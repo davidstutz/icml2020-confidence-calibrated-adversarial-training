@@ -1,0 +1,64 @@
+\documentclass{article}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\RequirePackage{snapshot}
+\newcommand{\theHalgorithm}{\arabic{algorithm}}
+\usepackage[accepted]{icml2020}
+\icmltitlerunning{Confidence-Calibrated Adversarial Training}
+
+\input{commands}
+
+\renewcommand{\topfraction}{.9}
+\renewcommand{\bottomfraction}{.5}
+\renewcommand{\textfraction}{.1}
+\renewcommand{\floatpagefraction}{.66}
+\renewcommand{\dbltopfraction}{.8}
+\renewcommand{\dblfloatpagefraction}{.66}
+\setcounter{topnumber}{15}
+\setcounter{bottomnumber}{15}
+\setcounter{totalnumber}{30}
+\setcounter{dbltopnumber}{15}
+
+\begin{document}
+
+\twocolumn[
+\icmltitle{Confidence-Calibrated Adversarial Training: Generalizing to Unseen Attacks}
+
+\begin{icmlauthorlist}
+    \icmlauthor{David Stutz}{mpii}
+    \icmlauthor{Matthias Hein}{tue}
+    \icmlauthor{Bernt Schiele}{mpii}
+\end{icmlauthorlist}
+
+\icmlaffiliation{mpii}{Max Planck Institute for Informatics, Saarland Informatics Campus, Saarbr\"{u}cken}
+\icmlaffiliation{tue}{University of T\"{u}bingen, T\"{u}bingen}
+
+\icmlcorrespondingauthor{David Stutz}{david.stutz@mpi-inf.mpg.de}
+
+\icmlkeywords{Adversarial Machine Learning, Adversarial Examples, Adversarial Robustness, Adversarial Training}
+
+\vskip 0.3in
+]
+
+\printAffiliationsAndNotice{}
+
+\input{top_abstract}
+\input{top_introduction}
+\input{top_related_work}
+\input{top_main}
+\input{top_experiments}
+\input{top_conclusion}
+
+\bibliography{bibliography}
+\bibliographystyle{icml2020}
+
+\onecolumn
+\begin{appendix}
+	\input{supp_abstract}
+	\input{supp_proof}
+	\input{supp_experiments}
+\end{appendix}
+
+\end{document}

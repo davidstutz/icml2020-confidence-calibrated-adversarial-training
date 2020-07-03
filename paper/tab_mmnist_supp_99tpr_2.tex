@@ -1,0 +1,66 @@
+\begin{tabularx}{1\textwidth}{| r | X ||c|c|c|c|c||c|c|}
+\hline
+\multicolumn{9}{|c|}{\textbf{MNIST:} Supplementary Results for $\mathbf{L_2}$ Adversarial Examples}\\
+\hline
+&& \multicolumn{5}{c||}{\begin{tabular}{c}\textbf{Detection Setting}\\$\tau$@$99\%$TPR\end{tabular}} & \multicolumn{2}{c|}{\begin{tabular}{c}\textbf{Standard Setting}\\$\tau{=}0$\end{tabular}}\\
+\hline
+Attack & Training & \begin{tabular}{c}ROC\\AUC\end{tabular} & \begin{tabular}{c}FPR\\ in \%\end{tabular} & \begin{tabular}{c}\TE\\ in \%\end{tabular} & \begin{tabular}{c}\RTE\\ in \%\end{tabular} & $\tau$ & \begin{tabular}{c}\TE\\ in \%\end{tabular} & \begin{tabular}{c}\RTE\\ in \%\end{tabular}\\
+\hline
+\hline
+\multirow{7}{*}{Worst-Case ($L_2$, $\epsilon = 1.5$)} & \Normal & 0.39 & 98.9 & 0.1 & 99.6 & 0.98 & 0.4 & 100.0\\
+& \AdvTrainHalf & 0.96 & 2.3 & 0.0 & 2.4 & 1.00 & 0.5 & 13.6\\
+& \AdvTrainFull & 0.96 & 2.6 & 0.0 & 2.7 & 1.00 & 0.5 & 12.0\\
+& \ConfTrain & 1.00 & 0.0 & 0.2 & 0.2 & 0.85 & 0.4 & 6.7\\
+& \Wong & 0.94 & 7.9 & 0.9 & 9.6 & 0.51 & 1.8 & 15.2\\
+& \TRADES & 0.96 & 2.2 & 0.1 & 2.3 & 0.92 & 0.5 & 8.5\\
+\hline
+\multirow{7}{*}{\PGD\FConf ($L_2$, $\epsilon = 1.5$)} & \Normal & 0.56 & 83.3 & 0.1 & 83.9 & 0.98 & 0.4 & 91.6\\
+& \AdvTrainHalf & 0.99 & 0.2 & 0.0 & 0.2 & 1.00 & 0.5 & 3.2\\
+& \AdvTrainFull & 0.99 & 0.1 & 0.0 & 0.1 & 1.00 & 0.5 & 2.5\\
+& \ConfTrain & 1.00 & 0.0 & 0.2 & 0.2 & 0.85 & 0.4 & 5.5\\
+& \Wong & 0.96 & 2.0 & 0.9 & 3.7 & 0.51 & 1.8 & 6.5\\
+& \TRADES & 0.99 & 0.2 & 0.1 & 0.2 & 0.92 & 0.5 & 3.6\\
+\hline
+\multirow{7}{*}{\PGD\FCE ($L_2$, $\epsilon = 1.5$)} & \Normal & 0.39 & 98.8 & 0.1 & 99.5 & 0.98 & 0.4 & 99.9\\
+& \AdvTrainHalf & 0.96 & 1.9 & 0.0 & 2.0 & 1.00 & 0.5 & 10.2\\
+& \AdvTrainFull & 0.96 & 1.9 & 0.0 & 2.0 & 1.00 & 0.5 & 10.0\\
+& \ConfTrain & 1.00 & 0.0 & 0.2 & 0.2 & 0.85 & 0.4 & 100.0\\
+& \Wong & 0.94 & 7.5 & 0.9 & 9.2 & 0.51 & 1.8 & 15.8\\
+& \TRADES & 0.96 & 2.2 & 0.1 & 2.3 & 0.92 & 0.5 & 8.2\\
+\hline
+\multirow{7}{*}{\BlackBox ($L_2$, $\epsilon = 1.5$)} & \Normal & 0.55 & 91.0 & 0.1 & 91.7 & 0.98 & 0.4 & 97.4\\
+& \AdvTrainHalf & 0.97 & 0.8 & 0.0 & 0.8 & 1.00 & 0.5 & 8.1\\
+& \AdvTrainFull & 0.98 & 0.9 & 0.0 & 0.9 & 1.00 & 0.5 & 6.8\\
+& \ConfTrain & 1.00 & 0.0 & 0.2 & 0.2 & 0.85 & 0.4 & 84.8\\
+& \Wong & 0.95 & 3.6 & 0.9 & 5.3 & 0.51 & 1.8 & 8.6\\
+& \TRADES & 0.99 & 0.3 & 0.1 & 0.3 & 0.92 & 0.5 & 4.4\\
+\hline
+\multirow{7}{*}{Worst-Case ($L_2$, $\epsilon = 3$)} & \Normal & 0.34 & 99.3 & 0.1 & 100.0 & 0.98 & 0.4 & 100.0\\
+& \AdvTrainHalf & 0.73 & 80.7 & 0.0 & 81.4 & 1.00 & 0.5 & 98.8\\
+& \AdvTrainFull & 0.66 & 83.9 & 0.0 & 84.7 & 1.00 & 0.5 & 98.5\\
+& \ConfTrain & 1.00 & 0.0 & 0.2 & 0.2 & 0.85 & 0.4 & 15.5\\
+& \Wong & 0.81 & 57.0 & 0.9 & 59.0 & 0.51 & 1.8 & 67.6\\
+& \TRADES & 0.90 & 43.6 & 0.1 & 44.0 & 0.92 & 0.5 & 69.9\\
+\hline
+\multirow{7}{*}{\PGD\FConf ($L_2$, $\epsilon = 3$)} & \Normal & 0.41 & 93.2 & 0.1 & 93.9 & 0.98 & 0.4 & 96.9\\
+& \AdvTrainHalf & 0.98 & 0.2 & 0.0 & 0.2 & 1.00 & 0.5 & 3.4\\
+& \AdvTrainFull & 0.99 & 0.1 & 0.0 & 0.1 & 1.00 & 0.5 & 2.7\\
+& \ConfTrain & 1.00 & 0.0 & 0.2 & 0.2 & 0.85 & 0.4 & 4.9\\
+& \Wong & 0.96 & 2.3 & 0.9 & 4.0 & 0.51 & 1.8 & 7.3\\
+& \TRADES & 0.98 & 0.4 & 0.1 & 0.4 & 0.92 & 0.5 & 3.8\\
+\hline
+\multirow{7}{*}{\PGD\FCE ($L_2$, $\epsilon = 3$)} & \Normal & 0.34 & 99.3 & 0.1 & 100.0 & 0.98 & 0.4 & 100.0\\
+& \AdvTrainHalf & 0.93 & 11.3 & 0.0 & 11.5 & 1.00 & 0.5 & 29.2\\
+& \AdvTrainFull & 0.92 & 9.3 & 0.0 & 9.5 & 1.00 & 0.5 & 24.5\\
+& \ConfTrain & 1.00 & 0.0 & 0.2 & 0.2 & 0.85 & 0.4 & 100.0\\
+& \Wong & 0.82 & 55.7 & 0.9 & 57.8 & 0.51 & 1.8 & 67.7\\
+& \TRADES & 0.95 & 5.3 & 0.1 & 5.4 & 0.92 & 0.5 & 15.9\\
+\hline
+\multirow{7}{*}{\BlackBox ($L_2$, $\epsilon = 3$)} & \Normal & 0.35 & 99.3 & 0.1 & 100.0 & 0.98 & 0.4 & 100.0\\
+& \AdvTrainHalf & 0.73 & 79.5 & 0.0 & 80.1 & 1.00 & 0.5 & 98.7\\
+& \AdvTrainFull & 0.67 & 83.0 & 0.0 & 83.8 & 1.00 & 0.5 & 98.1\\
+& \ConfTrain & 1.00 & 0.0 & 0.2 & 0.2 & 0.85 & 0.4 & 88.4\\
+& \Wong & 0.88 & 28.6 & 0.9 & 30.4 & 0.51 & 1.8 & 37.4\\
+& \TRADES & 0.91 & 42.6 & 0.1 & 43.0 & 0.92 & 0.5 & 69.1\\
+\hline
+\end{tabularx}

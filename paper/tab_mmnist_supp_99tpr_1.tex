@@ -1,0 +1,66 @@
+\begin{tabularx}{1\textwidth}{| r | X ||c|c|c|c|c||c|c|}
+\hline
+\multicolumn{9}{|c|}{\textbf{MNIST:} Supplementary Results for $\mathbf{L_\infty}$ Adversarial Examples}\\
+\hline
+&& \multicolumn{5}{c||}{\begin{tabular}{c}\textbf{Detection Setting}\\$\tau$@$99\%$TPR\end{tabular}} & \multicolumn{2}{c|}{\begin{tabular}{c}\textbf{Standard Setting}\\$\tau{=}0$\end{tabular}}\\
+\hline
+Attack & Training & \begin{tabular}{c}ROC\\AUC\end{tabular} & \begin{tabular}{c}FPR\\ in \%\end{tabular} & \begin{tabular}{c}\TE\\ in \%\end{tabular} & \begin{tabular}{c}\RTE\\ in \%\end{tabular} & $\tau$ & \begin{tabular}{c}\TE\\ in \%\end{tabular} & \begin{tabular}{c}\RTE\\ in \%\end{tabular}\\
+\hline
+\hline
+\multirow{7}{*}{Worst-Case ($L_\infty$, $\epsilon = 0.30$)} & \Normal & 0.34 & 99.3 & 0.1 & 100.0 & 0.98 & 0.4 & 100.0\\
+& \AdvTrainHalf & 0.97 & 1.0 & 0.0 & 1.0 & 1.00 & 0.5 & 7.2\\
+& \AdvTrainFull & 0.98 & 1.0 & 0.0 & 1.0 & 1.00 & 0.5 & 7.1\\
+& \ConfTrain & 0.99 & 6.9 & 0.2 & 7.1 & 0.85 & 0.4 & 48.9\\
+& \Wong & 0.86 & 32.1 & 0.9 & 33.9 & 0.51 & 1.8 & 38.0\\
+& \TRADES & 0.96 & 3.4 & 0.1 & 3.5 & 0.92 & 0.5 & 9.5\\
+\hline
+\multirow{7}{*}{\PGD\FConf ($L_\infty$, $\epsilon = 0.30$)} & \Normal & 0.34 & 99.3 & 0.1 & 100.0 & 0.98 & 0.4 & 100.0\\
+& \AdvTrainHalf & 0.97 & 0.4 & 0.0 & 0.4 & 1.00 & 0.5 & 5.6\\
+& \AdvTrainFull & 0.98 & 0.6 & 0.0 & 0.6 & 1.00 & 0.5 & 5.4\\
+& \ConfTrain & 0.98 & 6.9 & 0.2 & 7.1 & 0.85 & 0.4 & 45.9\\
+& \Wong & 0.87 & 28.7 & 0.9 & 30.5 & 0.51 & 1.8 & 34.6\\
+& \TRADES & 0.96 & 1.6 & 0.1 & 1.6 & 0.92 & 0.5 & 7.0\\
+\hline
+\multirow{7}{*}{\PGD\FCE ($L_\infty$, $\epsilon = 0.30$)} & \Normal & 0.34 & 99.3 & 0.1 & 100.0 & 0.98 & 0.4 & 100.0\\
+& \AdvTrainHalf & 0.97 & 0.8 & 0.0 & 0.8 & 1.00 & 0.5 & 6.7\\
+& \AdvTrainFull & 0.98 & 0.7 & 0.0 & 0.7 & 1.00 & 0.5 & 6.3\\
+& \ConfTrain & 1.00 & 0.0 & 0.2 & 0.2 & 0.85 & 0.4 & 100.0\\
+& \Wong & 0.88 & 28.0 & 0.9 & 29.8 & 0.51 & 1.8 & 37.6\\
+& \TRADES & 0.96 & 2.8 & 0.1 & 2.9 & 0.92 & 0.5 & 8.6\\
+\hline
+\multirow{7}{*}{\BlackBox ($L_\infty$, $\epsilon = 0.30$)} & \Normal & 0.34 & 99.3 & 0.1 & 100.0 & 0.98 & 0.4 & 100.0\\
+& \AdvTrainHalf & 0.98 & 1.0 & 0.0 & 1.0 & 1.00 & 0.5 & 7.2\\
+& \AdvTrainFull & 0.98 & 1.0 & 0.0 & 1.0 & 1.00 & 0.5 & 6.9\\
+& \ConfTrain & 1.00 & 0.1 & 0.2 & 0.3 & 0.85 & 0.4 & 82.4\\
+& \Wong & 0.88 & 27.7 & 0.9 & 29.5 & 0.51 & 1.8 & 35.9\\
+& \TRADES & 0.96 & 3.2 & 0.1 & 3.3 & 0.92 & 0.5 & 9.1\\
+\hline
+\multirow{7}{*}{Worst-Case ($L_\infty$, $\epsilon = 0.40$)} & \Normal & 0.34 & 99.3 & 0.1 & 100.0 & 0.98 & 0.4 & 100.0\\
+& \AdvTrainHalf & 0.20 & 99.3 & 0.0 & 100.0 & 1.00 & 0.5 & 100.0\\
+& \AdvTrainFull & 0.27 & 99.2 & 0.0 & 100.0 & 1.00 & 0.5 & 100.0\\
+& \ConfTrain & 0.97 & 11.4 & 0.2 & 11.6 & 0.85 & 0.4 & 69.3\\
+& \Wong & 0.66 & 96.7 & 0.9 & 98.9 & 0.51 & 1.8 & 99.8\\
+& \TRADES & 0.56 & 99.3 & 0.1 & 99.9 & 0.92 & 0.5 & 100.0\\
+\hline
+\multirow{7}{*}{\PGD\FConf ($L_\infty$, $\epsilon = 0.40$)} & \Normal & 0.34 & 99.3 & 0.1 & 100.0 & 0.98 & 0.4 & 100.0\\
+& \AdvTrainHalf & 0.36 & 97.1 & 0.0 & 97.8 & 1.00 & 0.5 & 99.8\\
+& \AdvTrainFull & 0.81 & 46.5 & 0.0 & 46.9 & 1.00 & 0.5 & 77.0\\
+& \ConfTrain & 0.97 & 11.4 & 0.2 & 11.6 & 0.85 & 0.4 & 58.9\\
+& \Wong & 0.73 & 89.3 & 0.9 & 91.4 & 0.51 & 1.8 & 93.3\\
+& \TRADES & 0.76 & 87.0 & 0.1 & 87.5 & 0.92 & 0.5 & 96.9\\
+\hline
+\multirow{7}{*}{\PGD\FCE ($L_\infty$, $\epsilon = 0.40$)} & \Normal & 0.34 & 99.3 & 0.1 & 100.0 & 0.98 & 0.4 & 100.0\\
+& \AdvTrainHalf & 0.20 & 99.3 & 0.0 & 100.0 & 1.00 & 0.5 & 100.0\\
+& \AdvTrainFull & 0.27 & 99.2 & 0.0 & 100.0 & 1.00 & 0.5 & 100.0\\
+& \ConfTrain & 1.00 & 0.0 & 0.2 & 0.2 & 0.85 & 0.4 & 100.0\\
+& \Wong & 0.69 & 95.6 & 0.9 & 97.8 & 0.51 & 1.8 & 99.7\\
+& \TRADES & 0.58 & 99.3 & 0.1 & 99.9 & 0.92 & 0.5 & 100.0\\
+\hline
+\multirow{7}{*}{\BlackBox ($L_\infty$, $\epsilon = 0.40$)} & \Normal & 0.34 & 99.3 & 0.1 & 100.0 & 0.98 & 0.4 & 100.0\\
+& \AdvTrainHalf & 0.23 & 99.3 & 0.0 & 100.0 & 1.00 & 0.5 & 100.0\\
+& \AdvTrainFull & 0.27 & 99.2 & 0.0 & 100.0 & 1.00 & 0.5 & 100.0\\
+& \ConfTrain & 1.00 & 0.2 & 0.2 & 0.4 & 0.85 & 0.4 & 91.2\\
+& \Wong & 0.76 & 92.5 & 0.9 & 94.7 & 0.51 & 1.8 & 99.3\\
+& \TRADES & 0.78 & 95.4 & 0.1 & 96.0 & 0.92 & 0.5 & 99.8\\
+\hline
+\end{tabularx}

@@ -1,0 +1,15 @@
+% 2020-02-12 18:28:59.816361
+\begin{tabularx}{1\textwidth}{|c| X |c|c|c|}
+	\hline
+	\multicolumn{5}{|c|}{\textbf{MNIST:} Results for (Uniform) Random Examples}\\
+	\hline
+	&& \multicolumn{3}{c|}{\begin{tabular}{c}\textbf{Detection Setting}\\$\tau$@$99\%$TPR\end{tabular}}\\
+	\hline
+	& Training & \begin{tabular}{c}ROC\\AUC\end{tabular} & \begin{tabular}{c}FPR\\ in \%\end{tabular} & $\tau$\\
+	\hline
+	\hline
+	\multirow{3}{*}{\Random} & \Normal & 0.95 & 81.4 & 0.6\\
+	& \AdvTrain & 1.00 & 4.3 & 0.6\\
+	& \ConfTrain & 1.00 & 0.0 & 0.5\\
+	\hline
+\end{tabularx}

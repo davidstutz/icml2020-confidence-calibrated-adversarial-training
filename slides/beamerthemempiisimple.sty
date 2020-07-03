@@ -1,0 +1,128 @@
+\mode<presentation>
+\usepackage{pgfcomp-version-0-65}
+\usepackage{color}
+\usepackage[absolute,overlay]{textpos}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+% \usepackage[ngerman]{babel}
+\usepackage[scaled]{helvet}
+
+% Restyle the left margins for the itemize lists
+\setlength{\leftmargini}{5mm}
+
+% Define some colors. The colors defined in the  manual
+    \definecolor{MPIIblue}{RGB}{22,26,60}
+    \definecolor{MPIIlightblue}{RGB}{103,133,158} % 67859E
+    %\definecolor{MPIIorange}{RGB}{200,91,15} % C85B0F
+    \definecolor{MPIIorange}{RGB}{255,125,0}
+    \definecolor{MPIIblack}{RGB}{55,55,55}
+    \definecolor{MPIIwhite}{RGB}{255,255,255}
+    \definecolor{MPIIdarkgray}{RGB}{123,123,123}
+    \definecolor{MPIIdarkergray}{RGB}{89,89,89}
+    \definecolor{MPIIgray}{RGB}{169,169,169}
+    \definecolor{MPIIlightgray}{RGB}{214,214,214}
+    \definecolor{MPIIlightergray}{RGB}{234,234,234}
+    \definecolor{MPIIgreen}{HTML}{327a2b} % 0.22,0.54, 0.19
+    %\definecolor{MPIIred}{rgb}{0.65,0.23,0.25}
+    \definecolor{MPIIred}{rgb}{1, 0, 0}
+    \definecolor{MPIIbeige}{rgb}{0.65,0.23,0.25}
+    
+% Assign the colors to the differen pars
+    % Title
+    \setbeamercolor{title}{fg = MPIIblack}
+    \setbeamercolor{author}{fg = MPIIblack}
+    \setbeamercolor{date}{fg = MPIIblack}
+    
+    % Frame title
+    \setbeamercolor{frametitle}{fg = MPIIblue}
+
+    % Table of contents
+    \setbeamercolor{section in toc}{fg = MPIIblack}
+    \setbeamercolor{subsection in toc}{fg = MPIIblue}
+    \setbeamercolor{section in toc shaded}{fg = MPIIblack}
+    % List colors (itemize)
+    \setbeamercolor{item}{fg = MPIIblue}
+    \setbeamercolor{subitem}{fg = MPIIblack}
+    \setbeamercolor{subsubitem}{fg = MPIIblack}
+    % The color of the bullets points
+    \setbeamercolor{description item}{fg = MPIIblue}
+    % Captions
+    \setbeamercolor{caption}{fg = MPIIblack}
+    \setbeamercolor{caption name}{fg = MPIIblack}
+
+    % Style the block elements:
+    % - Standard blocks
+    % - Alert blocks
+    % - Example block
+        % Standard block
+        \setbeamercolor{block title}{fg = MPIIblue, bg = MPIIlightergray}
+        \setbeamercolor{block body}{fg = MPIIblack, bg = MPIIlightgray}
+    
+        % Alert block
+        \setbeamercolor{block title alerted}{fg = MPIIwhite, bg = MPIIgray}
+        \setbeamercolor{block body alerted}{fg = MPIIblack, bg = MPIIlightergray}
+        
+        % Example block
+        \setbeamercolor{block title example}{fg = MPIIwhite, bg = MPIIblue}
+        \setbeamercolor{block body example}{fg = MPIIblack, bg = MPIIlightergray}
+    
+    % Normal text
+    \setbeamercolor{normal text}{fg = MPIIblack}
+
+% Define the fonts
+    % Here we are using default fonts
+    \usefonttheme{default}
+    % Math elements ought to be rendered in serif-font
+    \usefonttheme[onlymath]{serif}
+    
+    \setbeamerfont{title}{size = \huge}
+    \setbeamerfont{author}{size = \Large}
+    \setbeamerfont{date}{size = \Large}
+    
+    % Fontsize of the frame titles
+    \setbeamerfont{frametitle}{size = \LARGE}
+
+    % Bibliography
+    % see https://tex.stackexchange.com/questions/57177/beamer-changing-the-font-size-of-the-references-using-the-shrink-argument-cause
+    \setbeamerfont{bibliography item}{size=\scriptsize}
+    \setbeamerfont{bibliography entry author}{size=\scriptsize}
+    \setbeamerfont{bibliography entry title}{size=\scriptsize}
+    \setbeamerfont{bibliography entry location}{size=\scriptsize}
+    \setbeamerfont{bibliography entry note}{size=\scriptsize}
+
+\setbeamersize{text margin left=5mm,text margin right=5mm}
+
+% Draw blue circles around the main section numbers
+\useinnertheme{circles}
+
+% Set the list-style-type of an itemized list to triangles. 
+\setbeamertemplate{itemize items}[triangle]
+
+% Remove the circles in an enumerated itemized list
+\setbeamertemplate{enumerate items}[default]
+
+\setbeamertemplate{blocks}[default]
+
+% We declare the image that will be used as the logo
+\pgfdeclareimage[width = 0.25\paperwidth]{MPIIlogoblue}{logo.png}
+
+% Remove the navigation symbols since I don't think they are useful at all
+\setbeamertemplate{navigation symbols}{}
+
+\setbeamertemplate{title page}{%
+    \vfill
+    \centering
+    \begin{beamercolorbox}[sep=8pt,center]{title}
+        \usebeamerfont{title}\inserttitle
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[sep=8pt,center]{author}
+        \usebeamerfont{author}\insertauthor
+    \end{beamercolorbox}
+}
+
+\setbeamertemplate{frametitle}{
+    \begin{textblock*}{\paperwidth}(4mm, 4mm)
+        {\usebeamerfont{frametitle}\insertframetitle}
+    \end{textblock*}
+    \vspace*{10mm}
+}

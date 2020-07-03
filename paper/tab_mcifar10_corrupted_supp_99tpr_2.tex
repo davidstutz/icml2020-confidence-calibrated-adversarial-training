@@ -1,0 +1,90 @@
+\begin{tabularx}{1\textwidth}{| r | X ||c|c|c|c|c||c|}
+\hline
+\multicolumn{8}{|c|}{\textbf{CIFAR10-C:} Supplementary Results for Corruption}\\
+\hline
+&& \multicolumn{5}{c||}{\begin{tabular}{c}\textbf{Detection Setting}\\$\tau$@$99\%$TPR\end{tabular}} & \multicolumn{1}{c|}{\begin{tabular}{c}\textbf{Standard}\\\textbf{Setting}\\$\tau{=}0$\end{tabular}}\\
+\hline
+Corruption & Training & \begin{tabular}{c}ROC\\AUC\end{tabular} & \begin{tabular}{c}FPR\\ in \%\end{tabular} & \begin{tabular}{c}TNR\\ in \%\end{tabular} & \begin{tabular}{c}\TE\\ in \%\end{tabular} & $\tau$ & \begin{tabular}{c}\TE\\ in \%\end{tabular}\\
+\hline
+\hline
+\multirow{8}{*}{\texttt{impulse\_noise}} & \Normal & 0.59 & 97.0 & 3.0 & 13.1 & 0.59 & 14.5\\
+& \AdvTrainHalf & 0.53 & 96.4 & 3.6 & 16.4 & 0.35 & 17.9\\
+& \AdvTrainFull & 0.52 & 97.6 & 2.4 & 19.8 & 0.29 & 21.1\\
+& \ConfTrain & 1.00 & 0.1 & 99.9 & 0.0 & 0.40 & 61.0\\
+& \Wong & 0.51 & 98.4 & 1.6 & 18.3 & 0.24 & 19.2\\
+& \TRADES & 0.54 & 94.9 & 5.1 & 15.7 & 0.30 & 18.4\\
+& \MadryAT & 0.53 & 96.1 & 3.9 & 13.3 & 0.29 & 15.3\\
+\hline
+\multirow{8}{*}{\texttt{jpeg\_compression}} & \Normal & 0.59 & 96.9 & 3.1 & 12.3 & 0.59 & 13.7\\
+& \AdvTrainHalf & 0.51 & 96.8 & 3.2 & 15.5 & 0.35 & 17.0\\
+& \AdvTrainFull & 0.51 & 97.6 & 2.4 & 18.9 & 0.29 & 20.2\\
+& \ConfTrain & 0.59 & 93.3 & 6.7 & 9.3 & 0.40 & 12.1\\
+& \Wong & 0.51 & 98.3 & 1.7 & 18.3 & 0.24 & 19.3\\
+& \TRADES & 0.51 & 96.3 & 3.7 & 14.4 & 0.30 & 16.6\\
+& \MadryAT & 0.52 & 96.5 & 3.5 & 12.6 & 0.29 & 14.4\\
+\hline
+\multirow{8}{*}{\texttt{motion\_blur}} & \Normal & 0.58 & 97.3 & 2.7 & 10.9 & 0.59 & 12.2\\
+& \AdvTrainHalf & 0.55 & 95.9 & 4.1 & 16.8 & 0.35 & 18.9\\
+& \AdvTrainFull & 0.54 & 97.1 & 2.9 & 19.9 & 0.29 & 21.3\\
+& \ConfTrain & 0.52 & 96.5 & 3.5 & 11.9 & 0.40 & 13.6\\
+& \Wong & 0.54 & 98.1 & 1.9 & 19.7 & 0.24 & 20.7\\
+& \TRADES & 0.54 & 95.8 & 4.2 & 15.7 & 0.30 & 17.9\\
+& \MadryAT & 0.55 & 95.9 & 4.1 & 13.3 & 0.29 & 15.6\\
+\hline
+\multirow{8}{*}{\texttt{pixelate}} & \Normal & 0.54 & 97.6 & 2.4 & 9.7 & 0.59 & 10.9\\
+& \AdvTrainHalf & 0.51 & 96.7 & 3.3 & 15.3 & 0.35 & 17.0\\
+& \AdvTrainFull & 0.51 & 97.8 & 2.2 & 18.6 & 0.29 & 19.7\\
+& \ConfTrain & 0.52 & 97.0 & 3.0 & 9.2 & 0.40 & 10.8\\
+& \Wong & 0.51 & 98.4 & 1.6 & 18.2 & 0.24 & 19.1\\
+& \TRADES & 0.51 & 96.4 & 3.6 & 14.0 & 0.30 & 16.0\\
+& \MadryAT & 0.51 & 97.1 & 2.9 & 12.1 & 0.29 & 13.6\\
+\hline
+\multirow{8}{*}{\texttt{saturate}} & \Normal & 0.55 & 97.5 & 2.5 & 10.0 & 0.59 & 11.3\\
+& \AdvTrainHalf & 0.55 & 95.3 & 4.7 & 18.2 & 0.35 & 20.5\\
+& \AdvTrainFull & 0.54 & 96.0 & 4.0 & 21.3 & 0.29 & 23.3\\
+& \ConfTrain & 0.48 & 97.6 & 2.4 & 11.8 & 0.40 & 13.0\\
+& \Wong & 0.55 & 97.3 & 2.7 & 20.9 & 0.24 & 22.1\\
+& \TRADES & 0.53 & 95.0 & 5.0 & 15.6 & 0.30 & 18.2\\
+& \MadryAT & 0.54 & 95.2 & 4.8 & 14.2 & 0.29 & 16.4\\
+\hline
+\multirow{8}{*}{\texttt{shot\_noise}} & \Normal & 0.58 & 97.0 & 3.0 & 12.1 & 0.59 & 13.7\\
+& \AdvTrainHalf & 0.51 & 97.1 & 2.9 & 15.4 & 0.35 & 16.7\\
+& \AdvTrainFull & 0.50 & 97.7 & 2.3 & 18.5 & 0.29 & 19.6\\
+& \ConfTrain & 1.00 & 0.0 & 100.0 & 0.0 & 0.40 & 84.5\\
+& \Wong & 0.51 & 98.5 & 1.5 & 18.1 & 0.24 & 18.9\\
+& \TRADES & 0.51 & 96.2 & 3.8 & 13.7 & 0.30 & 15.8\\
+& \MadryAT & 0.51 & 97.1 & 2.9 & 11.8 & 0.29 & 13.4\\
+\hline
+\multirow{8}{*}{\texttt{snow}} & \Normal & 0.57 & 97.3 & 2.7 & 12.1 & 0.59 & 13.5\\
+& \AdvTrainHalf & 0.51 & 96.7 & 3.3 & 15.3 & 0.35 & 17.0\\
+& \AdvTrainFull & 0.51 & 97.5 & 2.5 & 18.8 & 0.29 & 20.1\\
+& \ConfTrain & 0.58 & 95.6 & 4.4 & 11.2 & 0.40 & 13.3\\
+& \Wong & 0.51 & 98.4 & 1.6 & 18.7 & 0.24 & 19.6\\
+& \TRADES & 0.50 & 96.3 & 3.7 & 14.1 & 0.30 & 16.1\\
+& \MadryAT & 0.51 & 97.0 & 3.0 & 12.3 & 0.29 & 13.8\\
+\hline
+\multirow{8}{*}{\texttt{spatter}} & \Normal & 0.54 & 97.5 & 2.5 & 9.4 & 0.59 & 10.6\\
+& \AdvTrainHalf & 0.51 & 96.8 & 3.2 & 15.5 & 0.35 & 17.2\\
+& \AdvTrainFull & 0.51 & 97.6 & 2.4 & 18.5 & 0.29 & 19.8\\
+& \ConfTrain & 0.58 & 95.2 & 4.8 & 9.3 & 0.40 & 11.6\\
+& \Wong & 0.51 & 98.3 & 1.7 & 18.0 & 0.24 & 18.8\\
+& \TRADES & 0.51 & 96.0 & 4.0 & 14.2 & 0.30 & 16.4\\
+& \MadryAT & 0.51 & 96.7 & 3.3 & 12.3 & 0.29 & 13.9\\
+\hline
+\multirow{8}{*}{\texttt{speckle\_noise}} & \Normal & 0.57 & 97.0 & 3.0 & 12.4 & 0.59 & 13.8\\
+& \AdvTrainHalf & 0.51 & 97.1 & 2.9 & 15.2 & 0.35 & 16.7\\
+& \AdvTrainFull & 0.51 & 97.7 & 2.3 & 18.4 & 0.29 & 19.5\\
+& \ConfTrain & 1.00 & 0.0 & 100.0 & 0.0 & 0.40 & 83.0\\
+& \Wong & 0.51 & 98.4 & 1.6 & 17.9 & 0.24 & 18.8\\
+& \TRADES & 0.51 & 96.4 & 3.6 & 13.8 & 0.30 & 15.9\\
+& \MadryAT & 0.51 & 96.9 & 3.1 & 12.0 & 0.29 & 13.4\\
+\hline
+\multirow{8}{*}{\texttt{zoom\_blur}} & \Normal & 0.61 & 96.7 & 3.3 & 12.9 & 0.59 & 14.6\\
+& \AdvTrainHalf & 0.56 & 95.7 & 4.3 & 17.2 & 0.35 & 19.2\\
+& \AdvTrainFull & 0.56 & 97.0 & 3.0 & 21.1 & 0.29 & 22.4\\
+& \ConfTrain & 0.52 & 97.1 & 2.9 & 13.9 & 0.40 & 15.6\\
+& \Wong & 0.56 & 98.0 & 2.0 & 20.5 & 0.24 & 21.5\\
+& \TRADES & 0.55 & 95.4 & 4.6 & 17.0 & 0.30 & 19.2\\
+& \MadryAT & 0.56 & 95.7 & 4.3 & 14.3 & 0.29 & 16.4\\
+\hline
+\end{tabularx}

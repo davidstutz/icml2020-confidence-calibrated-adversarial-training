@@ -1,0 +1,20 @@
+% 2020-01-28 19:42:01.667589
+\begin{tabularx}{1\textwidth}{| r | X |c|c|c|}
+\hline
+\multicolumn{5}{|c|}{\textbf{CIFAR10:} Results for Distal Adversarial Examples}\\
+\hline
+&& \multicolumn{3}{c|}{\begin{tabular}{c}\textbf{Detection Setting}\\$\tau$@$99\%$TPR\end{tabular}}\\
+\hline
+& Training & \begin{tabular}{c}ROC\\AUC\end{tabular} & \begin{tabular}{c}FPR\\ in \%\end{tabular} & $\tau$\\
+\hline
+\hline
+\multirow{8}{*}{\Distal} & \Normal & 0.49 & 83.3 & 0.6\\
+& \AdvTrainHalf & 0.31 & 75.0 & 0.3\\
+& \AdvTrainFull & 0.33 & 72.5 & 0.3\\
+& \ConfTrain & 1.00 & 0.0 & 0.4\\
+& \Wong & 0.41 & 76.7 & 0.2\\
+& \TRADES & 0.71 & 76.2 & 0.3\\
+& \WongAT & 0.36 & 74.0 & 0.3\\
+& \MadryAT & 0.52 & 78.5 & 0.3\\
+\hline
+\end{tabularx}

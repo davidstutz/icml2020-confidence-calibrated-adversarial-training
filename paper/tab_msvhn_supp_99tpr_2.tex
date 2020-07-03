@@ -1,0 +1,65 @@
+\begin{tabularx}{1\textwidth}{| r | X ||c|c|c|c|c||c|c|}
+\hline
+\multicolumn{9}{|c|}{\textbf{SVHN:} Supplementary Results for $\mathbf{L_2}$ Adversarial Examples}\\
+\hline
+&& \multicolumn{5}{c||}{\begin{tabular}{c}\textbf{Detection Setting}\\$\tau$@$99\%$TPR\end{tabular}} & \multicolumn{2}{c|}{\begin{tabular}{c}\textbf{Standard Setting}\\$\tau{=}0$\end{tabular}}\\
+\hline
+Attack & Training & \begin{tabular}{c}ROC\\AUC\end{tabular} & \begin{tabular}{c}FPR\\ in \%\end{tabular} & \begin{tabular}{c}\TE\\ in \%\end{tabular} & \begin{tabular}{c}\RTE\\ in \%\end{tabular} & $\tau$ & \begin{tabular}{c}\TE\\ in \%\end{tabular} & \begin{tabular}{c}\RTE\\ in \%\end{tabular}\\
+\hline
+\hline
+\multirow{4}{*}{Worst-Case ($L_2$, $\epsilon = 0.5$)} & \Normal & 0.27 & 93.3 & 2.6 & 97.4 & 0.78 & 3.6 & 97.7\\
+& \AdvTrainHalf & 0.53 & 65.2 & 2.5 & 68.6 & 0.56 & 3.4 & 70.7\\
+& \AdvTrainFull & 0.67 & 60.1 & 4.6 & 65.8 & 0.27 & 5.9 & 66.3\\
+& \ConfTrain & 0.87 & 17.2 & 2.1 & 20.0 & 0.60 & 2.9 & 63.3\\
+\hline
+\multirow{4}{*}{\PGD\FConf ($L_2$, $\epsilon = 0.5$)} & \Normal & 0.32 & 91.1 & 2.6 & 95.1 & 0.78 & 3.6 & 96.4\\
+& \AdvTrainHalf & 0.56 & 57.5 & 2.5 & 60.8 & 0.56 & 3.4 & 62.9\\
+& \AdvTrainFull & 0.68 & 54.0 & 4.6 & 59.6 & 0.27 & 5.9 & 60.2\\
+& \ConfTrain & 0.85 & 16.9 & 2.1 & 19.7 & 0.60 & 2.9 & 54.5\\
+\hline
+\multirow{4}{*}{\PGD\FCE ($L_2$, $\epsilon = 0.5$)} & \Normal & 0.28 & 93.3 & 2.6 & 97.4 & 0.78 & 3.6 & 97.7\\
+& \AdvTrainHalf & 0.57 & 63.1 & 2.5 & 66.5 & 0.56 & 3.4 & 70.1\\
+& \AdvTrainFull & 0.72 & 57.7 & 4.6 & 63.5 & 0.27 & 5.9 & 66.5\\
+& \ConfTrain & 0.99 & 1.8 & 2.1 & 4.5 & 0.60 & 2.9 & 100.0\\
+\hline
+\multirow{4}{*}{\BlackBox ($L_2$, $\epsilon = 0.5$)} & \Normal & 0.67 & 53.8 & 2.6 & 57.3 & 0.78 & 3.6 & 63.7\\
+& \AdvTrainHalf & 0.99 & 3.0 & 2.5 & 5.9 & 0.56 & 3.4 & 13.8\\
+& \AdvTrainFull & 0.90 & 7.3 & 4.6 & 12.2 & 0.27 & 5.9 & 15.3\\
+& \ConfTrain & 1.00 & 0.1 & 2.1 & 2.7 & 0.60 & 2.9 & 91.3\\
+\hline
+\multirow{4}{*}{Worst-Case($L_2$, $\epsilon = 1$)} & \Normal & 0.17 & 95.8 & 2.6 & 99.9 & 0.78 & 3.6 & 99.9\\
+& \AdvTrainHalf & 0.26 & 88.4 & 2.5 & 92.0 & 0.56 & 3.4 & 92.4\\
+& \AdvTrainFull & 0.38 & 87.3 & 4.6 & 93.4 & 0.27 & 5.9 & 93.5\\
+& \ConfTrain & 0.88 & 18.9 & 2.1 & 21.7 & 0.60 & 2.9 & 80.9\\
+\hline
+\multirow{4}{*}{\PGD\FConf ($L_2$, $\epsilon = 1$)} & \Normal & 0.22 & 95.4 & 2.6 & 99.5 & 0.78 & 3.6 & 99.6\\
+& \AdvTrainHalf & 0.49 & 73.6 & 2.5 & 77.1 & 0.56 & 3.4 & 78.7\\
+& \AdvTrainFull & 0.48 & 75.5 & 4.6 & 81.4 & 0.27 & 5.9 & 81.7\\
+& \ConfTrain & 0.88 & 18.6 & 2.1 & 21.4 & 0.60 & 2.9 & 74.6\\
+\hline
+\multirow{4}{*}{\PGD\FCE ($L_2$, $\epsilon = 1$)} & \Normal & 0.17 & 95.8 & 2.6 & 99.9 & 0.78 & 3.6 & 99.9\\
+& \AdvTrainHalf & 0.27 & 88.4 & 2.5 & 92.0 & 0.56 & 3.4 & 92.4\\
+& \AdvTrainFull & 0.39 & 87.3 & 4.6 & 93.4 & 0.27 & 5.9 & 93.5\\
+& \ConfTrain & 0.99 & 2.1 & 2.1 & 4.8 & 0.60 & 2.9 & 100.0\\
+\hline
+\multirow{4}{*}{\BlackBox ($L_2$, $\epsilon = 1$)} & \Normal & 0.42 & 88.3 & 2.6 & 92.3 & 0.78 & 3.6 & 94.4\\
+& \AdvTrainHalf & 0.98 & 10.8 & 2.5 & 13.8 & 0.56 & 3.4 & 29.8\\
+& \AdvTrainFull & 0.85 & 22.5 & 4.6 & 27.7 & 0.27 & 5.9 & 30.1\\
+& \ConfTrain & 1.00 & 0.1 & 2.1 & 2.7 & 0.60 & 2.9 & 96.5\\
+\hline
+\multirow{4}{*}{Worst-Case ($L_2$, $\epsilon = 2$)} & \Normal & 0.16 & 95.9 & 2.6 & 100.0 & 0.78 & 3.6 & 100.0\\
+& \AdvTrainHalf & 0.11 & 95.7 & 2.5 & 99.4 & 0.56 & 3.4 & 99.4\\
+& \AdvTrainFull & 0.12 & 93.3 & 4.6 & 99.5 & 0.27 & 5.9 & 99.5\\
+& \ConfTrain & 0.89 & 25.4 & 2.1 & 28.3 & 0.60 & 2.9 & 91.9\\
+\hline
+\multirow{4}{*}{\PGD\FConf ($L_2$, $\epsilon = 2$)} & \Normal & 0.21 & 95.4 & 2.6 & 99.5 & 0.78 & 3.6 & 99.8\\
+& \AdvTrainHalf & 0.49 & 76.2 & 2.5 & 79.7 & 0.56 & 3.4 & 81.2\\
+& \AdvTrainFull & 0.45 & 78.1 & 4.6 & 84.0 & 0.27 & 5.9 & 84.3\\
+& \ConfTrain & 0.89 & 19.1 & 2.1 & 21.9 & 0.60 & 2.9 & 88.0\\
+\hline
+\multirow{4}{*}{\PGD\FCE ($L_2$, $\epsilon = 2$)} & \Normal & 0.16 & 95.9 & 2.6 & 100.0 & 0.78 & 3.6 & 100.0\\
+& \AdvTrainHalf & 0.12 & 95.7 & 2.5 & 99.4 & 0.56 & 3.4 & 99.4\\
+& \AdvTrainFull & 0.12 & 93.3 & 4.6 & 99.5 & 0.27 & 5.9 & 99.5\\
+& \ConfTrain & 0.98 & 5.0 & 2.1 & 7.7 & 0.60 & 2.9 & 100.0\\
+\hline
+\end{tabularx}

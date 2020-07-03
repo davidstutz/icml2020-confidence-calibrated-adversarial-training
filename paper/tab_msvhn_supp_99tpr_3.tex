@@ -1,0 +1,75 @@
+\begin{tabularx}{1\textwidth}{| r | X ||c|c|c|c|c||c|c|}
+    \hline
+    \multicolumn{9}{|c|}{\textbf{SVHN:} Supplementary Results for $\mathbf{L_1}$, $\mathbf{L_0}$ Adversarial Examples and \textbf{Adversarial Frames}}\\
+    \hline
+    && \multicolumn{5}{c||}{\begin{tabular}{c}\textbf{Detection Setting}\\$\tau$@$99\%$TPR\end{tabular}} & \multicolumn{2}{c|}{\begin{tabular}{c}\textbf{Standard Setting}\\$\tau{=}0$\end{tabular}}\\
+    \hline
+    Attack & Training & \begin{tabular}{c}ROC\\AUC\end{tabular} & \begin{tabular}{c}FPR\\ in \%\end{tabular} & \begin{tabular}{c}\TE\\ in \%\end{tabular} & \begin{tabular}{c}\RTE\\ in \%\end{tabular} & $\tau$ & \begin{tabular}{c}\TE\\ in \%\end{tabular} & \begin{tabular}{c}\RTE\\ in \%\end{tabular}\\
+    \hline
+    \hline
+\multirow{4}{*}{Worst-Case ($L_1$, $\epsilon = 18$)} & \Normal & 0.17 & 95.9 & 2.6 & 100.0 & 0.78 & 3.6 & 100.0\\
+& \AdvTrainHalf & 0.09 & 95.0 & 2.5 & 98.7 & 0.56 & 3.4 & 98.7\\
+& \AdvTrainFull & 0.14 & 93.1 & 4.6 & 99.3 & 0.27 & 5.9 & 99.3\\
+& \ConfTrain & 0.82 & 24.3 & 2.1 & 27.2 & 0.60 & 2.9 & 72.8\\
+\hline
+\multirow{4}{*}{\PGD\FConf ($L_1$, $\epsilon = 18$)} & \Normal & 0.17 & 95.9 & 2.6 & 100.0 & 0.78 & 3.6 & 100.0\\
+& \AdvTrainHalf & 0.11 & 94.8 & 2.5 & 98.5 & 0.56 & 3.4 & 98.5\\
+& \AdvTrainFull & 0.15 & 92.9 & 4.6 & 99.1 & 0.27 & 5.9 & 99.1\\
+& \ConfTrain & 0.82 & 23.4 & 2.1 & 26.3 & 0.60 & 2.9 & 69.3\\
+\hline
+\multirow{4}{*}{\PGD\FCE ($L_1$, $\epsilon = 18$)} & \Normal & 0.21 & 95.7 & 2.6 & 99.8 & 0.78 & 3.6 & 99.8\\
+& \AdvTrainHalf & 0.29 & 92.8 & 2.5 & 96.5 & 0.56 & 3.4 & 96.6\\
+& \AdvTrainFull & 0.27 & 92.1 & 4.6 & 98.3 & 0.27 & 5.9 & 98.3\\
+& \ConfTrain & 0.99 & 2.7 & 2.1 & 5.4 & 0.60 & 2.9 & 100.0\\
+\hline
+\multirow{4}{*}{\BlackBox ($L_1$, $\epsilon = 18$)} & \Normal & 0.89 & 6.2 & 2.6 & 9.2 & 0.78 & 3.6 & 13.0\\
+& \AdvTrainHalf & 0.97 & 3.7 & 2.5 & 6.6 & 0.56 & 3.4 & 10.9\\
+& \AdvTrainFull & 0.90 & 7.4 & 4.6 & 12.3 & 0.27 & 5.9 & 14.9\\
+& \ConfTrain & 1.00 & 0.5 & 2.1 & 3.2 & 0.60 & 2.9 & 10.0\\
+\hline
+\multirow{4}{*}{Worst-Case ($L_1$, $\epsilon = 24$)} & \Normal & 0.16 & 95.9 & 2.6 & 100.0 & 0.78 & 3.6 & 100.0\\
+& \AdvTrainHalf & 0.05 & 95.8 & 2.5 & 99.5 & 0.56 & 3.4 & 99.5\\
+& \AdvTrainFull & 0.09 & 93.6 & 4.6 & 99.8 & 0.27 & 5.9 & 99.8\\
+& \ConfTrain & 0.80 & 28.1 & 2.1 & 31.0 & 0.60 & 2.9 & 77.0\\
+\hline
+\multirow{4}{*}{\PGD\FConf ($L_1$, $\epsilon = 24$)} & \Normal & 0.16 & 95.9 & 2.6 & 100.0 & 0.78 & 3.6 & 100.0\\
+& \AdvTrainHalf & 0.06 & 95.7 & 2.5 & 99.4 & 0.56 & 3.4 & 99.4\\
+& \AdvTrainFull & 0.09 & 93.6 & 4.6 & 99.8 & 0.27 & 5.9 & 99.8\\
+& \ConfTrain & 0.79 & 27.1 & 2.1 & 30.0 & 0.60 & 2.9 & 73.3\\
+\hline
+\multirow{4}{*}{\PGD\FCE ($L_1$, $\epsilon = 24$)} & \Normal & 0.19 & 95.8 & 2.6 & 99.9 & 0.78 & 3.6 & 99.9\\
+& \AdvTrainHalf & 0.25 & 94.0 & 2.5 & 97.7 & 0.56 & 3.4 & 98.0\\
+& \AdvTrainFull & 0.22 & 92.5 & 4.6 & 98.7 & 0.27 & 5.9 & 98.7\\
+& \ConfTrain & 0.98 & 3.4 & 2.1 & 6.1 & 0.60 & 2.9 & 100.0\\
+\hline
+\multirow{4}{*}{\BlackBox ($L_1$, $\epsilon = 24$)} & \Normal & 0.86 & 18.7 & 2.6 & 21.8 & 0.78 & 3.6 & 27.1\\
+& \AdvTrainHalf & 0.96 & 11.2 & 2.5 & 14.2 & 0.56 & 3.4 & 22.2\\
+& \AdvTrainFull & 0.86 & 16.3 & 4.6 & 21.3 & 0.27 & 5.9 & 24.6\\
+& \ConfTrain & 1.00 & 1.3 & 2.1 & 4.0 & 0.60 & 2.9 & 18.3\\
+\hline
+\multirow{4}{*}{Worst-Case ($L_0$, $\epsilon = 10$)} & \Normal & 0.60 & 79.6 & 2.6 & 83.5 & 0.78 & 3.6 & 98.0\\
+& \AdvTrainHalf & 0.90 & 70.0 & 2.5 & 73.5 & 0.56 & 3.4 & 89.2\\
+& \AdvTrainFull & 0.65 & 83.1 & 4.6 & 89.2 & 0.27 & 5.9 & 89.9\\
+& \ConfTrain & 1.00 & 0.4 & 2.1 & 3.0 & 0.60 & 2.9 & 75.3\\
+\hline
+\multirow{4}{*}{\PGD\FConf ($L_0$, $\epsilon = 10$)} & \Normal & 0.55 & 63.4 & 2.6 & 67.1 & 0.78 & 3.6 & 69.0\\
+& \AdvTrainHalf & 0.90 & 48.0 & 2.5 & 51.3 & 0.56 & 3.4 & 59.7\\
+& \AdvTrainFull & 0.64 & 61.3 & 4.6 & 67.2 & 0.27 & 5.9 & 68.0\\
+& \ConfTrain & 1.00 & 0.1 & 2.1 & 2.7 & 0.60 & 2.9 & 63.9\\
+\hline
+\multirow{4}{*}{\PGD\FCE ($L_0$, $\epsilon = 10$)} & \Normal & 0.52 & 71.4 & 2.6 & 75.2 & 0.78 & 3.6 & 78.1\\
+& \AdvTrainHalf & 0.89 & 57.4 & 2.5 & 60.8 & 0.56 & 3.4 & 68.9\\
+& \AdvTrainFull & 0.65 & 68.2 & 4.6 & 74.2 & 0.27 & 5.9 & 75.5\\
+& \ConfTrain & 1.00 & 0.0 & 2.1 & 2.6 & 0.60 & 2.9 & 96.9\\
+\hline
+\multirow{4}{*}{\BlackBox ($L_0$, $\epsilon = 10$)} & \Normal & 0.96 & 44.5 & 2.6 & 47.9 & 0.78 & 3.6 & 97.7\\
+& \AdvTrainHalf & 0.98 & 34.4 & 2.5 & 37.7 & 0.56 & 3.4 & 86.6\\
+& \AdvTrainFull & 0.86 & 74.3 & 4.6 & 80.6 & 0.27 & 5.9 & 85.5\\
+& \ConfTrain & 1.00 & 0.3 & 2.1 & 3.0 & 0.60 & 2.9 & 93.1\\
+\hline
+\multirow{4}{*}{Adversarial Frames} & \Normal & 0.47 & 74.6 & 2.6 & 78.4 & 0.78 & 3.6 & 80.1\\
+& \AdvTrainHalf & 0.77 & 30.0 & 2.5 & 33.1 & 0.56 & 3.4 & 36.0\\
+& \AdvTrainFull & 0.78 & 19.9 & 4.6 & 25.1 & 0.27 & 5.9 & 27.4\\
+& \ConfTrain & 1.00 & 1.0 & 2.1 & 3.7 & 0.60 & 2.9 & 97.3\\
+\hline
+\end{tabularx}

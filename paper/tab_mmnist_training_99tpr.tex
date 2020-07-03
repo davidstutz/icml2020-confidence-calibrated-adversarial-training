@@ -1,0 +1,28 @@
+% 2020-01-20 21:44:27.535928
+\begin{tabularx}{1\textwidth}{| X ||c|c|c|c||c|c|}
+\hline
+\multicolumn{7}{|c|}{\textbf{MNIST:} Training Ablation for Detection \underline{and} Standard Settings}\\
+\multicolumn{7}{|c|}{($L_\infty$ attack with $\epsilon = 0.30$ during training and testing)}\\
+\hline
+\hline
+& \multicolumn{4}{c||}{\begin{tabular}{c}\textbf{Detection Setting}\\$\tau$@$99\%$TPR\end{tabular}} & \multicolumn{2}{c|}{\begin{tabular}{c}\textbf{Standard Setting}\\$\tau = 0$\end{tabular}}\\
+\hline
+& \begin{tabular}{c}ROC\\AUC\end{tabular} & \begin{tabular}{c}\TE\\ in \%\end{tabular} & \begin{tabular}{c}\RTE\\ in \%\end{tabular} & $\tau$ & \begin{tabular}{c}\TE\\ in \%\end{tabular} & \begin{tabular}{c}\RTE\\ in \%\end{tabular}\\
+\hline
+\hline
+\Normal & 0.34 & 0.1 & 100.0 & 1.0 & 0.4 & 100.0\\
+\AdvTrain & 0.97 & 0.0 & 0.4 & 1.0 & 0.5 & 5.6\\
+\AdvTrain\FConf & 0.98 & 0.1 & 1.1 & 1.0 & 0.5 & 6.0\\
+\hline
+\ConfTrain, $\rho_{\text{exp}} = 3$ & 0.99 & 0.1 & 11.9 & 1.0 & 0.4 & 88.1\\
+\ConfTrain, $\rho_{\text{exp}} = 4$ & 0.98 & 0.1 & 10.4 & 1.0 & 0.5 & 95.2\\
+\ConfTrain, $\rho_{\text{exp}} = 5$ & 0.99 & 0.1 & 10.8 & 1.0 & 0.4 & 88.7\\
+\ConfTrain, $\rho_{\text{exp}} = 6$ & 0.99 & 0.1 & 7.8 & 1.0 & 0.4 & 83.5\\
+\ConfTrain, $\rho_{\text{exp}} = 7$ & 0.99 & 0.1 & 5.7 & 1.0 & 0.5 & 74.7\\
+\ConfTrain, $\rho_{\text{exp}} = 8$ & 0.98 & 0.1 & 13.3 & 1.0 & 0.3 & 94.3\\
+\ConfTrain, $\rho_{\text{exp}} = 9$ & 0.99 & 0.1 & 11.0 & 1.0 & 0.3 & 86.8\\
+\ConfTrain, $\rho_{\text{exp}} = 10$ & 0.99 & 0.1 & 14.3 & 1.0 & 0.4 & 97.1\\
+\hline
+\ConfTrain, $\rho_{\text{pow}} = 10$ & 0.98 & 0.2 & 7.1 & 0.9 & 0.4 & 45.9\\
+\hline
+\end{tabularx}

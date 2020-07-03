@@ -1,0 +1,42 @@
+% 2020-01-28 18:48:24.475299
+\begin{tabularx}{1\textwidth}{|X|@{ }c@{ }|@{ }c@{ }|@{ }c@{ }|@{ }c@{ }|@{ }c@{ }|}
+\hline
+\multicolumn{6}{|c|}{\textbf{SVHN:} \textbf{\RTE} in \% for $\tau$@$99\%$TPR}\\
+\hline
+& \multicolumn{1}{@{}c@{}|@{ }}{\begin{tabular}{@{}c@{}}$L_\infty$\\$\epsilon = 0.03$\end{tabular}}
+& \multicolumn{1}{@{}c@{}|@{ }}{\begin{tabular}{@{}c@{}}$L_\infty$\\$\epsilon = 0.06$\end{tabular}}
+& \multicolumn{1}{@{}c@{}|@{ }}{\begin{tabular}{@{}c@{}}$L_2$\\$\epsilon = 2$\end{tabular}}
+& \multicolumn{1}{@{}c@{}|@{ }}{\begin{tabular}{@{}c@{}}$L_1$\\$\epsilon = 24$\end{tabular}}
+& \multicolumn{1}{c|}{\begin{tabular}{@{}c@{}}$L_0$\\$\epsilon = 10$\end{tabular}}
+%& \multicolumn{1}{c|}{\begin{tabular}{@{}c@{}}adv.\\frames\end{tabular}}
+\\\hline
+& \multicolumn{1}{@{}c@{}|@{ }}{\textcolor{colorbrewer3}{seen}}
+& \multicolumn{1}{@{}c@{}|@{ }}{\textcolor{colorbrewer1}{\bfseries unseen}}
+& \multicolumn{1}{@{}c@{}|@{ }}{\textcolor{colorbrewer1}{\bfseries unseen}}
+& \multicolumn{1}{@{}c@{}|@{ }}{\textcolor{colorbrewer1}{\bfseries unseen}}
+& \multicolumn{1}{c|}{\textcolor{colorbrewer1}{\bfseries unseen}}
+%& \multicolumn{1}{c|}{\textcolor{colorbrewer1}{\bfseries unseen}}
+\\\hline
+& \RTE$\downarrow$
+& \RTE$\downarrow$
+& \RTE$\downarrow$
+& \RTE$\downarrow$
+& \RTE$\downarrow$
+%& \RTE$\downarrow$
+\\\hline\hline
+AT & 56.0 % fpr@99, rte@99
+& 88.4 % fpr@99, rte@99
+& 99.4 % fpr@99, rte@99
+& 99.5 % fpr@99, rte@99
+& 73.6 % fpr@99, rte@99
+%& 33.6 % fpr@99, rte@99
+\\
+CCAT & \bfseries 39.1 % fpr@99, rte@99
+& \bfseries 53.1 % fpr@99, rte@99
+& \bfseries 29.0 % fpr@99, rte@99
+& \bfseries 31.7 % fpr@99, rte@99
+& \bfseries 3.5 % fpr@99, rte@99
+%& \bfseries 3.7 % fpr@99, rte@99
+\\\hline
+\multicolumn{6}{l}{(Lower \RTE means ``better'' robustness.)}
+\end{tabularx}

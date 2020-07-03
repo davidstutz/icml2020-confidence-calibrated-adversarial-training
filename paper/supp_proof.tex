@@ -1,0 +1,176 @@
+\section{Proof of Proposition 1}
+\label{sec:supp-proof}
+
+Adversarial training usually results in reduced accuracy on clean examples. In practice, training on $50\%$ clean and  $50\%$ adversarial examples instead of training \emph{only} on adversarial examples allows to control the robustness-accuracy trade-off to some extent, \ie, increase accuracy while sacrificing robustness. The following proposition shows that there exist problems where adversarial training is unable to reconcile robustness and accuracy, while \ConfTrain is able to obtain \emph{both}:
+
+\begin{proposition}\label{prop:toy-example}
+    We consider a classification problem with two points $x=0$ and $x=\epsilon$ in $\mR$ with deterministic labels, \ie,
+    $p(y=2|x=0)=1$ and $p(y=1|x=\epsilon)=1$, such that the problem is fully determined by the probability $p_0=p(x=0)$. 
+    The Bayes error of this classification problem is zero. Let the predicted probability distribution over classes be $\tilde{p}(y|x)=\frac{e^{g_y(x)}}{e^{g_1(x)}+e^{g_2(x)}}$, where $g:\R^d \rightarrow \R^2$ is the classifier and we assume that the function $\lambda:\mR_+ \rightarrow [0,1]$ used in \ConfTrain is monotonically decreasing and $\lambda(0)=1$. Then, the error of the Bayes optimal classifier (with cross-entropy loss) for
+    \vspace*{-8px}
+    \begin{itemize}
+        \item adversarial training on $100\%$ adversarial examples
+        is $\min\{p_0,1-p_0\}$.
+        \vspace*{-3px}
+        \item adversarial training on $50\%$/$50\%$ adversarial/clean examples per batch
+        is $\min\{p_0,1 - p_0\}$.
+        \vspace*{-3px}
+        \item \ConfTrain on $50\%$ clean and $50\%$ adversarial examples 
+        is \emph{zero} 
+        if $\lambda(\epsilon) < \min\left\{\nicefrac{p_0}{1-p_0},\nicefrac{1-p_0}{p_0}\right\}$.
+        \vspace*{-6px}
+    \end{itemize}
+\end{proposition}
+
+\begin{proof}
+    First, we stress that we are dealing with three different probability distributions over the labels:
+	the true one $\Pr(y|x)$, the imposed one during training $\hat{p}(y|x)$ and the predicted one $\tilde{p}(y|x)$. We also note that $\hat{p}$ depends on $\lambda$ as follows:
+    \begin{align}
+        \hat{p}(k) = \lambda p_y(k) + (1 - \lambda) u(k)
+    \end{align}
+    where $p_y(k)$ is the original one-hot distribution, \ie, $p_y(k) = 1$ iff $k = y$ and $p_y(k) = 0$ otherwise with $y$ being the true label, and $u(k) = \nicefrac{1}{K}$ is the uniform distribution. We note that this is merely an alternative formulation to the target distribution as outlined in the main paper.
+    Also note that $\lambda$ itself is a function of the norm $\|\delta\|$; here, this dependence is made explicit by writing $\hat{p}(\lambda)(y|x)$.
+	This makes the expressions for the expected loss of \ConfTrain slightly more complicated. We first derive the Bayes optimal classifier and its loss for \ConfTrain.
+    We introduce
+    \begin{align}
+        a = g_1(0)-g_2(0), \quad b=g_1(\epsilon)-g_2(\epsilon). \label{eq:supp-a-b}
+    \end{align}
+    and express the logarithm of the predicted probabilities (confidences) of class $1$ and $2$ in terms of these quantities.
+	\begin{align*}
+		\hspace*{-10px}
+		-\log \tilde{p}(y=2|x=x)&= -\log\Big(\frac{e^{g_2(x)}}{e^{g_1(x)} + e^{g_2(x)}}\Big) = \log\big(1 + e^{g_1(x)-g_2(x)}\big)
+     	=\begin{cases} \log\big(1+e^a\big) & \textrm{ if } x=0\\ \log(1+e^b) & \textrm{ if } x=\epsilon \end{cases}.\\
+    	\hspace*{-10px}
+    	-\log \tilde{p}(y=1|x=x)&=-\log\Big(\frac{e^{g_1(x)}}{e^{g_1(x)} + e^{g_2(x)}}\Big) = \log\big(1 + e^{g_2(x)-g_1(x)}\big) = 
+    	\begin{cases} \log(1+e^{-a}) & \textrm{ if } x=0\\ \log\big(1+e^{-b}\big) & \textrm{ if } x=\epsilon\end{cases}.
+    \end{align*}
+    
+    We consider the approach by \cite{MadryICLR2018} with $100\%$ adversarial training. The expected loss can be written as
+	\begin{align*}
+		&\Exp\Big[\max_{\norm{\delta}_\infty\leq \epsilon} L(y,g(x+\delta)\Big]= \Exp\Big[\Exp\Big[\max_{\norm{\delta}_\infty\leq \epsilon} L(y,g(x+\delta)|x\Big]\Big]\\
+		=&\Pr(x=0)\Pr(y=2|x=0)\max\left\{-\log\big(\tilde{p}(y=2|x=0)\big),-\log\big(\tilde{p}(y=2|x=\epsilon)\big)\right\}\\
+		&+(1-\Pr(x=0))\Pr(y=1|x=\epsilon)\max\left\{-\log\big(\tilde{p}(y=1|x=0)\big),-\log\big(\tilde{p}(y=1|x=\epsilon)\big)\right\}\\
+		=&\Pr(x=0)\max\left\{-\log\big(\tilde{p}(y=2|x=0)\big),-\log\big(\tilde{p}(y=2|x=\epsilon)\big)\right\}\\
+	 	&+ (1-\Pr(x=0))\max\left\{-\log\big(\tilde{p}(y=1|x=0)\big),-\log\big(\tilde{p}(y=1|x=\epsilon)\right\}
+	\end{align*}
+	This yields in terms of the parameters $a,b$ the expected loss:
+    \begin{align*}
+    	L(a,b)=&  \max\Big\{ \log(1+e^a),\log(1+e^b)\Big\}p_0 + \max\Big\{ \log(1+e^{-a}),\log(1+e^{-b})\Big\}(1-p_0)
+    \end{align*}
+   	The expected loss is minimized if $a=b$ as then both maxima are minimal. This results in the expected loss
+   	\begin{align*}
+    	L(a)= \log(1+e^a)p_0 + \log(1+e^{-a}) (1-p_0).
+    \end{align*}
+    The critical point is attained at $a^*=b^*=\log\Big(\frac{1-p_0}{p_0}\Big)$. 
+    Thus
+    \begin{align*}
+        a^*=b^*=\begin{cases} >0 & \textrm{ if } p_0<\frac{1}{2},\\ <0 & \textrm{ if } p_0>\frac{1}{2}.\end{cases}
+    \end{align*}
+    Thus, we classify $x=0$ correctly, if $p_0>\frac{1}{2}$ and $x=\epsilon$ correctly if $p_0<\frac{1}{2}$. As result, the error of $100\%$ adversarial training is given by
+    $\min\{p_0,1-p_0\}$ whereas the Bayes optimal error is zero as the problem is deterministic.
+    
+    Next we consider $50\%$ adversarial plus $50\%$ clean training. The expected loss 
+	\begin{align*}
+		\Exp\Big[\max_{\norm{\delta}_\infty\leq \epsilon} L(y,g(x+\delta)\Big] + \Exp\Big[ L(y,g(x+\delta)\Big],
+	\end{align*}
+	can be written as
+    \begin{align*}
+	    L(a,b)=&  \max\Big\{ \log(1+e^a),\log(1+e^b)\Big\}p_0 \\
+	           &+ \max\Big\{ \log(1+e^{-a}),\log(1+e^{-b})\Big\}(1-p_0)\\
+	           &+ \log(1+e^a)p_0 + \log(1+e^{-b})(1-p_0)
+    \end{align*}
+    We make a case distinction. If $a\geq b$, then the loss reduces to
+    \begin{align*}
+	    L(a,b)=&    \log(1+e^a)p_0 + \log(1+e^{-b})(1-p_0) \\
+	           & + \log(1+e^a)p_0 + \log(1+e^{-b})(1-p_0)\\
+	           &\geq L(a,a)\\
+	           &=2\log(1+e^a)p_0 + 2\log(1+e^{-a})(1-p_0)
+    \end{align*}
+    Solving for the critical point yields $a^*=\log\Big(\frac{1-p_0}{p_0}\Big)=b^*$. Next we consider the set $a\leq b$.  This yields the loss
+    \begin{align*}
+	    L(a,b)=& \log(1+e^b)p_0 + \log(1+e^{-a})(1-p_0)\\
+	           &+ \log(1+e^a)p_0 + \log(1+e^{-b})(1-p_0)
+    \end{align*}
+    Solving for the critical point yields $a^*=\log\Big(\frac{1-p_0}{p_0}\Big)=b^*$ which fulfills $a\leq b$. Actually, it coincides with the solution found already for $100\%$ adversarial training and thus resulting error of $50\%$ adversarial, $50\%$ clean training is again $\min\{p_0,1-p_0\}$ which is not equal to the Bayes optimal error.
+    
+    For our confidence-calibrated adversarial training one first has to solve
+	\begin{align*}
+		\delta_x^*(j)=\argmax_{\norm{\delta}_\infty \leq \epsilon} \max\limits_{k\neq j} \tilde{p}(y=k\,|\,x+\delta).
+	\end{align*}
+	We get with the expressions above (note that we have a binary classification problem):
+    \begin{align*}
+	    \delta^*_0(1)=\argmax_{\norm{\delta}_\infty \leq \epsilon} \tilde{p}(y=2|{0}+\delta) = \begin{cases} 0 & \textrm{ if } a<b \\ \epsilon & \textrm{ else}.\end{cases}.\\
+	    \delta^*_0(2)= \argmax_{\norm{\delta}_\infty \leq \epsilon} \tilde{p}(y=1|{0} +\delta) = \begin{cases} \epsilon & \textrm{ if }  a<b  \\ 0 & \textrm{ else}.\end{cases}.\\
+			\delta^*_\epsilon(1)= \argmax_{\norm{\delta}_\infty \leq \epsilon} \tilde{p}(y=2|\epsilon+\delta) = \begin{cases} -\epsilon & \textrm{ if }  a<b  \\0 & \textrm{ else}.\end{cases}.\\
+	    \delta^*_\epsilon(2)=\argmax_{\norm{\delta}_\infty \leq \epsilon} \tilde{p}(y=1|\epsilon +\delta) = \begin{cases} 0 & \textrm{ if }  a<b  \\ -\epsilon & \textrm{ else}.\end{cases}.
+    \end{align*}
+    Note that the imposed distribution $\hat{p}$ over the classes depends on the true label $y$ of $x$ and $\delta^*_x(y)$ and then $\lambda(\norm{\delta^*_x(y)}_\infty)$. Due to the simple structure of the problem it holds that $\norm{\delta^*_x(y)}_\infty$ is either $0$ or $\epsilon$.
+    
+	In \ConfTrain we use for $50\%$ of the batch the standard cross-entropy loss and for the other $50\%$ we use the following loss:
+	\begin{align*}
+		L\left(\hat{p}_y\big(\lambda\big(\norm{\delta^*_x(y)}\big)\big)(x),\tilde{p}(x)\right)= - \sum_{j=1}^2 \hat{p}_y\big(\lambda\big(\norm{\delta^*_x(y)}\big)\big)(y=j\,|\,x=x) \log\left(\tilde{p}\big(y=j\,|\,x=x+\delta^*_x(j)\big)\right).
+	\end{align*}
+	The corresponding expected loss is then given by
+	\begin{align*}
+		&\Exp\Big[ L\Big(\hat{p}_y\big(\lambda\big(\norm{\delta^*_x(y)}\big)\big)(x),\tilde{p}(x)\Big)\Big]
+		=\Exp\Big[\,\Exp\Big[ L\Big(\hat{p}_y\big(\lambda\big(\norm{\delta^*_x(y)}\big)\big)(x),\tilde{p}(x)\Big) \Big| \,x\Big]\Big] \\
+		=&\Pr(x=0)\,\Exp\Big[ L\Big(\hat{p}_y\big(\lambda\big(\norm{\delta^*_0(y)}\big)\big)(0),\tilde{p}(0)\Big)\Big|\,x=0\Big] + \Pr(x=\epsilon)\,\Exp\Big[ L\Big(\hat{p}_Y\big(\lambda\big(\norm{\delta^*_\epsilon(y)}\big)\big)(\epsilon),\tilde{p}(\epsilon)\Big)\Big|\,x=\epsilon\Big],
+	\end{align*}
+	where $\Pr(x=0)=p_0$ and $\Pr(x=\epsilon)=1-\Pr(x=0)=1-p_0$. With the true conditional probabilities $\Pr(y=s\,|\,x)$ we get 
+	\begin{align*}
+		&\Exp\Big[ L\Big(\hat{p}_y\big(\lambda(\delta)\big)(x),\tilde{p}(x)\Big)\Big|\,x\Big]
+		=\sum_{s=1}^2 \Pr(y=s\,|\,x) \, L\Big(\hat{p}_s\big(\lambda\big(\norm{\delta^*_x(s)}\big)\big)(x),\tilde{p}(x)\Big)\\
+		=&- \sum_{s=1}^2 \Pr(y=s\,|\,x) \sum_{j=1}^2 \hat{p}_s\big(\lambda\big(\norm{\delta^*_x(s)}\big)\big)(y=j\,|\,x) \log\big(\tilde{p}(y=j\,|\,x=x+\delta^*_x(s))\big)
+	\end{align*}
+	For our problem it holds with $\Pr(y=2\,|\,x=0)=\Pr(y=1\,|\,x=\epsilon) =1$ (by assumption). Thus,
+	\begin{align*}
+		\Exp\Big[ L\Big(\hat{p}_y\big(\lambda(\delta)\big)(x),\tilde{p}(x)\Big)\Big|x=0\Big]=-\sum_{j=1}^2 \hat{p}_2\big(\lambda\big(\norm{\delta^*_0(2)}\big)\big)(y=j\,|\,x=0) \log\big(\tilde{p}(y=j\,|\,x=x+\delta^*_0(2))\big)\\
+		\Exp\Big[ L\Big(\hat{p}_y\big(\lambda(\delta)\big)(x),\tilde{p}(x))\Big|\,x=\epsilon\Big]=-\sum_{j=1}^2 \hat{p}_1\big(\lambda\big(\norm{\delta^*_\epsilon(1)}\big)\big)(y=j\,|\,x=\epsilon) \log\big(\tilde{p}(y=j\,|\,x=x+\delta^*_\epsilon(1))\big)
+	\end{align*}
+	As $\norm{\delta^*_x(y)}_\infty$ is either $0$ or $\epsilon$ and $\lambda(0)=1$ we use in the following for simplicity the notation $\lambda=\lambda(\norm{\epsilon}_\infty)$. Moreover, note that 
+	\begin{align*}
+		\hat{p}_y(\lambda)(y=j|x=x)=\begin{cases} \lambda + \frac{(1-\lambda)}{K} & \textrm{ if } y = j,\\ \frac{(1-\lambda)}{K} & \textrm{ else }\end{cases},
+	\end{align*}
+	where $K$ is the number of classes. Thus, $K=2$ in our example and we note that $\lambda + \frac{(1-\lambda)}{2}=\frac{1+\lambda}{2}$.
+	
+    With this we can write the total loss (remember that we have half normal cross-entropy loss and half the loss for the adversarial part with the modified ``labels'') as
+    \begin{align*}
+    	L(a,b)=&  p_0\Big[\log(1+e^a) \Id_{a\geq b} 
+           + \Id_{a<b}\Big( \frac{(1+\lambda)}{2}\log(1+e^b)+\frac{(1-\lambda)}{2}\log(1+e^{-b})\Big)\Big]\\ 
+					 &+ (1-p_0)\Big[\log(1+e^{-b})   \Id_{a\geq b} +\Id_{a<b}\Big( \frac{(1+\lambda)}{2}\log(1+e^{-a})+\frac{(1-\lambda)}{2}\log(1+e^a)\Big)\Big]\\
+           &+ \log(1+e^a)p_0 + \log(1+e^{-b})(1-p_0),
+    \end{align*}
+    where we have omitted a global factor $\frac{1}{2}$ for better readability (the last row is the cross-entropy loss).  We distinguish two sets in the optimization. First we consider the case $a\geq b$. Then it is easy to see that in order to minimize the loss we have $a=b$. 
+    \begin{align*}
+    	\partial_a L &= 2\frac{e^a}{1+e^a}p_0-\frac{e^{-a}}{1+e^{-a}}(1-p_0)
+    \end{align*}
+    This yields $e^a=\frac{1-p_0}{p_0}$ or $a=\log\big(\frac{1-p_0}{p_0}\big)$ and the minimum for $a\geq b$ is attained on the boundary of the domain of $a\leq b$. The other case is $a\leq b$. We get
+    \begin{align*}
+    	\partial_a L =& \Big[\frac{(1+\lambda)}{2}\frac{-e^{-a}}{1+e^{-a}}+\frac{(1-\lambda)}{2}\frac{e^a}{1+e^a}\Big](1-p_0)
+                   + p_0 \frac{e^a}{1+e^a}\\
+    	\partial_b L =& \Big[\frac{(1+\lambda)}{2}\frac{e^{b}}{1+e^{b}}+\frac{(1-\lambda)}{2}\frac{-e^b}{1+e^{-b}}\Big]p_0 
+                  + (1-p_0) \frac{-e^{-b}}{1+e^{-b}}
+    \end{align*}
+    This yields the solution
+    \begin{align*}
+    	a^* = \log\left(\frac{\frac{1+\lambda}{2}(1-p_0)}{p_0 + \frac{1-\lambda}{2}(1-p_0)}\right), \qquad
+    	b^* = \log\left(\frac{\frac{1-\lambda}{2}p_0 + (1-p_0)}{\frac{1+\lambda}{2}p_0}\right)
+    \end{align*}
+    It is straightforward to check that $a^*<b^*$ for all $0<p_0<1$, indeed we have
+	\begin{align*}
+		\frac{\frac{1+\lambda}{2}(1-p_0)}{p_0 + \frac{1-\lambda}{2}(1-p_0)} &= \frac{\frac{1+\lambda}{2}(1-p_0)}{p_0 \frac{1+\lambda}{2} +\frac{1-\lambda}{2}}
+		=\frac{1-p_0 - \frac{(1-\lambda)}{2}(1-p_0)}{p_0 \frac{1+\lambda}{2} +\frac{1-\lambda}{2}} < \frac{\frac{1-\lambda}{2}p_0 + (1-p_0)}{\frac{1+\lambda}{2}p_0}
+	\end{align*}
+	if $0<p_0<1$ and note that $\lambda<1$ by assumption. We have $a^*<0$ and thus $g_2(0)>g_1(0)$ (Bayes optimal decision for $x=0$) if 
+	\begin{align*}
+    	1 > \frac{1-p_0}{p_0}\lambda,
+	\end{align*}
+   	and $b^*>0$ and thus $g_1(\epsilon)>g_2(\epsilon)$ (Bayes optimal decision for $x=\epsilon$) if
+   	\begin{align*}
+	    1 > \frac{p_0}{1-p_0}\lambda.
+   	\end{align*}
+    Thus we recover the Bayes classifier if
+    \begin{align*}
+    	\lambda < \min\Big\{\frac{1-p_0}{p_0},\frac{p_0}{1-p_0}\Big\}.
+   	\end{align*}
+\end{proof}

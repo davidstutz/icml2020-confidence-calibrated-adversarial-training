@@ -1,0 +1,77 @@
+\begin{tabularx}{1\textwidth}{|X|@{\hskip 7px}c@{\hskip 7px}|@{\hskip 3px}c@{\hskip 3px}|@{\hskip 7px}c@{\hskip 7px}|@{\hskip 7px}c@{\hskip 7px}|@{\hskip 7px}c@{\hskip 7px}|@{\hskip 7px}c@{\hskip 7px}|@{\hskip 7px}c@{\hskip 7px}|@{\hskip 7px}c@{\hskip 7px}|}
+\hline
+%\multicolumn{9}{|c|}{\textbf{SVHN:}}\\
+%\hline
+\textbf{SVHN:} & \multicolumn{2}{c|@{\hskip 7px}}{\textbf{\TE} $\downarrow$ in \%} & \multicolumn{6}{@{\hskip 7px}c@{\hskip 7px}|}{\emph{confidence-thresholed} \textbf{\RTE} $\downarrow$ for $\tau$@$99\%$TPR}\\
+\hline
+& \begin{tabular}{@{}c@{}}(clean)\\$\tau = 0$\end{tabular}
+& \begin{tabular}{@{}c@{}}(clean)\\$99\%$TPR\end{tabular}
+& \begin{tabular}{@{}c@{}}$L_\infty$\\$\epsilon = 0.03$\end{tabular}
+& \begin{tabular}{@{}c@{}}$L_\infty$\\$\epsilon = 0.06$\end{tabular}
+& \begin{tabular}{@{}c@{}}$L_2$\\$\epsilon = 2$\end{tabular}
+& \begin{tabular}{@{}c@{}}$L_1$\\$\epsilon = 24$\end{tabular}
+& \begin{tabular}{@{}c@{}}$L_0$\\$\epsilon = 10$\end{tabular}
+& \begin{tabular}{@{}c@{}}adv.\\frames\end{tabular}
+\\\hline
+& (seen)
+& (seen)
+& \textcolor{colorbrewer3}{seen}
+& \textcolor{colorbrewer1}{\bfseries unseen}
+& \textcolor{colorbrewer1}{\bfseries unseen}
+& \textcolor{colorbrewer1}{\bfseries unseen}
+& \textcolor{colorbrewer1}{\bfseries unseen}
+& \textcolor{colorbrewer1}{\bfseries unseen}
+\\\hline\hline
+\Normal & 3.6 & 2.6
+& 99.9 % rte@99
+& 100.0 % rte@99
+& 100.0 % rte@99
+& 100.0 % rte@99
+& 83.7 % rte@99
+& 78.7 % rte@99
+\\
+%\hline
+\AdvTrainHalf & 3.4 & 2.5
+& 56.0 % rte@99
+& 88.4 % rte@99
+& 99.4 % rte@99
+& 99.5 % rte@99
+& 73.6 % rte@99
+& 33.6 % rte@99
+\\
+%\hline
+\AdvTrainFull & 5.9 & 4.6
+& 48.3 % rte@99
+& 87.1 % rte@99
+& 99.5 % rte@99
+& 99.8 % rte@99
+& 89.4 % rte@99
+& 26.0 % rte@99
+\\
+%\hline
+\ConfTrain & \bfseries 2.9 & \bfseries 2.1
+& \bfseries 39.1 % rte@99
+& \bfseries 53.1 % rte@99
+& \bfseries 29.0 % rte@99
+& \bfseries 31.7 % rte@99
+& \bfseries 3.5 % rte@99
+& \bfseries 3.7 % rte@99
+\\
+\hline\hline
+\textbf{*} \Ma & 3.3 & 2.2
+& 91.0
+& 93.1
+& 92.2
+& 90.0
+& 41.6
+& 89.8
+\\
+\textbf{*} \Lee & 3.3 & 2.2
+& 73.0
+& 79.5
+& 78.1
+& 67.5
+& 41.5
+& 9.9
+\\\hline
+\end{tabularx}

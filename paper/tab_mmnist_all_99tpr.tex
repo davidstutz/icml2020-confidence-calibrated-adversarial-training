@@ -1,0 +1,23 @@
+\begin{tabular}{|@{ }l@{ }|@{ }c@{ }|@{ }c@{ }|}
+    \hline
+    & \multicolumn{2}{@{}c@{}|}{\textbf{MNIST:}}\\
+    \hline\hline
+    & \multicolumn{2}{@{}c@{}|}{\begin{tabular}{@{}c@{}}\textbf{all}\\\textbf{\textcolor{colorbrewer1}{unseen}}\\\vphantom{$L_\infty$}\end{tabular}}\\\hline
+    & FPR$\downarrow$ & \RTE$\downarrow$\\
+    \hline
+    \hline
+    \Normal & 99.3 & 100.0 % fpr@99, rte@99
+    \\
+    \AdvTrainHalf & 99.3 & 100.0 % fpr@99, rte@99
+    \\
+    \AdvTrainFull & 99.2 & 100.0 % fpr@99, rte@99
+    \\
+    \ConfTrain & 23.4 & 23.9 % fpr@99, rte@99
+    \\\hline\hline
+    \textbf{*} \Wong & 97.0 & 99.2 % fpr@99, rte@99
+    \\
+    \textbf{*} \TRADES & 99.3 & 99.9 % fpr@99, rte@99
+    \\
+    \textbf{*} \MadryAT & \textcolor{gray}{--} & \textcolor{gray}{--}\\
+    \hline
+\end{tabular}

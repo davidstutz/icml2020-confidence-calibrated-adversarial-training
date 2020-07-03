@@ -1,0 +1,29 @@
+\begin{tabularx}{1\textwidth}{| X ||c|c|c||c|c|}
+\hline
+\multicolumn{6}{|c|}{\textbf{CIFAR10:} Training Ablation for Detection ($\tau$@$99\%$TPR) \underline{and} Standard Settings ($\tau = 0$)}\\
+\multicolumn{6}{|c|}{($L_\infty$ attack with $\epsilon = 0.03$ during training and testing)}\\
+\hline
+\hline
+& \multicolumn{3}{c||}{\begin{tabular}{c}\textbf{Detection Setting}\\$\tau$@$99\%$TPR\end{tabular}} & \multicolumn{2}{c|}{\begin{tabular}{c}\textbf{Standard Setting}\\$\tau = 0$\end{tabular}}\\
+\hline
+& \begin{tabular}{c}ROC\\AUC\end{tabular} &
+\begin{tabular}{c}\TE\\ in \%\end{tabular} &
+\begin{tabular}{c}\RTE\\ in \%\end{tabular} &
+%$\tau$ &
+\begin{tabular}{c}\TE\\ in \%\end{tabular} &
+\begin{tabular}{c}\RTE\\ in \%\end{tabular}\\
+\hline
+\hline
+\Normal & 0.20 & 7.4 & 100.0 & 8.3 & 100.0\\
+\AdvTrain & 0.65 & 15.1 & 60.9 & 16.6 & 61.3\\
+\AdvTrain\FConf (\AdvTrain trained with \PGD-\FConf) & 0.63 & 15.1 & 61.5 & 16.1 & 61.7\\
+\hline
+\ConfTrain, $\rho = 1$ & 0.63 & 8.7 & 72.4 & 9.7 & 95.3\\
+\ConfTrain, $\rho = 2$ & 0.60 & 8.4 & 70.6 & 9.7 & 95.1\\
+\ConfTrain, $\rho = 4$ & 0.61 & 8.6 & 66.3 & 9.8 & 93.5\\
+\ConfTrain, $\rho = 6$ & 0.54 & 8.0 & 69.8 & 9.2 & 94.1\\
+\ConfTrain, $\rho = 8$ & 0.58 & 8.5 & 65.3 & 9.4 & 93.2\\
+\ConfTrain, $\rho = 10$ & 0.60 & 8.7 & 63.0 & 10.1 & 95.0\\
+\ConfTrain, $\rho = 12$ & 0.62 & 9.4 & 63.0 & 10.1 & 96.6\\
+\hline
+\end{tabularx}

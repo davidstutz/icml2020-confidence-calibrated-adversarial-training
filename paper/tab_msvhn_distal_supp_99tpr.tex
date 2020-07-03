@@ -1,0 +1,16 @@
+% 2020-01-28 19:42:11.657061
+\begin{tabularx}{1\textwidth}{| r | X |c|c|c|}
+\hline
+\multicolumn{5}{|c|}{\textbf{SVHN:} Results for Distal Adversarial Examples}\\
+\hline
+&& \multicolumn{3}{c|}{\begin{tabular}{c}\textbf{Detection Setting}\\$\tau$@$99\%$TPR\end{tabular}}\\
+\hline
+& Training & \begin{tabular}{c}ROC\\AUC\end{tabular} & \begin{tabular}{c}FPR\\ in \%\end{tabular} & $\tau$\\
+\hline
+\hline
+\multirow{4}{*}{\Distal} & \Normal & 0.43 & 87.1 & 0.8\\
+& \AdvTrainHalf & 0.89 & 87.0 & 0.6\\
+& \AdvTrainFull & 0.82 & 81.0 & 0.3\\
+& \ConfTrain & 1.00 & 0.0 & 0.6\\
+\hline
+\end{tabularx}

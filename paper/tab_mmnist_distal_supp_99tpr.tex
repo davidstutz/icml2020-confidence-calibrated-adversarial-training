@@ -1,0 +1,19 @@
+% 2020-01-28 19:41:45.802552
+\begin{tabularx}{1\textwidth}{| r | X |c|c|c|}
+\hline
+\multicolumn{5}{|c|}{\textbf{MNIST:} Results for Distal Adversarial Examples}\\
+\hline
+&& \multicolumn{3}{c|}{\begin{tabular}{c}\textbf{Detection Setting}\\$\tau$@$99\%$TPR\end{tabular}}\\
+\hline
+& Training & \begin{tabular}{c}ROC\\AUC\end{tabular} & \begin{tabular}{c}FPR\\ in \%\end{tabular} & $\tau$\\
+\hline
+\hline
+\multirow{7}{*}{\begin{tabular}{@{}c@{}}dist.\\vphantom{t}\end{tabular}} & \Normal & 0.34 & 100.0 & 1.0\\
+& \AdvTrainHalf & 0.63 & 100.0 & 1.0\\
+& \AdvTrainFull & 0.74 & 100.0 & 1.0\\
+& \ConfTrain & 1.00 & 0.0 & 0.9\\
+& \Wong & 0.47 & 100.0 & 0.5\\
+& \TRADES & 0.44 & 100.0 & 0.9\\
+& \WongAT & 0.94 & 99.3 & 0.9\\
+\hline
+\end{tabularx}

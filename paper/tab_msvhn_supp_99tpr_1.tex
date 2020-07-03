@@ -1,0 +1,50 @@
+\begin{tabularx}{1\textwidth}{| r | X ||c|c|c|c|c||c|c|}
+\hline
+\multicolumn{9}{|c|}{\textbf{SVHN:} Supplementary Results for $\mathbf{L_\infty}$ Adversarial Examples}\\
+\hline
+&& \multicolumn{5}{c||}{\begin{tabular}{c}\textbf{Detection Setting}\\$\tau$@$99\%$TPR\end{tabular}} & \multicolumn{2}{c|}{\begin{tabular}{c}\textbf{Standard Setting}\\$\tau{=}0$\end{tabular}}\\
+\hline
+Attack & Training & \begin{tabular}{c}ROC\\AUC\end{tabular} & \begin{tabular}{c}FPR\\ in \%\end{tabular} & \begin{tabular}{c}\TE\\ in \%\end{tabular} & \begin{tabular}{c}\RTE\\ in \%\end{tabular} & $\tau$ & \begin{tabular}{c}\TE\\ in \%\end{tabular} & \begin{tabular}{c}\RTE\\ in \%\end{tabular}\\
+\hline
+\hline
+\multirow{4}{*}{Worst-Case ($L_\infty$, $\epsilon = 0.03$)} & \Normal & 0.17 & 95.8 & 2.6 & 99.9 & 0.78 & 3.6 & 100.0\\
+& \AdvTrainHalf & 0.55 & 52.3 & 2.5 & 55.6 & 0.56 & 3.4 & 57.3\\
+& \AdvTrainFull & 0.73 & 42.1 & 4.6 & 47.5 & 0.27 & 5.9 & 48.4\\
+& \ConfTrain & 0.70 & 35.5 & 2.1 & 38.5 & 0.60 & 2.9 & 97.8\\
+\hline
+\multirow{4}{*}{\PGD\FConf ($L_\infty$, $\epsilon = 0.03$)} & \Normal & 0.17 & 95.8 & 2.6 & 99.9 & 0.78 & 3.6 & 99.9\\
+& \AdvTrainHalf & 0.55 & 51.6 & 2.5 & 54.9 & 0.56 & 3.4 & 56.9\\
+& \AdvTrainFull & 0.73 & 40.9 & 4.6 & 46.2 & 0.27 & 5.9 & 47.1\\
+& \ConfTrain & 0.67 & 35.5 & 2.1 & 38.5 & 0.60 & 2.9 & 91.0\\
+\hline
+\multirow{4}{*}{\PGD\FCE ($L_\infty$, $\epsilon = 0.03$)} & \Normal & 0.17 & 95.8 & 2.6 & 99.9 & 0.78 & 3.6 & 100.0\\
+& \AdvTrainHalf & 0.68 & 40.0 & 2.5 & 43.2 & 0.56 & 3.4 & 50.7\\
+& \AdvTrainFull & 0.81 & 34.6 & 4.6 & 39.9 & 0.27 & 5.9 & 45.3\\
+& \ConfTrain & 1.00 & 0.0 & 2.1 & 2.6 & 0.60 & 2.9 & 94.9\\
+\hline
+\multirow{4}{*}{\BlackBox ($L_\infty$, $\epsilon = 0.03$)} & \Normal & 0.23 & 95.6 & 2.6 & 99.7 & 0.78 & 3.6 & 99.7\\
+& \AdvTrainHalf & 0.95 & 27.7 & 2.5 & 30.8 & 0.56 & 3.4 & 46.2\\
+& \AdvTrainFull & 0.78 & 38.5 & 4.6 & 43.8 & 0.27 & 5.9 & 45.5\\
+& \ConfTrain & 1.00 & 3.7 & 2.1 & 6.4 & 0.60 & 2.9 & 79.6\\
+\hline
+\multirow{4}{*}{Worst-Case ($L_\infty$, $\epsilon = 0.06$)} & \Normal & 0.16 & 95.9 & 2.6 & 100.0 & 0.78 & 3.6 & 100.0\\
+& \AdvTrainHalf & 0.32 & 84.7 & 2.5 & 88.3 & 0.56 & 3.4 & 89.0\\
+& \AdvTrainFull & 0.38 & 80.9 & 4.6 & 86.9 & 0.27 & 5.9 & 87.1\\
+& \ConfTrain & 0.64 & 49.5 & 2.1 & 52.6 & 0.60 & 2.9 & 99.9\\
+\hline
+\multirow{4}{*}{\PGD\FConf ($L_\infty$, $\epsilon = 0.06$)} & \Normal & 0.16 & 95.9 & 2.6 & 100.0 & 0.78 & 3.6 & 100.0\\
+& \AdvTrainHalf & 0.31 & 81.1 & 2.5 & 84.7 & 0.56 & 3.4 & 86.1\\
+& \AdvTrainFull & 0.40 & 77.4 & 4.6 & 83.3 & 0.27 & 5.9 & 83.6\\
+& \ConfTrain & 0.64 & 42.1 & 2.1 & 45.2 & 0.60 & 2.9 & 98.1\\
+\hline
+\multirow{4}{*}{\PGD\FCE ($L_\infty$, $\epsilon = 0.06$)} & \Normal & 0.16 & 95.9 & 2.6 & 100.0 & 0.78 & 3.6 & 100.0\\
+& \AdvTrainHalf & 0.61 & 84.4 & 2.5 & 88.0 & 0.56 & 3.4 & 88.9\\
+& \AdvTrainFull & 0.43 & 80.9 & 4.6 & 86.9 & 0.27 & 5.9 & 87.1\\
+& \ConfTrain & 0.99 & 14.3 & 2.1 & 17.2 & 0.60 & 2.9 & 100.0\\
+\hline
+\multirow{4}{*}{\BlackBox ($L_\infty$, $\epsilon = 0.06$)} & \Normal & 0.17 & 95.9 & 2.6 & 100.0 & 0.78 & 3.6 & 100.0\\
+& \AdvTrainHalf & 0.78 & 78.9 & 2.5 & 82.4 & 0.56 & 3.4 & 84.0\\
+& \AdvTrainFull & 0.51 & 76.5 & 4.6 & 82.4 & 0.27 & 5.9 & 82.7\\
+& \ConfTrain & 1.00 & 4.5 & 2.1 & 7.2 & 0.60 & 2.9 & 83.7\\
+\hline
+\end{tabularx}

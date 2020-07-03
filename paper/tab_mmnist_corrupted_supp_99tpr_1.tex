@@ -1,0 +1,80 @@
+\begin{tabularx}{1\textwidth}{| r | X ||c|c|c|c|c||c|}
+\hline
+\multicolumn{8}{|c|}{\textbf{MNIST-C:} Supplementary Results for Corruption}\\
+\hline
+&& \multicolumn{5}{c||}{\begin{tabular}{c}\textbf{Detection Setting}\\$\tau$@$99\%$TPR\end{tabular}} & \multicolumn{1}{c|}{\begin{tabular}{c}\textbf{Standard}\\\textbf{Setting}\\$\tau{=}0$\end{tabular}}\\
+\hline
+Corruption & Training & \begin{tabular}{c}ROC\\AUC\end{tabular} & \begin{tabular}{c}FPR\\ in \%\end{tabular} & \begin{tabular}{c}TNR\\ in \%\end{tabular} & \begin{tabular}{c}\TE\\ in \%\end{tabular} & $\tau$ & \begin{tabular}{c}\TE\\ in \%\end{tabular}\\
+\hline
+\hline
+\multirow{7}{*}{\texttt{all}} & \Normal & 0.75 & 82.8 & 17.2 & 31.9 & 0.98 & 36.4\\
+& \AdvTrainHalf & 0.80 & 59.0 & 41.0 & 4.0 & 1.00 & 26.9\\
+& \AdvTrainFull & 0.78 & 63.5 & 36.5 & 8.6 & 1.00 & 27.4\\
+& \ConfTrain & 0.96 & 29.0 & 71.0 & 6.7 & 0.85 & 41.5\\
+& \Wong & 0.75 & 75.0 & 25.0 & 5.4 & 0.51 & 14.0\\
+& \TRADES & 0.79 & 74.1 & 25.9 & 5.5 & 0.92 & 16.1\\
+\hline
+\multirow{7}{*}{\texttt{mean}} & \Normal & 0.75 & 82.8 & 17.2 & 32.8 & 1.0 & 36.3\\
+& \AdvTrainHalf & 0.80 & 59.0 & 41.0 & 12.6 & 1.0 & 26.9\\
+& \AdvTrainFull & 0.78 & 63.5 & 36.5 & 17.6 & 1.0 & 27.4\\
+& \ConfTrain & 0.96 & 29.0 & 71.0 & 5.7 & 0.9 & 41.5\\
+& \Wong & 0.75 & 75.0 & 25.0 & 6.0 & 0.5 & 14.0\\
+& \TRADES & 0.79 & 74.1 & 25.9 & 7.9 & 0.9 & 16.1\\
+\hline
+\multirow{7}{*}{\texttt{brightness}} & \Normal & 0.36 & 100.0 & 0.0 & 90.2 & 0.98 & 90.2\\
+& \AdvTrainHalf & 0.99 & 0.9 & 99.1 & 36.4 & 1.00 & 84.3\\
+& \AdvTrainFull & 0.97 & 35.4 & 64.6 & 82.2 & 1.00 & 90.9\\
+& \ConfTrain & 1.00 & 0.0 & 100.0 & 0.0 & 0.85 & 90.5\\
+& \Wong & 0.95 & 38.7 & 61.3 & 0.1 & 0.51 & 23.1\\
+& \TRADES & 0.95 & 43.7 & 56.3 & 67.3 & 0.92 & 77.2\\
+\hline
+\multirow{7}{*}{\texttt{canny\_edges}} & \Normal & 0.91 & 62.4 & 37.6 & 34.8 & 0.98 & 45.6\\
+& \AdvTrainHalf & 0.96 & 28.8 & 71.2 & 33.4 & 1.00 & 53.2\\
+& \AdvTrainFull & 0.94 & 35.3 & 64.7 & 38.2 & 1.00 & 53.4\\
+& \ConfTrain & 0.99 & 34.3 & 65.7 & 70.5 & 0.85 & 61.9\\
+& \Wong & 0.87 & 63.4 & 36.6 & 5.5 & 0.51 & 17.8\\
+& \TRADES & 0.92 & 53.2 & 46.8 & 21.5 & 0.92 & 36.3\\
+\hline
+\multirow{7}{*}{\texttt{dotted\_line}} & \Normal & 0.76 & 85.4 & 14.6 & 2.4 & 0.98 & 7.6\\
+& \AdvTrainHalf & 0.77 & 72.8 & 27.2 & 0.9 & 1.00 & 7.9\\
+& \AdvTrainFull & 0.75 & 74.5 & 25.5 & 0.9 & 1.00 & 6.4\\
+& \ConfTrain & 0.98 & 53.4 & 46.6 & 2.5 & 0.85 & 10.1\\
+& \Wong & 0.60 & 94.2 & 5.8 & 1.1 & 0.51 & 2.9\\
+& \TRADES & 0.73 & 84.5 & 15.5 & 0.5 & 0.92 & 4.2\\
+\hline
+\multirow{7}{*}{\texttt{fog}} & \Normal & 0.38 & 99.9 & 0.1 & 90.2 & 0.98 & 90.2\\
+& \AdvTrainHalf & 0.90 & 29.7 & 70.3 & 10.4 & 1.00 & 59.0\\
+& \AdvTrainFull & 0.88 & 46.3 & 53.7 & 37.7 & 1.00 & 62.0\\
+& \ConfTrain & 1.00 & 0.0 & 100.0 & 0.0 & 0.85 & 90.3\\
+& \Wong & 0.92 & 46.8 & 53.2 & 4.3 & 0.51 & 26.1\\
+& \TRADES & 0.87 & 60.9 & 39.1 & 14.3 & 0.92 & 35.8\\
+\hline
+\multirow{7}{*}{\texttt{glass\_blur}} & \Normal & 0.87 & 71.6 & 28.4 & 57.2 & 0.98 & 56.2\\
+& \AdvTrainHalf & 0.82 & 67.4 & 32.6 & 1.2 & 1.00 & 11.0\\
+& \AdvTrainFull & 0.77 & 70.5 & 29.5 & 1.1 & 1.00 & 8.5\\
+& \ConfTrain & 1.00 & 0.0 & 100.0 & 0.0 & 0.85 & 86.8\\
+& \Wong & 0.69 & 89.1 & 10.9 & 1.7 & 0.51 & 4.9\\
+& \TRADES & 0.81 & 80.9 & 19.1 & 0.6 & 0.92 & 6.0\\
+\hline
+\multirow{7}{*}{\texttt{impulse\_noise}} & \Normal & 0.87 & 72.4 & 27.6 & 79.2 & 0.98 & 81.3\\
+& \AdvTrainHalf & 0.98 & 13.9 & 86.1 & 18.8 & 1.00 & 61.4\\
+& \AdvTrainFull & 0.97 & 18.8 & 81.2 & 12.8 & 1.00 & 56.2\\
+& \ConfTrain & 1.00 & 0.0 & 100.0 & 0.0 & 0.85 & 69.1\\
+& \Wong & 0.83 & 69.4 & 30.6 & 0.7 & 0.51 & 8.2\\
+& \TRADES & 0.91 & 57.3 & 42.7 & 2.2 & 0.92 & 17.2\\
+\hline
+\multirow{7}{*}{\texttt{motion\_blur}} & \Normal & 0.86 & 73.9 & 26.1 & 29.5 & 0.98 & 37.2\\
+& \AdvTrainHalf & 0.62 & 90.6 & 9.4 & 0.3 & 1.00 & 2.7\\
+& \AdvTrainFull & 0.58 & 91.3 & 8.7 & 0.3 & 1.00 & 2.4\\
+& \ConfTrain & 1.00 & 0.0 & 100.0 & 0.0 & 0.85 & 75.6\\
+& \Wong & 0.74 & 83.1 & 16.9 & 3.6 & 0.51 & 9.1\\
+& \TRADES & 0.71 & 88.3 & 11.7 & 0.6 & 0.92 & 4.0\\
+\hline
+\multirow{7}{*}{\texttt{rotate}} & \Normal & 0.70 & 92.4 & 7.6 & 1.7 & 0.98 & 4.6\\
+& \AdvTrainHalf & 0.64 & 87.9 & 12.1 & 0.8 & 1.00 & 4.1\\
+& \AdvTrainFull & 0.63 & 87.2 & 12.8 & 0.8 & 1.00 & 4.5\\
+& \ConfTrain & 0.98 & 41.5 & 58.5 & 0.3 & 0.85 & 4.4\\
+& \Wong & 0.64 & 90.7 & 9.3 & 5.7 & 0.51 & 9.7\\
+& \TRADES & 0.66 & 87.7 & 12.3 & 1.4 & 0.92 & 4.8\\
+\hline
+\end{tabularx}

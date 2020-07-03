@@ -1,0 +1,59 @@
+\begin{tabularx}{1\textwidth}{| r | X ||c|c|c|c|c||c|}
+\hline
+\multicolumn{8}{|c|}{\textbf{MNIST-C:} Supplementary Results for Corruption}\\
+\hline
+&& \multicolumn{5}{c||}{\begin{tabular}{c}\textbf{Detection Setting}\\$\tau$@$99\%$TPR\end{tabular}} & \multicolumn{1}{c|}{\begin{tabular}{c}\textbf{Standard}\\\textbf{Setting}\\$\tau{=}0$\end{tabular}}\\
+\hline
+Corruption & Training & \begin{tabular}{c}ROC\\AUC\end{tabular} & \begin{tabular}{c}FPR\\ in \%\end{tabular} & \begin{tabular}{c}TNR\\ in \%\end{tabular} & \begin{tabular}{c}\TE\\ in \%\end{tabular} & $\tau$ & \begin{tabular}{c}\TE\\ in \%\end{tabular}\\
+\hline
+\hline
+\multirow{7}{*}{\texttt{scale}} & \Normal & 0.84 & 89.5 & 10.5 & 0.7 & 0.98 & 3.1\\
+& \AdvTrainHalf & 0.86 & 78.5 & 21.5 & 0.1 & 1.00 & 3.0\\
+& \AdvTrainFull & 0.80 & 82.1 & 17.9 & 0.4 & 1.00 & 3.0\\
+& \ConfTrain & 0.75 & 96.7 & 3.3 & 0.8 & 0.85 & 2.0\\
+& \Wong & 0.84 & 64.4 & 35.6 & 8.1 & 0.51 & 18.1\\
+& \TRADES & 0.82 & 84.4 & 15.6 & 0.3 & 0.92 & 2.9\\
+\hline
+\multirow{7}{*}{\texttt{shear}} & \Normal & 0.60 & 97.6 & 2.4 & 0.2 & 0.98 & 0.8\\
+& \AdvTrainHalf & 0.56 & 95.1 & 4.9 & 0.1 & 1.00 & 0.9\\
+& \AdvTrainFull & 0.55 & 94.8 & 5.2 & 0.1 & 1.00 & 0.9\\
+& \ConfTrain & 0.98 & 27.4 & 72.6 & 0.0 & 0.85 & 1.1\\
+& \Wong & 0.56 & 95.9 & 4.1 & 1.9 & 0.51 & 3.2\\
+& \TRADES & 0.61 & 94.8 & 5.2 & 0.3 & 0.92 & 1.4\\
+\hline
+\multirow{7}{*}{\texttt{shot\_noise}} & \Normal & 0.74 & 93.0 & 7.0 & 1.4 & 0.98 & 3.6\\
+& \AdvTrainHalf & 0.62 & 91.3 & 8.7 & 0.2 & 1.00 & 1.9\\
+& \AdvTrainFull & 0.57 & 92.6 & 7.4 & 0.2 & 1.00 & 1.8\\
+& \ConfTrain & 0.96 & 61.2 & 38.8 & 0.1 & 0.85 & 2.3\\
+& \Wong & 0.59 & 95.2 & 4.8 & 0.9 & 0.51 & 2.4\\
+& \TRADES & 0.65 & 94.9 & 5.1 & 0.2 & 0.92 & 1.4\\
+\hline
+\multirow{7}{*}{\texttt{spatter}} & \Normal & 0.85 & 72.8 & 27.2 & 18.9 & 0.98 & 28.1\\
+& \AdvTrainHalf & 0.65 & 88.3 & 11.7 & 0.6 & 1.00 & 3.6\\
+& \AdvTrainFull & 0.61 & 90.3 & 9.7 & 0.4 & 1.00 & 2.7\\
+& \ConfTrain & 1.00 & 0.0 & 100.0 & 0.0 & 0.85 & 29.7\\
+& \Wong & 0.56 & 95.6 & 4.4 & 1.2 & 0.51 & 2.6\\
+& \TRADES & 0.63 & 90.4 & 9.6 & 0.7 & 0.92 & 3.3\\
+\hline
+\multirow{7}{*}{\texttt{stripe}} & \Normal & 0.92 & 61.1 & 38.9 & 69.6 & 0.98 & 70.2\\
+& \AdvTrainHalf & 0.98 & 12.2 & 87.8 & 83.8 & 1.00 & 81.3\\
+& \AdvTrainFull & 0.99 & 12.4 & 87.6 & 88.2 & 1.00 & 87.4\\
+& \ConfTrain & 1.00 & 0.0 & 100.0 & 0.0 & 0.85 & 78.0\\
+& \Wong & 0.90 & 55.8 & 44.2 & 1.1 & 0.51 & 10.4\\
+& \TRADES & 0.88 & 72.9 & 27.1 & 0.6 & 0.92 & 5.9\\
+\hline
+\multirow{7}{*}{\texttt{translate}} & \Normal & 0.72 & 95.2 & 4.8 & 0.3 & 0.98 & 1.6\\
+& \AdvTrainHalf & 0.80 & 74.6 & 25.4 & 0.2 & 1.00 & 4.0\\
+& \AdvTrainFull & 0.79 & 72.4 & 27.6 & 0.2 & 1.00 & 4.2\\
+& \ConfTrain & 0.84 & 95.3 & 4.7 & 0.3 & 0.85 & 1.4\\
+& \Wong & 0.88 & 59.3 & 40.7 & 44.7 & 0.51 & 55.2\\
+& \TRADES & 0.94 & 42.3 & 57.7 & 6.3 & 0.92 & 28.1\\
+\hline
+\multirow{7}{*}{\texttt{zigzag}} & \Normal & 0.85 & 74.5 & 25.5 & 16.3 & 0.98 & 24.8\\
+& \AdvTrainHalf & 0.87 & 53.6 & 46.4 & 10.9 & 1.00 & 24.9\\
+& \AdvTrainFull & 0.87 & 48.3 & 51.7 & 10.1 & 1.00 & 25.8\\
+& \ConfTrain & 0.99 & 25.6 & 74.4 & 9.8 & 0.85 & 18.6\\
+& \Wong & 0.70 & 83.5 & 16.5 & 9.7 & 0.51 & 15.8\\
+& \TRADES & 0.76 & 75.2 & 24.8 & 4.9 & 0.92 & 13.8\\
+\hline
+\end{tabularx}

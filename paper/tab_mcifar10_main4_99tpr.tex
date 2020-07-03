@@ -1,0 +1,103 @@
+\begin{tabularx}{1\textwidth}{|X|@{\hskip 7px}c@{\hskip 7px}|@{\hskip 3px}c@{\hskip 3px}|@{\hskip 7px}c@{\hskip 7px}|@{\hskip 7px}c@{\hskip 7px}|@{\hskip 7px}c@{\hskip 7px}|@{\hskip 7px}c@{\hskip 7px}|@{\hskip 7px}c@{\hskip 7px}|@{\hskip 7px}c@{\hskip 7px}|}
+%\hline
+%\multicolumn{9}{|c|}{\textbf{CIFAR10:}}\\
+\hline
+\textbf{CIFAR10:} & \multicolumn{2}{c|@{\hskip 7px}}{\textbf{\TE} $\downarrow$ in \%} & \multicolumn{6}{@{\hskip 7px}c@{\hskip 7px}|}{\emph{confidence-thresholed} \textbf{\RTE} $\downarrow$ for $\tau$@$99\%$TPR}\\
+\hline
+& \begin{tabular}{@{}c@{}}(clean)\\$\tau = 0$\end{tabular}
+& \begin{tabular}{@{}c@{}}(clean)\\$99\%$TPR\end{tabular}
+& \begin{tabular}{@{}c@{}}$L_\infty$\\$\epsilon = 0.03$\end{tabular}
+& \begin{tabular}{@{}c@{}}$L_\infty$\\$\epsilon = 0.06$\end{tabular}
+& \begin{tabular}{@{}c@{}}$L_2$\\$\epsilon = 2$\end{tabular}
+& \begin{tabular}{@{}c@{}}$L_1$\\$\epsilon = 24$\end{tabular}
+& \begin{tabular}{@{}c@{}}$L_0$\\$\epsilon = 10$\end{tabular}
+& \begin{tabular}{@{}c@{}}adv.\\frames\end{tabular}
+\\\hline
+& (seen)
+& (seen)
+& \textcolor{colorbrewer3}{seen}
+& \textcolor{colorbrewer1}{\bfseries unseen}
+& \textcolor{colorbrewer1}{\bfseries unseen}
+& \textcolor{colorbrewer1}{\bfseries unseen}
+& \textcolor{colorbrewer1}{\bfseries unseen}
+& \textcolor{colorbrewer1}{\bfseries unseen}
+\\\hline\hline
+\Normal & \underline{8.3} & 7.4
+& 100.0 % rte@99
+& 100.0 % rte@99
+& 100.0 % rte@99
+& 100.0 % rte@99
+& 84.7 % rte@99
+& 96.7 % rte@99
+\\
+%\hline
+\AdvTrainHalf & 16.6 & 15.5
+& 62.7 % rte@99
+& 93.7 % rte@99
+& 98.4 % rte@99
+& 98.4 % rte@99
+& 74.4 % rte@99
+& 78.7 % rte@99
+\\
+%\hline
+\AdvTrainFull & 19.4 & 18.3
+& 59.9 % rte@99
+& 90.3 % rte@99
+& 98.3 % rte@99
+& 98.0 % rte@99
+& 72.3 % rte@99
+& 79.6 % rte@99
+\\
+%\hline
+\ConfTrain & 10.1 & \underline{6.7}
+& 68.4 % rte@99
+& 92.4 % rte@99
+& \bfseries 52.2 % rte@99
+& \bfseries 58.8 % rte@99
+& \bfseries 23.0 % rte@99
+& \bfseries 66.1 % rte@99
+\\
+\hline\hline
+\textbf{*} \Wong & 18.4 & 17.6
+& 53.2 % rte@99
+& 89.4 % rte@99
+& 88.5 % rte@99
+& 68.6 % rte@99
+& 39.2 % rte@99
+& 82.6 % rte@99
+\\
+%\hline
+\textbf{*} \TRADES & 15.2 & 13.2
+& \bfseries 43.5 % rte@99
+& \bfseries 81.0 % rte@99
+& 70.9 % rte@99
+& 96.9 % rte@99
+& 36.9 % rte@99
+& 72.1 % rte@99
+\\
+\textbf{*} \MadryAT & 13.0 & 11.7
+& 45.1 % rte@99
+& 84.5 % rte@99
+& 98.7 % rte@99
+& 97.8 % rte@99
+& 42.3 % rte@99
+& 73.3 % rte@99
+\\
+\hline\hline
+\textbf{*} \Ma & \bfseries 6.4 & \bfseries 4.9
+& 99.0
+& 99.2
+& 70.6
+& 89.4
+& 47.0
+& \bfseries 66.1
+\\
+\textbf{*} \Lee & \bfseries 6.4 & \bfseries 4.9
+& 94.1
+& 95.3
+& 90.6
+& 97.6
+& 49.8
+& 70.0
+\\\hline
+\end{tabularx}

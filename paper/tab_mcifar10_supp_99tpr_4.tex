@@ -1,0 +1,50 @@
+\begin{tabularx}{1\textwidth}{| r | X ||c|c|c|c|c||c|c|}
+\hline
+\multicolumn{9}{|c|}{\textbf{CIFAR10:} Supplementary Results for $\mathbf{L_0}$ Adversarial Examples and \textbf{Adversarial Frames}}\\
+\hline
+&& \multicolumn{5}{c||}{\begin{tabular}{c}\textbf{Detection Setting}\\$\tau$@$99\%$TPR\end{tabular}} & \multicolumn{2}{c|}{\begin{tabular}{c}\textbf{Standard Setting}\\$\tau{=}0$\end{tabular}}\\
+\hline
+Attack & Training & \begin{tabular}{c}ROC\\AUC\end{tabular} & \begin{tabular}{c}FPR\\ in \%\end{tabular} & \begin{tabular}{c}\TE\\ in \%\end{tabular} & \begin{tabular}{c}\RTE\\ in \%\end{tabular} & $\tau$ & \begin{tabular}{c}\TE\\ in \%\end{tabular} & \begin{tabular}{c}\RTE\\ in \%\end{tabular}\\
+\hline
+\hline
+\multirow{8}{*}{Worst-Case ($L_0$, $\epsilon = 10$)} & \Normal & 0.80 & 77.7 & 7.4 & 84.6 & 0.59 & 8.3 & 96.2\\
+& \AdvTrainHalf & 0.80 & 59.3 & 15.1 & 74.1 & 0.35 & 16.6 & 75.9\\
+& \AdvTrainFull & 0.75 & 54.7 & 18.3 & 72.0 & 0.29 & 19.4 & 73.2\\
+& \ConfTrain & 0.97 & 14.4 & 8.7 & 21.9 & 0.40 & 10.1 & 54.7\\
+& \Wong & 0.84 & 21.4 & 17.6 & 39.1 & 0.24 & 18.4 & 39.8\\
+& \TRADES & 0.78 & 22.3 & 13.2 & 35.2 & 0.30 & 15.2 & 37.8\\
+& \MadryAT & 0.73 & 31.0 & 11.7 & 41.5 & 0.29 & 13.0 & 42.8\\
+\hline
+\multirow{8}{*}{\PGD\FConf ($L_0$, $\epsilon = 10$)} & \Normal & 0.74 & 48.9 & 7.4 & 55.5 & 0.59 & 8.3 & 57.4\\
+& \AdvTrainHalf & 0.74 & 29.7 & 15.1 & 44.3 & 0.35 & 16.6 & 45.1\\
+& \AdvTrainFull & 0.72 & 25.2 & 18.3 & 42.3 & 0.29 & 19.4 & 43.3\\
+& \ConfTrain & 0.98 & 5.2 & 8.7 & 12.5 & 0.40 & 10.1 & 34.8\\
+& \Wong & 0.81 & 5.2 & 17.6 & 22.8 & 0.24 & 18.4 & 23.1\\
+& \TRADES & 0.80 & 18.0 & 13.2 & 30.8 & 0.30 & 15.2 & 33.2\\
+& \MadryAT & 0.77 & 21.8 & 11.7 & 32.3 & 0.29 & 13.0 & 33.5\\
+\hline
+\multirow{8}{*}{\PGD\FCE ($L_0$, $\epsilon = 10$)} & \Normal & 0.73 & 56.3 & 7.4 & 63.0 & 0.59 & 8.3 & 65.4\\
+& \AdvTrainHalf & 0.76 & 34.8 & 15.1 & 49.4 & 0.35 & 16.6 & 51.4\\
+& \AdvTrainFull & 0.72 & 30.3 & 18.3 & 47.5 & 0.29 & 19.4 & 48.9\\
+& \ConfTrain & 1.00 & 0.3 & 8.7 & 7.6 & 0.40 & 10.1 & 79.3\\
+& \Wong & 0.82 & 5.9 & 17.6 & 23.5 & 0.24 & 18.4 & 23.9\\
+& \TRADES & 0.81 & 21.0 & 13.2 & 33.9 & 0.30 & 15.2 & 37.5\\
+& \MadryAT & 0.77 & 26.7 & 11.7 & 37.2 & 0.29 & 13.0 & 39.2\\
+\hline
+\multirow{8}{*}{\BlackBox ($L_0$, $\epsilon = 10$)} & \Normal & 0.94 & 66.1 & 7.4 & 72.9 & 0.59 & 8.3 & 96.2\\
+& \AdvTrainHalf & 0.91 & 54.2 & 15.1 & 69.6 & 0.35 & 16.6 & 75.7\\
+& \AdvTrainFull & 0.83 & 52.8 & 18.3 & 70.3 & 0.29 & 19.4 & 72.4\\
+& \ConfTrain & 0.99 & 12.0 & 8.7 & 19.6 & 0.40 & 10.1 & 96.6\\
+& \Wong & 0.86 & 22.1 & 17.6 & 39.8 & 0.24 & 18.4 & 41.0\\
+& \TRADES & 0.84 & 8.4 & 13.2 & 20.9 & 0.30 & 15.2 & 24.3\\
+& \MadryAT & 0.79 & 15.7 & 11.7 & 26.1 & 0.29 & 13.0 & 27.6\\
+\hline
+\multirow{8}{*}{Adversarial Frames} & \Normal & 0.28 & 89.7 & 7.4 & 96.7 & 0.59 & 8.3 & 96.9\\
+& \AdvTrainHalf & 0.40 & 63.6 & 15.1 & 78.5 & 0.35 & 16.6 & 78.7\\
+& \AdvTrainFull & 0.39 & 62.0 & 18.3 & 79.4 & 0.29 & 19.4 & 79.6\\
+& \ConfTrain & 0.75 & 57.4 & 8.7 & 65.6 & 0.40 & 10.1 & 86.7\\
+& \Wong & 0.38 & 64.7 & 17.6 & 82.5 & 0.24 & 18.4 & 82.6\\
+& \TRADES & 0.45 & 57.5 & 13.2 & 71.3 & 0.30 & 15.2 & 72.1\\
+& \MadryAT & 0.48 & 62.0 & 11.7 & 72.9 & 0.29 & 13.0 & 73.3\\
+\hline
+\end{tabularx}

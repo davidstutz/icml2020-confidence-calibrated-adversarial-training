@@ -1,0 +1,17 @@
+\begin{tabularx}{1\textwidth}{| X ||c|c|c|c||c||c|c||c|c|}
+\hline
+\multicolumn{10}{|c|}{\textbf{CIFAR10:} Attack Ablation with confidence-thresholded \RTE in \% for $\tau$@$99\%$TPR}\\
+\multicolumn{10}{|c|}{($L_\infty$ attack with $\epsilon = 0.03$ for training and testing)}\\
+\hline
+Optimization & \multicolumn{5}{c||}{momentum+backtrack} & \multicolumn{2}{c||}{mom} & \multicolumn{2}{c|}{--}\\
+\hline
+Initialization & \multicolumn{4}{c||}{zero} & rand & \multicolumn{2}{c||}{zero} & \multicolumn{2}{c|}{zero}\\
+\hline
+Iterations & $40$ & $200$ & $1000$ & $2000$ & $2000$ & $60$ & $300$ & $60$ & $300$\\
+\hline
+\hline
+\AdvTrain & 60.9 & 60.8 & 60.8 & 60.8 & 60.9 & 60.9 & 60.9 & 57.4 & 57.6\\
+\AdvTrain\FConf (\AdvTrain trained with \PGD-\FConf) & 60.4 & 60.6 & 60.5 & 60.5 & 60.9 & 60.4 & 60.6 & 56.2 & 56.6\\
+\ConfTrain & 14.8 & 16.2 & 40.2 & 41.3 & 34.9 & 7.2 & 7.2 & 7.2 & 7.2\\
+\hline
+\end{tabularx}

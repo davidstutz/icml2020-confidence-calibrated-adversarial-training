@@ -1,0 +1,17 @@
+\begin{tabularx}{1\textwidth}{| X ||c|c|c|c||c||c|c||c|c|}
+    \hline
+    \multicolumn{10}{|c|}{\textbf{MNIST:} Attack Ablation with confidence-thresholded \RTE in \% for $\tau$@$99\%$TPR}\\
+    \multicolumn{10}{|c|}{($L_\infty$ attack with $\epsilon = 0.3$ for training and testing)}\\
+    \hline
+    Optimization & \multicolumn{5}{c||}{momentum+backtrack} & \multicolumn{2}{c||}{mom} & \multicolumn{2}{c|}{--}\\
+    \hline
+    Initialization & \multicolumn{4}{c||}{zero} & rand & \multicolumn{2}{c||}{zero} & \multicolumn{2}{c|}{zero}\\
+    \hline
+    Iterations & $40$ & $200$ & $1000$ & $2000$ & $2000$ & $60$ & $300$ & $60$ & $300$\\
+    \hline
+    \hline
+    \AdvTrain & 0.4 & 0.4 & 0.4 & 0.3 & 0.6 & 0.4 & 0.6 & 0.4 & 0.4\\
+    \AdvTrain\FConf (\AdvTrain trained with \PGD-\FConf) & 0.8 & 0.8 & 0.8 & 0.8 & 1.1 & 1.0 & 1.1 & 1.0 & 1.0\\
+    \ConfTrain & 0.2 & 1.4 & 4.6 & 4.6 & 3.7 & 0.7 & 0.7 & 0.2 & 0.2\\
+    \hline
+\end{tabularx}

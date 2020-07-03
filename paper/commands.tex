@@ -1,0 +1,343 @@
+\usepackage{amsmath}
+\usepackage{xspace}
+\usepackage{subcaption}
+\usepackage{bbm}
+\usepackage{nicefrac}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{tikz}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{xspace}
+\usepackage{mathtools}
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algcompatible}
+\usepackage[labelfont=bf]{caption}
+\usepackage{wrapfig}
+\usepackage[breakable, theorems, skins]{tcolorbox}
+\usepackage{array}
+\usepackage{bbold}
+\usepackage{placeins}
+\setlength\extrarowheight{0.75pt}
+
+\def\Vhrulefill{\leavevmode\hrule height 0.7ex depth \dimexpr0.4pt-0.7ex with 1cm\kern0pt}
+
+\usepackage{xcolor}
+\definecolor{colorbrewer0}{RGB}{45,45,45}
+\definecolor{colorbrewer1}{RGB}{228,26,28}
+\definecolor{colorbrewer2}{RGB}{55,126,184}
+\definecolor{colorbrewer3}{RGB}{77,175,74}
+\definecolor{colorbrewer4}{RGB}{152,78,163}
+\definecolor{colorbrewer5}{RGB}{255,127,0}
+\definecolor{colorbrewer6}{RGB}{255,255,51}
+\definecolor{colorbrewer7}{RGB}{166,86,40}
+\definecolor{colorbrewer8}{RGB}{247,129,191}
+\definecolor{colorbrewer9}{RGB}{153,153,153}
+\definecolor{colorbrewer10}{RGB}{24,167,181}
+
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\newtheorem{proposition}{Proposition}
+\definecolor{darkred}{RGB}{255, 0, 0}
+
+\definecolor{gray}{RGB}{100, 100, 100}
+
+\definecolor{colorbrewer0}{RGB}{45,45,45}
+\definecolor{colorbrewer1}{RGB}{228,26,28}
+\definecolor{colorbrewer2}{RGB}{55,126,184}
+\definecolor{colorbrewer3}{RGB}{77,175,74}
+\definecolor{colorbrewer4}{RGB}{152,78,163}
+\definecolor{colorbrewer5}{RGB}{255,127,0}
+\definecolor{colorbrewer6}{RGB}{255,255,51}
+\definecolor{colorbrewer7}{RGB}{166,86,40}
+\definecolor{colorbrewer8}{RGB}{247,129,191}
+\definecolor{colorbrewer9}{RGB}{153,153,153}
+\definecolor{colorbrewer10}{RGB}{24,167,181}
+
+\makeatletter
+\DeclareRobustCommand\onedot{\futurelet\@let@token\@onedot}
+\def\@onedot{\ifx\@let@token.\else.\null\fi\xspace}
+
+\def\eg{\emph{e.g}\onedot} \def\Eg{\emph{E.g}\onedot}
+\def\ie{\emph{i.e}\onedot} \def\Ie{\emph{I.e}\onedot}
+\def\cf{\emph{c.f}\onedot} \def\Cf{\emph{C.f}\onedot}
+\def\etc{\emph{etc}\onedot} \def\vs{\emph{vs}\onedot}
+\def\wrt{w.r.t\onedot} \def\dof{d.o.f\onedot}
+\def\etal{\emph{et al}\onedot}
+\makeatother
+
+\newcommand{\Perp}{\perp\!\!\! \perp}
+\newcommand{\bK}{\mathbf{K}}
+\newcommand{\bX}{\mathbf{X}}
+\newcommand{\bY}{\mathbf{Y}}
+\newcommand{\bk}{\mathbf{k}}
+\newcommand{\bx}{\mathbf{x}}
+\newcommand{\by}{\mathbf{y}}
+\newcommand{\bhy}{\hat{\mathbf{y}}}
+\newcommand{\bty}{\tilde{\mathbf{y}}}
+\newcommand{\bG}{\mathbf{G}}
+\newcommand{\bI}{\mathbf{I}}
+\newcommand{\bg}{\mathbf{g}}
+\newcommand{\bS}{\mathbf{S}}
+\newcommand{\bs}{\mathbf{s}}
+\newcommand{\bM}{\mathbf{M}}
+\newcommand{\bw}{\mathbf{w}}
+\newcommand{\eye}{\mathbf{I}}
+\newcommand{\bU}{\mathbf{U}}
+\newcommand{\bV}{\mathbf{V}}
+\newcommand{\bW}{\mathbf{W}}
+\newcommand{\bn}{\mathbf{n}}
+\newcommand{\bv}{\mathbf{v}}
+\newcommand{\bq}{\mathbf{q}}
+\newcommand{\bR}{\mathbf{R}}
+\newcommand{\bi}{\mathbf{i}}
+\newcommand{\bj}{\mathbf{j}}
+\newcommand{\bp}{\mathbf{p}}
+\newcommand{\bt}{\mathbf{t}}
+\newcommand{\bJ}{\mathbf{J}}
+\newcommand{\bu}{\mathbf{u}}
+\newcommand{\bB}{\mathbf{B}}
+\newcommand{\bD}{\mathbf{D}}
+\newcommand{\bz}{\mathbf{z}}
+\newcommand{\bP}{\mathbf{P}}
+\newcommand{\bC}{\mathbf{C}}
+\newcommand{\bA}{\mathbf{A}}
+\newcommand{\bZ}{\mathbf{Z}}
+\newcommand{\bff}{\mathbf{f}}
+\newcommand{\bF}{\mathbf{F}}
+\newcommand{\bo}{\mathbf{o}}
+\newcommand{\bO}{\mathbf{O}}
+\newcommand{\bc}{\mathbf{c}}
+\newcommand{\bm}{\mathbf{m}}
+\newcommand{\bT}{\mathbf{T}}
+\newcommand{\bQ}{\mathbf{Q}}
+\newcommand{\bL}{\mathbf{L}}
+\newcommand{\bl}{\mathbf{l}}
+\newcommand{\ba}{\mathbf{a}}
+\newcommand{\bE}{\mathbf{E}}
+\newcommand{\bH}{\mathbf{H}}
+\newcommand{\bd}{\mathbf{d}}
+\newcommand{\br}{\mathbf{r}}
+\newcommand{\be}{\mathbf{e}}
+\newcommand{\bb}{\mathbf{b}}
+\newcommand{\bh}{\mathbf{h}}
+\newcommand{\bhh}{\hat{\mathbf{h}}}
+\newcommand{\btheta}{\boldsymbol{\theta}}
+\newcommand{\bTheta}{\boldsymbol{\Theta}}
+\newcommand{\bpi}{\boldsymbol{\pi}}
+\newcommand{\bphi}{\boldsymbol{\phi}}
+\newcommand{\bPhi}{\boldsymbol{\Phi}}
+\newcommand{\bmu}{\boldsymbol{\mu}}
+\newcommand{\bSigma}{\boldsymbol{\Sigma}}
+\newcommand{\bGamma}{\boldsymbol{\Gamma}}
+\newcommand{\bbeta}{\boldsymbol{\beta}}
+\newcommand{\bomega}{\boldsymbol{\omega}}
+\newcommand{\blambda}{\boldsymbol{\lambda}}
+\newcommand{\bLambda}{\boldsymbol{\Lambda}}
+\newcommand{\bkappa}{\boldsymbol{\kappa}}
+\newcommand{\btau}{\boldsymbol{\tau}}
+\newcommand{\balpha}{\boldsymbol{\alpha}}
+\newcommand{\mR}{\mathbb{R}}
+\newcommand{\mN}{\mathbb{N}}
+\newcommand{\mL}{\mathbb{L}}
+\newcommand{\mF}{\mathbb{F}}
+\newcommand{\mE}{\mathbb{E}}
+\newcommand{\cN}{\mathcal{N}}
+\newcommand{\cM}{\mathcal{M}}
+\newcommand{\cR}{\mathcal{R}}
+\newcommand{\cB}{\mathcal{B}}
+\newcommand{\cL}{\mathcal{L}}
+\newcommand{\cH}{\mathcal{H}}
+\newcommand{\cS}{\mathcal{S}}
+\newcommand{\cT}{\mathcal{T}}
+\newcommand{\cO}{\mathcal{O}}
+\newcommand{\cC}{\mathcal{C}}
+\newcommand{\cD}{\mathcal{D}}
+\newcommand{\cP}{\mathcal{P}}
+\newcommand{\cE}{\mathcal{E}}
+\newcommand{\cF}{\mathcal{F}}
+\newcommand{\cK}{\mathcal{K}}
+\newcommand{\cZ}{\mathcal{Z}}
+\newcommand{\cY}{\mathcal{Y}}
+\newcommand{\cX}{\mathcal{X}}
+\def\bgamma{\boldsymbol\gamma}
+
+\newcommand{\specialcell}[2][c]{%
+    \begin{tabular}[#1]{@{}c@{}}#2\end{tabular}}
+
+\newcommand{\figref}[1]{\Fig~\ref{#1}}
+\newcommand{\secref}[1]{\Sec~\ref{#1}}
+\newcommand{\defref}[1]{\Def~\ref{#1}}
+\renewcommand{\algref}[1]{\Alg~\ref{#1}}
+\newcommand{\eqnref}[1]{\Eq~\eqref{#1}}
+\newcommand{\tabref}[1]{\Tab~\ref{#1}}
+\newcommand{\rulesep}{\unskip\ \vrule\ }
+
+\DeclareMathOperator*{\argmax}{argmax~}
+\DeclareMathOperator*{\argmin}{argmin~}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\enc}{enc}
+\DeclareMathOperator{\dec}{dec}
+\DeclareMathOperator{\softmax}{softmax}
+\DeclareMathOperator{\softplus}{softplus}
+\DeclareMathOperator{\Tr}{Tr}
+
+\def\mc{\mathcal}
+\def\mb{\mathbf}
+
+\newcommand{\T}{^{\raisemath{-1pt}{\mathsf{T}}}}
+
+\makeatletter
+\DeclareRobustCommand\onedot{\futurelet\@let@token\@onedot}
+\def\@onedot{\ifx\@let@token.\else.\null\fi\xspace}
+\def\eg{e.g\onedot} \def\Eg{E.g\onedot}
+\def\ie{i.e\onedot} \def\Ie{I.e\onedot}
+\def\dh{d.h\onedot} \def\Dh{D.h\onedot}
+\def\cf{cf\onedot} \def\Cf{Cf\onedot}
+\def\etc{etc\onedot} \def\vs{vs\onedot}
+\def\bzw{bzw\onedot}
+\def\st{s.t\onedot}
+\def\wrt{wrt\onedot}
+\def\dof{d.o.f\onedot}
+\def\etal{et~al\onedot} \def\iid{i.i.d\onedot}
+\def\Fig{Fig\onedot} \def\Eq{Eq\onedot}
+\def\Sec{Sec\onedot} \def\Alg{Alg\onedot}
+\def\Tab{Tab\onedot} \def\Def{Def\onedot}
+\makeatother
+
+% metrics
+\DeclareRobustCommand{\RTE}{%
+    \ifmmode
+    \text{RErr}
+    \else
+    RErr\xspace
+    \fi
+}
+\DeclareRobustCommand{\TE}{%
+    \ifmmode
+    \text{Err}
+    \else
+    Err\xspace
+    \fi
+}
+\def\PGD{\text{PGD}\xspace}
+\def\Normal{\text{Normal}\xspace}
+\def\AdvTrain{\text{AT}\xspace}
+\def\AdvTrainHalf{\text{AT-50\%}\xspace}
+\def\AdvTrainFull{\text{AT-100\%}\xspace}
+\def\FConf{\text{Conf}\xspace}
+\def\FCE{\text{CE}\xspace}
+\def\ConfTrain{\text{CCAT}\xspace}
+\def\Wong{MSD\xspace}
+\def\WongAT{AT-100\% (Maini)\xspace}
+\def\MadryAT{AT-Madry\xspace}
+\def\Ma{LID\xspace}
+\def\Lee{MAHA\xspace}
+\def\TRADES{TRADES\xspace}
+
+\def\Distal{\text{Dist}\xspace}
+\def\MNIST{\text{MNIST}\xspace}
+\def\Fashion{\text{Fashion}\xspace}
+\def\SVHN{\text{SVHN}\xspace}
+\def\Cifar{\text{Cifar10}\xspace}
+\def\Random{\text{Rand}\xspace}
+\def\Cube{\text{Cube}\xspace}
+\def\Simple{\text{Simple}\xspace}
+\def\QueryLimited{\text{QL}\xspace}
+\def\BlackBox{\text{Black-Box}\xspace}
+
+\newcommand*\rot{\rotatebox{90}}
+\newcommand{\boldparagraph}[1]{\vspace{0.2cm}\noindent{\bf #1:} }
+
+\newcommand{\inner}[1]{\left\langle#1\right\rangle}
+\def\H{\mathcal{H}}
+\def\Pr{p}
+\def\E{\mathcal{E}}
+\def\G{\mathcal{G}}
+\def\tG{{\tilde{\mathcal{G}}}}
+\def\A{\mathcal{A}}
+\def\X{\mathcal{X}}
+\def\Y{\mathcal{Y}}
+\def\R{\mathbb{R}}
+\def\C{\mathbb{C}}
+\def\D{\mathcal{D}}
+\def\N{\mathbb{N}}
+\def\M{\mathcal{M}}
+\def\L{\mathcal{L}}
+\def\F{\mathcal{F}}
+\def\K{\mathcal{K}}
+\def\KK{\mathbb{K}}
+\def\B{\mathcal{B}}
+\def\U{\mathcal{U}}
+\def\P{\mathcal{P}}
+\def\Span{\textrm{Span}}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+\newcommand{\abs}[1]{\left|#1\right|}
+\def\bydef{:=}
+\def\Nc{\mathcal{N}}
+\def\Z{\mathbb{Z}}
+
+\def\mean{\mathop{\rm mean}\nolimits}
+\def\median{\mathop{\rm median}\nolimits}  
+\def\sgn{\mathop{\rm sgn}\nolimits}
+\def\diam{\mathop{\rm diam}\nolimits}
+\def\esssup{\mathop{\rm ess\,sup}\nolimits}
+\def\conv{\mathop{\rm conv}\nolimits}
+\def\sconv{\mathop{\rm sconv}\nolimits}
+\def\tr{\mathop{\rm tr}\nolimits}
+\def\det{\mathop{\rm det}\nolimits}
+\def\mstar{\mathop{\rm star}\nolimits}
+\def\card{\mathop{\rm card}\nolimits}
+\def\dom{\mathop{\rm dom}\nolimits}
+\def\epi{\mathop{\rm epi}\nolimits}
+\def\mspan{\mathop{\rm span}\nolimits}
+\def\cspan{\mathop{\rm \overline{span}}\nolimits}
+\def\conv{\mathop{\rm conv}\nolimits}
+\def\cconv{\mathop{\rm \overline{conv}}\nolimits}
+\def\aconv{\mathop{\rm absconv}\nolimits}
+\def\acconv{\mathop{\rm \overline{absconv}}\nolimits}
+\def\supp{\mathop{\rm supp}\nolimits}
+\def\ker{\mathop{\rm ker}\nolimits}
+\def\ran{\mathop{\rm ran}\nolimits}
+\def\id{\mathop{\rm id}\nolimits}
+\def\im{\mathop{\rm im}\nolimits}
+\def\Exp{\mathbb{E}}
+\def\vol{\mathop{\rm vol}\nolimits}
+\def\div{\mathop{\rm div}\nolimits}
+\def\grad{\mathop{\rm grad}\nolimits}
+\def\inj{\mathrm{inj}}
+\newcommand{\Id}{\mathbb{1}}
+\def\ones{\mathop{\rm e}\nolimits}
+\def\eps{\mathop{\epsilon}\nolimits}
+
+\def\cut{\mathrm{cut}}
+\def\Ncut{\mathrm{NCut}}
+\def\Rcut{\mathrm{RCut}}
+\def\Hcut{\mathrm{HardCut}}
+\def\TNcut{\mathrm{NCut}}
+\def\TRcut{\mathrm{RCut}}
+\def\RCC{\mathrm{RCC}}
+\def\NCC{\mathrm{NCC}}
+\def\SCC{\mathrm{SCC}}
+\def\TCC{\mathrm{TrCC}}
+
+\def\BCC{\mathrm{BCC}}
+\def\BNC{\mathrm{BNC}}
+\def\BTCC{\mathrm{BTCC}}
+\def\BSCC{\mathrm{BSCC}}
+
+\def\out{\mathrm{out}}
+\def\inn{\mathrm{in}}
+
+\def\pin{p_{\mathrm{in}}}
+\def\pout{p_{\mathrm{out}}}
+\def\wmean{\mathrm{wmean}}
+
+\def\min{\mathop{\rm min}\nolimits}
+\def\max{\mathop{\rm max}\nolimits}
+\def\ones{\mathbf{1}}
+
+\def\var{\mathrm{var}}

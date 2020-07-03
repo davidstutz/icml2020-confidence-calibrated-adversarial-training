@@ -1,0 +1,54 @@
+\begin{tabularx}{1\textwidth}{|X|@{ }c@{ }|@{ }c@{ }|@{ }c@{ }|@{ }c@{ }|@{ }c@{ }|@{ }c@{ }|@{ }c@{ }|@{ }c@{ }|@{ }c@{ }|@{ }c@{ }|@{ }c@{ }|@{ }c@{ }|}
+\hline
+\multicolumn{13}{|c|}{\textbf{SVHN:} \textbf{FPR} and confidence-thresholded \textbf{\RTE} in \% for $\tau$@{\color{colorbrewer1}$\mathbf{98}\%$TPR}}\\
+\hline
+& \multicolumn{2}{@{}c@{}|@{ }}{\begin{tabular}{@{}c@{}}$L_\infty$\\$\epsilon = 0.03$\end{tabular}}
+& \multicolumn{2}{@{}c@{}|@{ }}{\begin{tabular}{@{}c@{}}$L_\infty$\\$\epsilon = 0.06$\end{tabular}}
+& \multicolumn{2}{@{}c@{}|@{ }}{\begin{tabular}{@{}c@{}}$L_2$\\$\epsilon = 2$\end{tabular}}
+& \multicolumn{2}{@{}c@{}|@{ }}{\begin{tabular}{@{}c@{}}$L_1$\\$\epsilon = 24$\end{tabular}}
+& \multicolumn{2}{@{}c@{}|@{ }}{\begin{tabular}{@{}c@{}}$L_0$\\$\epsilon = 10$\end{tabular}}
+& \multicolumn{2}{c|}{\begin{tabular}{@{}c@{}}adv.\\frames\end{tabular}}
+\\\hline
+& \multicolumn{2}{@{}c@{}|@{ }}{\textcolor{colorbrewer3}{seen}}
+& \multicolumn{2}{@{}c@{}|@{ }}{\textcolor{colorbrewer1}{\bfseries unseen}}
+& \multicolumn{2}{@{}c@{}|@{ }}{\textcolor{colorbrewer1}{\bfseries unseen}}
+& \multicolumn{2}{@{}c@{}|@{ }}{\textcolor{colorbrewer1}{\bfseries unseen}}
+& \multicolumn{2}{@{}c@{}|@{ }}{\textcolor{colorbrewer1}{\bfseries unseen}}
+& \multicolumn{2}{c|}{\textcolor{colorbrewer1}{\bfseries unseen}}
+\\\hline
+& FPR$\downarrow$ & \RTE$\downarrow$
+& FPR$\downarrow$ & \RTE$\downarrow$
+& FPR$\downarrow$ & \RTE$\downarrow$
+& FPR$\downarrow$ & \RTE$\downarrow$
+& FPR$\downarrow$ & \RTE$\downarrow$
+& FPR$\downarrow$ & \RTE$\downarrow$
+\\\hline\hline
+\Normal & 95.7 & 99.8 % fpr@98, rte@98
+& 95.9 & 100.0 % fpr@98, rte@98
+& 95.9 & 100.0 % fpr@98, rte@98
+& 95.9 & 100.0 % fpr@98, rte@98
+& 72.7 & 76.8 % fpr@98, rte@98
+& 72.4 & 76.5 % fpr@98, rte@98
+\\
+\AdvTrainHalf & 50.0 & 53.7 % fpr@98, rte@98
+& 83.4 & 87.1 % fpr@98, rte@98
+& 95.5 & 99.2 % fpr@98, rte@98
+& 95.7 & 99.4 % fpr@98, rte@98
+& 54.0 & 57.9 % fpr@98, rte@98
+& 26.8 & 30.6 % fpr@98, rte@98
+\\
+\AdvTrainFull & 42.1 & 48.3 % fpr@98, rte@98
+& 80.9 & 87.1 % fpr@98, rte@98
+& 93.3 & 99.5 % fpr@98, rte@98
+& 93.6 & 99.8 % fpr@98, rte@98
+& 82.2 & 88.8 % fpr@98, rte@98
+& 19.3 & 25.1 % fpr@98, rte@98
+\\
+\ConfTrain & 34.0 & 37.6 % fpr@98, rte@98
+& 40.5 & 44.1 % fpr@98, rte@98
+& 20.3 & 23.9 % fpr@98, rte@98
+& 25.0 & 28.6 % fpr@98, rte@98
+& 0.2 & 2.6 % fpr@98, rte@98
+& 0.1 & 2.2 % fpr@98, rte@98
+\\\hline
+\end{tabularx}

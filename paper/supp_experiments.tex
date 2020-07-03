@@ -1,0 +1,821 @@
+\section{Experiments}
+\label{sec:supp-experiments}
+
+In the following, we provide additional details on our experimental setup regarding (a) the used attacks, especially our \PGD-\FConf attack including pseudo-code in \secref{subsec:supp-experiments-attacks}, (b) training of \AdvTrain and \ConfTrain in \secref{subsec:supp-experiments-training}, (c) the evaluated baselines in \secref{subsec:supp-experiments-baselines} and (d) the used evaluation metrics in \secref{subsec:supp-experiments-evaluation}. Afterwards, we include additional experimental results, including ablation studies in \secref{subsec:supp-experiments-ablation}, qualitative results for analysis in \secref{subsec:supp-experiments-analysis}, and further results for $95\%$ and $98\%$ true positive rate (TPR), results per attack and results per corruption on MNIST-C \citep{MuICMLWORK2019} and Cifar10-C \citep{HendrycksARXIV2019} in \secref{subsec:supp-experiments-results}.
+
+\subsection{Attacks}
+\label{subsec:supp-experiments-attacks}
+
+\textbf{Projected Gradient Descent (\PGD):}
+%
+Complementary to the description of the projected gradient descent (\PGD) attack by \cite{MadryICLR2018} and our adapted attack, we provide a detailed algorithm in \algref{alg:supp-pgd}. We note that the objective maximized in \citep{MadryICLR2018} is
+\begin{align}
+    \mathcal{F}(x + \delta, y) = \cL(f(x + \delta; w), y)\label{eq:supp-attack}
+\end{align}
+where $\mathcal{L}$ denotes the cross-entropy loss, $f(\cdot;w)$ denotes the model and $(x,y)$ is an input-label pair from the test set. Our adapted attack, in contrast, maximizes
+\begin{align}
+    \mathcal{F}(x + \delta, y) = \max_{k\neq y}f_k(x + \delta;w)\label{eq:supp-conf-attack}
+\end{align}
+where $f_k$ denotes the confidence of $f$ in class $k$. Note that the maximum over labels, \ie, $\max_{k\neq y}$, is explicitly computed during optimization; this means that in contrast to \citep{GoodfellowOPENREVIEW2019}, we do not run $(K - 1)$ targeted attacks and subsequently take the maximum-confidence one, where $K$ is the number of classes. We denote these two variants as \PGD-\FCE and \PGD-\FConf, respectively. Deviating from \citep{MadryICLR2018}, we initialize $\delta$ uniformly over directions and norm (instead of uniform initialization over the volume of the $\epsilon$-ball):
+\begin{align}
+    \delta = u\epsilon \frac{\delta'}{\|\delta'\|_\infty},\quad\delta' \sim \mathcal{N}(0, I),u\sim U(0,1)\label{eq:supp-initialization}
+\end{align}
+where $\delta'$ is sampled from a standard Gaussian and $u \in [0,1]$ from a uniform distribution. We also consider zero initialization, \ie, $\delta = 0$. For random initialization we always consider multiple restarts, $10$ for \PGD-\FConf and $50$ for \PGD-\FCE; for zero initialization, we use $1$ restart. Finally, in contrast to \cite{MadryICLR2018}, we run \PGD for exactly $T$ iterations, taking the perturbation corresponding to the best objective value obtained throughout the optimization.
+
+\begin{algorithm*}[t]
+    \caption{\textbf{Projected Gradient Descent (\PGD) with Backtracking.} Pseudo-code for the used \PGD procedure to maximize \eqnref{eq:supp-attack} or \eqnref{eq:supp-conf-attack} using momentum and backtracking subject to the constraints $\tilde{x}_i = x_i + \delta_i \in [0,1]$ and $\|\delta\|_\infty \leq \epsilon$; in practice, the procedure is applied on batches of inputs. The algorithm is easily adapted to work with arbitrary $L_p$-norm; only the projections on Line \ref{line:projection1} and \ref{line:projection2} as well as the normalized gradient in Line \ref{line:normalized-grad} need to be adapted.}
+    \label{alg:supp-pgd}
+    \begin{algorithmic}[1]
+        \small
+        \STATEx \textbf{input:} example $x$ with label $y$
+        \STATEx \textbf{input:} number of iterations $T$
+        \STATEx \textbf{input:} learning rate $\gamma$, momentum $\beta$, learning rate factor $\alpha$
+        \STATEx \textbf{input:} initial $\delta^{(0)}$, \eg, \eqnref{eq:supp-initialization} or $\delta^{(0)} = 0$
+        \STATE $v := 0$ \COMMENT{saves the best objective achieved}
+        \STATE $\tilde{x} := x + \delta^{(0)}$ \COMMENT{best adversarial example obtained}
+        \STATE $g^{(-1)} := 0$ \COMMENT{accumulated gradients}
+        \FOR{$t = 0,\ldots,T$}
+        \STATE \COMMENT{projection onto $L_\infty$ $\epsilon$-ball and on $[0,1]$:}
+        \STATE clip $\delta^{(t)}_i$ to $[-\epsilon, \epsilon]$\label{line:projection1}
+        \STATE clip $x_i + \delta^{(t)}_i$ to $[0,1]$
+        \STATE \COMMENT{forward and backward pass to get objective and gradient:}
+        \STATE $v^{(t)} := \mathcal{F}(x + \delta^{(t)}, y)$ \COMMENT{see \eqnref{eq:supp-attack} or \eqnref{eq:supp-conf-attack}}
+        \STATE $g^{(t)} := \text{sign}\left(\nabla_{\delta^{(t)}} \mathcal{F}(x + \delta^{(t)}, y)\right)$\label{line:normalized-grad}
+        \STATE \COMMENT{keep track of adversarial example resulting in best objective:}
+        \IF{$v^{(t)} > v$}
+        \STATE $v := v^{(t)}$
+        \STATE $\tilde{x} := x + \delta^{(t)}$
+        \ENDIF
+        \STATE \COMMENT{iteration $T$ is only meant to check whether last update improved objective:}
+        \IF{$t = T$}
+        \STATE \textbf{break}
+        \ENDIF
+        \STATE \COMMENT{integrate momentum term:}
+        \STATE $g^{(t)} := \beta g^{(t - 1)} + (1 - \beta)g^{(t)}$
+        \STATE \COMMENT{``try'' the update step and see if objective increases:}
+        \STATE $\hat{\delta}^{(t)} := \delta^{(t)} + \gamma g^{(t)}$
+        \STATE clip $\hat{\delta}^{(t)}_i$ to $[-\epsilon, \epsilon]$\label{line:projection2}
+        \STATE clip $x_i + \hat{\delta}^{(t)}_i$ to $[0,1]$
+        \STATE $\hat{v}^{(t)} := \mathcal{F}(x + \hat{\delta}^{(t)}, y)$
+        \STATE \COMMENT{only keep the update if the objective increased; otherwise decrease learning rate:}
+        \IF{$\hat{v}^{(t)} \geq v^{(t)}$}
+        \STATE $\delta^{(t + 1)} := \hat{\delta}^{(t)}$
+        \ELSE
+        \STATE $\gamma := \nicefrac{\gamma}{\alpha}$
+        \ENDIF
+        \ENDFOR
+        \STATE \textbf{return} $\tilde{x}$, $\tilde{v}$
+    \end{algorithmic}
+\end{algorithm*}
+\begin{table*}[t]
+    \centering
+    \begin{subfigure}{1\textwidth}
+        \centering
+        \footnotesize
+        \input{tab_mmnist_attack_99tpr}
+    \end{subfigure}
+    \vskip 2px
+    \begin{subfigure}{1\textwidth}
+        \centering
+        \footnotesize
+        \input{tab_msvhn_attack_99tpr}
+    \end{subfigure}
+    \vskip 2px
+    \begin{subfigure}{1\textwidth}
+        \centering
+        \footnotesize
+        \input{tab_mcifar10_attack_99tpr}
+    \end{subfigure}
+    \vskip -6px
+    \caption{\textbf{Detailed Attack Ablation Studies.} We compare our $L_\infty$ \PGD-\FConf attack with $T$ iterations and different combinations of momentum, backtracking and initialization on all three datasets. We consider \AdvTrain, \AdvTrain trained with \PGD-\FConf (\AdvTrain\FConf), and \ConfTrain; we report \RTE for confidence threshold $\tau$@$99\%$TPR. As backtracking requires an additional forward pass per iteration, we use $T = 60$ and $T = 300$ for attacks without backtracking to be comparable to attacks with $T = 40$ and $T = 200$ with backtracking. Against \ConfTrain, $T=1000$ iterations or more are required and backtracking is essential to achieve high \RTE. \AdvTrain, in contrast, is ``easier'' to attack, requiring less iterations and less sophisticated optimization (\ie, without momentum and/or backtracking).}
+    \label{tab:supp-experiments-attack}
+\end{table*}
+\begin{table}[t]
+    \centering
+    \begin{subfigure}[t]{1\textwidth}
+        \vspace*{0px}
+        
+        \centering
+        \footnotesize
+        \input{tab_msvhn_training_99tpr}
+    \end{subfigure}
+    \vskip 2px
+    \begin{subfigure}[t]{1\textwidth}
+        \vspace*{0px}
+        
+        \centering
+        \footnotesize
+        \input{tab_mcifar10_training_99tpr}
+    \end{subfigure}
+    \vskip -6px
+    \caption{\textbf{Training Ablation Studies.} We report unthresholded \RTE and \TE, \ie, $\tau = 0$ (``Standard Setting''), and $\tau$@$99\%$TPR as well as ROC AUC (``Detection Setting'') for \ConfTrain with various values for $\rho$. The models are tested against our $L_\infty$ \PGD-\FConf attack with $T = 1000$ iterations and zero as well as random initialization. On Cifar10, $\rho = 10$ works best and performance stagnates for $\rho > 10$. On SVHN, we also use $\rho = 10$, although $\rho = 6$ shows better results.}
+    \label{tab:supp-experiments-training}
+\end{table}
+\begin{figure*}[t]
+    \begin{subfigure}[t]{0.485\textwidth}
+        \vspace*{0px}
+        
+        \centering
+        \textbf{MNIST} (worst-case of $L_\infty$ attacks with $\epsilon = 0.3$)
+        
+        \begin{subfigure}[t]{0.49\textwidth}
+            \vspace*{0px}
+            
+            \centering
+            \includegraphics[width=1\textwidth]{fig_mnist_corr_advtrain}
+            
+            \includegraphics[width=1\textwidth]{fig_mnist_succ_advtrain}
+        \end{subfigure}
+        \begin{subfigure}[t]{0.49\textwidth}
+            \vspace*{0px}
+            
+            \centering
+            \includegraphics[width=1\textwidth]{fig_mnist_corr_ours10}
+            
+            \includegraphics[width=1\textwidth]{fig_mnist_succ_ours10}
+        \end{subfigure}
+    \end{subfigure}
+    \hfill\vrule\hfill
+    \begin{subfigure}[t]{0.485\textwidth}
+        \vspace*{0px}
+        
+        \centering
+        \textbf{Cifar10} (worst-case of $L_\infty$ attacks with $\epsilon = 0.03$)
+        
+        \begin{subfigure}[t]{0.49\textwidth}
+            \vspace*{0px}
+            
+            \centering
+            \includegraphics[width=1\textwidth]{fig_cifar10_corr_advtrain}
+            
+            \includegraphics[width=1\textwidth]{fig_cifar10_succ_advtrain}
+        \end{subfigure}
+        \begin{subfigure}[t]{0.49\textwidth}
+            \vspace*{0px}
+            
+            \centering
+            \includegraphics[width=1\textwidth]{fig_cifar10_corr_ours10}
+            
+            \includegraphics[width=1\textwidth]{fig_cifar10_succ_ours10}
+        \end{subfigure}
+    \end{subfigure}
+    \vskip -6px
+    \caption{\textbf{Confidence Histograms.} We show histograms of confidences on correctly classified test examples (top) and on adversarial examples (bottom) for both \AdvTrain and \ConfTrain. Note that for \AdvTrain, the number of successful adversarial examples is usually lower than for \ConfTrain. For \ConfTrain in contrast, nearly all adversarial examples are successful, while only a part has high confidence. Histograms obtained for the worst-case adversarial examples across all  tested $L_\infty$ attacks with $\epsilon = 0.3$ and $\epsilon = 0.03$ on MNIST and Cifar10, respectively.}
+    \label{fig:supp-experiments-histograms}
+\end{figure*}
+
+\textbf{\PGD for $\boldsymbol{L_p}$, $\boldsymbol{p \in \{0, 1, 2\}}$:}
+%
+Both \PGD-\FCE and \PGD-\FConf can also be applied using the $L_2$, $L_1$ and $L_0$ norms following the description above. Then, gradient normalization in Line \ref{line:normalized-grad} of \algref{alg:supp-pgd}, the projection in Line \ref{line:projection1}, and the initialization in \eqnref{eq:supp-initialization} need to be adapted. For the $L_2$ norm, the gradient is normalized by dividing by the $L_2$ norm; for the $L_1$ norm only the $1\%$ largest values (in absolute terms) of the gradient are kept and normalized by their $L_1$ norm; and for the $L_0$ norm, the gradient is normalized by dividing by the $L_1$ norm. We follow the algorithm of \cite{DuchiICML2008} for the $L_1$ projection; for the $L_0$ projection (onto the $\epsilon$-ball for $\epsilon \in \mathbb{N}_0$), only the $\epsilon$ largest values are kept. Similarly, initialization for $L_2$ and $L_1$ are simple by randomly choosing a direction (as in \eqnref{eq:supp-initialization}) and then normalizing by their norm. For $L_0$, we randomly choose pixels with probability $(\frac{2}{3}\epsilon)/(HWD)$ and set them to a uniformly random values $u \in [0,1]$, where $H \times W \times D$ is the image size. In experiments, we found that tuning the learning rate for \PGD with $L_1$ and $L_0$ constraints (independent of the objective, \ie, \eqnref{eq:supp-attack} or \eqnref{eq:supp-conf-attack}) is much more difficult. Additionally, \PGD using the $L_0$ norm seems to get easily stuck in sub-optimal local optima.
+
+\textbf{Backtracking:}
+%
+\algref{alg:supp-pgd} also gives more details on the employed momentum and backtracking scheme. These two ``tricks'' add two additional hyper-parameters to the number of iterations $T$ and the learning rate $\gamma$, namely the momentum parameter $\beta$ and the learning rate factor $\alpha$. After each iteration, the computed update, already including the momentum term, is only applied if this improves the objective. This is checked through an additional forward pass. If not, the learning rate is divided by $\alpha$, and the update is rejected. \algref{alg:supp-pgd} includes this scheme as an algorithm for an individual test example $x$ with label $y$ for brevity; however, extending it to work on batches is straight-forward. However, it is important to note that the learning rate is updated per test example individually. In practice, for \PGD-\FCE, with $T = 200$ iterations, we use $\gamma = 0.05$, $\beta = 0.9$ and $\alpha = 1.25$; for \PGD-\FConf, with $T = 1000$ iterations, we use $\gamma = 0.001$, $\beta = 0.9$ and $\alpha = 1.1$.
+
+\textbf{Black-Box Attacks:}
+%
+We also give more details on the used black-box attacks. For random sampling, we apply \eqnref{eq:supp-initialization} $T = 5000$ times. We also implemented the Query-Limited (QL) black-box attack of \cite{IlyasICML2018} using a population of $50$ and variance of $0.1$ for estimating the gradient in Line \ref{line:normalized-grad} of \algref{alg:supp-pgd}; a detailed algorithm is provided in \citep{IlyasICML2018}. We use a learning rate of $0.001$ (note that the gradient is signed, as in \citep{MadryICLR2018}) and also integrated a momentum with $\beta = 0.9$ and backtracking with $\alpha = 1.1$ and $T = 1000$ iterations. We use zero and random initialization; in the latter case we allow $10$ random restarts. For the Simple black-box attack we follow the algorithmic description in \citep{NarodytskaCVPRWORK2017} considering only axis-aligned perturbations of size $\epsilon$ per pixel. We run the attack for $T = 1000$ iterations and allow $10$ random restarts. Following, \cite{KhouryARXIV2018}, we further use the Geometry attack for $T = 1000$ iterations. Random sampling, QL, Simple and Geometry attacks are run for arbitrary $L_p$, $p \in \{\infty, 2, 1, 0\}$. For $L_\infty$, we also use the Square attack proposed in \citep{AndriushchenkoARXIV2019} with $T = 5000$ iterations with a probability of change of $0.05$. For all attacks, we use \eqnref{eq:supp-conf-attack} as objective. Finally, for $L_0$, we also use Corner Search \cite{CroceICCV2019} with the cross-entropy loss as objective, for $T = 200$ iterations. We emphasize that, except for QL, these attacks are not gradient-based and do not approximate the gradient. Furthermore, we note that all attacks except Corner Search are adapted to explicitly attack \ConfTrain by maximizing \eqnref{eq:supp-conf-attack}.
+
+\subsection{Training}
+\label{subsec:supp-experiments-training}
+
+We follow the ResNet-20 architecture by \cite{HeCVPR2016} implemented in PyTorch \citep{PaszkeNIPSWORK2017}. For training we use a batch size of $100$ and train for $100$ and $200$ epochs on MNIST and SVHN/Cifar10, respectively: this holds for normal training, adversarial training (\AdvTrain) and confidence-calibrated adversarial training (\ConfTrain). For the latter two, we use \PGD-\FCE and \PGD\FConf, respectively, for $T = 40$ iterations including momentum and backtracking ($\beta = 0.9$, $\alpha = 1.5$). For \PGD-\FCE we use a learning rate of $0.05$, $0.01$ and $0.005$ on MNIST, SVHN and Cifar10. For \PGD-\FConf we use a learning rate of $0.005$. For \ConfTrain, we randomly switch between the initialization in \eqnref{eq:supp-initialization} and zero initialization. For training, we use standard stochastic gradient descent, starting with a learning rate of $0.1$ on MNIST/SVHN and $0.075$ on Cifar10. The learning rate is multiplied by $0.95$ after each epoch. We do not use weight decay; but the network includes batch normalization \citep{IoffeICML2015}. On SVHN and Cifar10, we use random cropping, random flipping (only Cifar10) and contrast augmentation during training. We always train on $50\%$ clean and $50\%$ adversarial examples per batch, \ie, each batch contains both clean and adversarial examples which is important when using batch normalization.
+
+\subsection{Baselines}
+\label{subsec:supp-experiments-baselines}
+
+As baseline, we use the multi-steepest descent (\Wong) adversarial training of \cite{MainiICML2020}, using the code and models provided in the official repository\footnote{\url{https://github.com/locuslab/robust_union}}. The models correspond to a LeNet-like \cite{LecunIEEE1998} architecture on MNIST, and the pre-activation version of ResNet-18 \cite{HeCVPR2016} on Cifar10. The models were trained with $L_\infty$, $L_2$ and $L_1$ adversarial examples and $\epsilon$ set to $0.3, 1.5, 12$ and $0.03, 0.5, 12$, respectively. We attacked these models using the same setup as used for standard \AdvTrain and our \ConfTrain. 
+
+Additionally, we compare to \TRADES \cite{ZhangICML2019} using the code and pre-trained models from the official repository\footnote{\url{https://github.com/yaodongyu/TRADES}}. The models correspond to a convolutional architecture with four convolutional and three fully-connected layers \cite{CarliniSP2017} on MNIST, and a wide ResNet, specifically WRN-10-28 \cite{ZagoruykoBMVC2016}, on Cifar10. Both are trained using \emph{only} $L_\infty$ adversarial examples with $\epsilon = 0.3$ and $\epsilon = 0.03$, respectively. The evaluation protocol follows the same setup as used for standard \AdvTrain and \ConfTrain.
+
+On Cifar10, we also use the pre-trained ResNet-50 from \cite{MadryICLR2018} obtained from the official repository\footnote{\url{https://github.com/MadryLab/robustness}}. The model was trained on $L_\infty$ adversarial examples with $\epsilon = 0.03$. The same evaluation as for \ConfTrain applies.
+
+Furthermore, we evaluate two detection baseline: the Mahalanobis detector (\Lee) of \cite{MaICLR2018} and the local intrinsic dimensionality (\Ma) detector of \cite{LeeNIPS2018}.
+We used the code provided by \cite{LeeNIPS2018} from the official repository\footnote{\url{https://github.com/pokaxpoka/deep_Mahalanobis_detector}}. For evaluation, we used the provided setup, adding \emph{only} \PGD-\FCE and \PGD-\FConf with $T=1000$, $T=200$ and $T = 40$. For $T=1000$, we used $5$ random restarts, for $T=200$, we used $25$ restarts, and for $T = 40$, we used one restart. These were run for $L_\infty$, $L_2$, $L_1$ and $L_0$. We also evaluated distal adversarial examples as in the main paper. While the hyper-parameters were chosen considering our $L_\infty$ \PGD-\FCE attack ($T = 40$, one restart) and kept fixed for other threat models, the logistic regression classifier trained on the computed statistics (\eg, the Mahalanobis statistics) is trained for each threat model individually, resulting in an advantage over \AdvTrain and \ConfTrain. For worst-case evaluation, where we keep the highest-confidence adversarial example per test example for \ConfTrain, we use the obtained detection score instead. This means, for each test example individually, we consider the adversarial example with worst detection score for evaluation.
+
+\subsection{Evaluation Metrics}
+\label{subsec:supp-experiments-evaluation}
+
+Complementing the discussion in the main paper, we describe the used evaluation metrics and evaluation procedure in more detail. Adversarial examples are computed on the first 1000 examples of the test set; the used confidence threshold is computed on the last 1000 examples of the test set; test errors are computed on all test examples minus the last 1000. As we consider multiple attacks, and some attacks allow multiple random restarts, we always consider the worst case adversarial example per test example and across all attacks/restarts; the worst-case is selected based on confidence.
+
+\textbf{FPR and ROC AUC:}
+%
+To compute receiver operating characteristic (ROC) curves, and the area under the curve, \ie, ROC AUC, we define negatives as \emph{successful} adversarial examples (corresponding to correctly classified test examples) and positives as the corresponding \emph{correctly classified} test examples. The ROC AUC as well as the curve itself can easily be calculated using scikit-learn \citep{PedregosaJMLR2011}. Practically, the generated curve could be used to directly estimate a threshold corresponding to a pre-determined true positive rate (TPR). However, this requires interpolation; after trying several interpolation schemes, we concluded that the results are distorted significantly, especially for TPRs close to $100\%$. Thus, we follow a simpler scheme: on a held out validation set of size $1000$ (the last 1000 samples of the test set), we sorted the corresponding confidences, and picked the confidence threshold in order to obtain (at least) the desired TPR, \eg, $99\%$.
+
+\begin{figure*}[t]
+    \begin{subfigure}[t]{0.485\textwidth}
+        \vspace*{0px}
+        
+        \centering
+        \textbf{MNIST} (worst-case of $L_\infty$ attacks with $\epsilon = 0.3$)
+        
+        \begin{subfigure}[t]{0.47\textwidth}
+            \vspace*{0px}
+            
+            \centering
+            \includegraphics[height=3.5cm]{fig_mnist_roc}
+        \end{subfigure}
+        \begin{subfigure}[t]{0.49\textwidth}
+            \vspace*{0px}
+            
+            \centering			
+            \includegraphics[height=3.5cm]{fig_mnist_rte}
+        \end{subfigure}
+        \begin{subfigure}{0.925\textwidth}
+            \fbox{
+                \hspace*{1.5cm}\includegraphics[width=0.6\textwidth]{fig_mnist_legend}\hspace*{1.5cm}
+            }
+        \end{subfigure}
+    \end{subfigure}
+    \hfill
+    \vrule
+    \hfill
+    \begin{subfigure}[t]{0.485\textwidth}
+        \vspace*{0px}
+        
+        \centering
+        \textbf{Cifar10} (worst-case of $L_\infty$ attacks with $\epsilon = 0.03$)
+        
+        \begin{subfigure}[t]{0.47\textwidth}
+            \vspace*{0px}
+            
+            \centering
+            \includegraphics[height=3.5cm]{fig_cifar10_roc}
+        \end{subfigure}
+        \begin{subfigure}[t]{0.49\textwidth}
+            \vspace*{0px}
+            
+            \centering			
+            \includegraphics[height=3.5cm]{fig_cifar10_rte}
+        \end{subfigure}
+        \begin{subfigure}{0.925\textwidth}
+            \fbox{
+                \hspace*{1.5cm}\includegraphics[width=0.6\textwidth]{fig_cifar10_legend}\hspace*{1.5cm}
+            }
+        \end{subfigure}
+    \end{subfigure}
+    \vskip -6px
+    \caption{\textbf{ROC and \RTE curves.} ROC curves, \ie FPR plotted against TPR for all possible confidence thresholds $\tau$, and (confidence-thresholded) \RTE curves, \ie, \RTE over confidence threshold $\tau$ for \AdvTrain and \ConfTrain, including different $\rho$ parameters. Worst-case adversarial examples across all $L_\infty$ attacks with $\epsilon = 0.3$ (MNIST) and $\epsilon = 0.03$ (Cifar10) were tested. For evaluation, the confidence threshold $\tau$ is fixed at $99\%$TPR, allowing to reject at most $1\%$ correctly classified clean examples. Thus, we also do not report the area under the ROC curve in the main paper.}
+    \label{fig:supp-experiments-evaluation}
+\end{figure*}
+\begin{figure*}[t]
+    \centering
+    \footnotesize
+    \begin{subfigure}{1\textwidth}
+        \centering
+        \textbf{SVHN:} \textbf{\AdvTrain} with $L_\infty$ \PGD-\FConf, $\epsilon = 0.03$ for training \emph{and} testing
+    \end{subfigure}
+    \\[2px]
+    \begin{subfigure}{0.19\textwidth}
+        \includegraphics[height=2.2cm]{fig_svhn_advtrain_0_adversarial}
+    \end{subfigure}
+    \begin{subfigure}{0.19\textwidth}
+        \includegraphics[height=2.2cm]{fig_svhn_advtrain_1_adversarial}
+    \end{subfigure}
+    \begin{subfigure}{0.19\textwidth}
+        \includegraphics[height=2.2cm]{fig_svhn_advtrain_2_adversarial}
+    \end{subfigure}
+    \begin{subfigure}{0.19\textwidth}
+        \includegraphics[height=2.2cm]{fig_svhn_advtrain_3_adversarial}
+    \end{subfigure}
+    \begin{subfigure}{0.19\textwidth}
+        \includegraphics[height=2.2cm]{fig_svhn_advtrain_4_adversarial}
+    \end{subfigure}
+    \\
+    \begin{subfigure}{0.19\textwidth}
+        \includegraphics[height=2.2cm]{fig_svhn_advtrain_5_adversarial}
+    \end{subfigure}
+    \begin{subfigure}{0.19\textwidth}
+        \includegraphics[height=2.2cm]{fig_svhn_advtrain_6_adversarial}
+    \end{subfigure}
+    \begin{subfigure}{0.19\textwidth}
+        \includegraphics[height=2.2cm]{fig_svhn_advtrain_7_adversarial}
+    \end{subfigure}
+    \begin{subfigure}{0.19\textwidth}
+        \includegraphics[height=2.2cm]{fig_svhn_advtrain_8_adversarial}
+    \end{subfigure}
+    \begin{subfigure}{0.19\textwidth}
+        \includegraphics[height=2.2cm]{fig_svhn_advtrain_9_adversarial}
+    \end{subfigure}
+    \\[4px]
+    \begin{subfigure}{1\textwidth}
+        \centering
+        \textbf{SVHN:} \textbf{\ConfTrain} with $L_\infty$ \PGD-\FConf, $\epsilon = 0.03$ for training \emph{and} testing
+    \end{subfigure}\\[4px]
+    \begin{subfigure}{0.19\textwidth}
+        \includegraphics[height=2.2cm]{fig_svhn_ours10_0_adversarial}
+    \end{subfigure}
+    \begin{subfigure}{0.19\textwidth}
+        \includegraphics[height=2.2cm]{fig_svhn_ours10_1_adversarial}
+    \end{subfigure}
+    \begin{subfigure}{0.19\textwidth}
+        \includegraphics[height=2.2cm]{fig_svhn_ours10_2_adversarial}
+    \end{subfigure}
+    \begin{subfigure}{0.19\textwidth}
+        \includegraphics[height=2.2cm]{fig_svhn_ours10_3_adversarial}
+    \end{subfigure}
+    \begin{subfigure}{0.19\textwidth}
+        \includegraphics[height=2.2cm]{fig_svhn_ours10_4_adversarial}
+    \end{subfigure}
+    \\
+    \begin{subfigure}{0.19\textwidth}
+        \includegraphics[height=2.2cm]{fig_svhn_ours10_5_adversarial}
+    \end{subfigure}
+    \begin{subfigure}{0.19\textwidth}
+        \includegraphics[height=2.2cm]{fig_svhn_ours10_6_adversarial}
+    \end{subfigure}
+    \begin{subfigure}{0.19\textwidth}
+        \includegraphics[height=2.2cm]{fig_svhn_ours10_7_adversarial}
+    \end{subfigure}
+    \begin{subfigure}{0.19\textwidth}
+        \includegraphics[height=2.2cm]{fig_svhn_ours10_8_adversarial}
+    \end{subfigure}
+    \begin{subfigure}{0.19\textwidth}
+        \includegraphics[height=2.2cm]{fig_svhn_ours10_9_adversarial}
+    \end{subfigure}
+    \\[4px]
+    \begin{subfigure}{1\textwidth}
+        \centering
+        \textbf{Cifar10:} \textbf{\AdvTrain} with $L_\infty$ \PGD-\FConf, $\epsilon = 0.03$ for training \emph{and} testing
+    \end{subfigure}
+    \\[2px]
+    \begin{subfigure}{0.19\textwidth}
+        \includegraphics[height=2.2cm]{fig_cifar10_advtrain_5_adversarial}
+    \end{subfigure}
+    \begin{subfigure}{0.19\textwidth}
+        \includegraphics[height=2.2cm]{fig_cifar10_advtrain_6_adversarial}
+    \end{subfigure}
+    \begin{subfigure}{0.19\textwidth}
+        \includegraphics[height=2.2cm]{fig_cifar10_advtrain_7_adversarial}
+    \end{subfigure}
+    \begin{subfigure}{0.19\textwidth}
+        \includegraphics[height=2.2cm]{fig_cifar10_advtrain_8_adversarial}
+    \end{subfigure}
+    \begin{subfigure}{0.19\textwidth}
+        \includegraphics[height=2.2cm]{fig_cifar10_advtrain_9_adversarial}
+    \end{subfigure}
+    \\[4px]
+    \begin{subfigure}{1\textwidth}
+        \centering
+        \textbf{Cifar10:} \textbf{\ConfTrain} with $L_\infty$ \PGD-\FConf, $\epsilon = 0.03$ for training \emph{and} testing
+    \end{subfigure}
+    \\[2px]
+    \begin{subfigure}{0.19\textwidth}
+        \includegraphics[height=2.2cm]{fig_cifar10_ours10_5_adversarial}
+    \end{subfigure}
+    \begin{subfigure}{0.19\textwidth}
+        \includegraphics[height=2.2cm]{fig_cifar10_ours10_6_adversarial}
+    \end{subfigure}
+    \begin{subfigure}{0.19\textwidth}
+        \includegraphics[height=2.2cm]{fig_cifar10_ours10_7_adversarial}
+    \end{subfigure}
+    \begin{subfigure}{0.19\textwidth}
+        \includegraphics[height=2.2cm]{fig_cifar10_ours10_8_adversarial}
+    \end{subfigure}
+    \begin{subfigure}{0.19\textwidth}
+        \includegraphics[height=2.2cm]{fig_cifar10_ours10_9_adversarial}
+    \end{subfigure}
+    \vskip 4px
+    \fbox{
+        \hspace*{3.75cm}\includegraphics[width=0.5\textwidth]{fig_supp_class_legend}\hspace*{3.75cm}
+    }
+    \caption{\textbf{Effect of Confidence Calibration.} Confidences for classes along adversarial directions for \AdvTrain and \ConfTrain. Adversarial examples were computed using \PGD-\FConf with $T=1000$ iterations and zero initialization. For both \AdvTrain and \ConfTrain, we show the first ten examples of the test set on SVHN, and the first five examples of the test set on Cifar10. As can be seen, \ConfTrain biases the network to predict uniform distributions beyond the $\epsilon$-ball used during training ($\epsilon = 0.03$). For \AdvTrain, in contrast, adversarial examples can usually be found right beyond the $\epsilon$-ball.}
+    \label{fig:supp-experiments-analysis}
+\end{figure*}
+\begin{figure*}[t]
+    \centering
+    \footnotesize
+    \begin{subfigure}{1\textwidth}
+        \centering
+        \textbf{MNIST:} \textbf{\AdvTrain} with $L_\infty$ \PGD-\FConf, $\epsilon = 0.3$ for training
+    \end{subfigure}
+    \\[4px]
+    \begin{subfigure}{0.225\textwidth}
+        \includegraphics[height=2cm]{fig_mnist_advtrain_0_interpolation}
+    \end{subfigure}
+    \begin{subfigure}{0.085\textwidth}
+        \centering
+        \includegraphics[height=1.25cm]{fig_mnist_advtrain_0_interpolation_0}\\
+        \tiny $y{=}2$\\
+        $f_y{=}1$
+    \end{subfigure}
+    \begin{subfigure}{0.085\textwidth}
+        \centering
+        \includegraphics[height=1.25cm]{fig_mnist_advtrain_0_interpolation_05}\\
+        \tiny $\tilde{y}{=}8$\\
+        $f_{\tilde{y}}{=}0.995$
+    \end{subfigure}
+    \begin{subfigure}{0.085\textwidth}
+        \centering
+        \includegraphics[height=1.25cm]{fig_mnist_advtrain_0_interpolation_1}\\
+        \tiny $y{=}7$\\
+        $f_y{=}1$
+    \end{subfigure}
+    %
+    \begin{subfigure}{0.225\textwidth}
+        \includegraphics[height=2cm]{fig_mnist_advtrain_4_interpolation}
+    \end{subfigure}
+    \begin{subfigure}{0.085\textwidth}
+        \centering
+        \includegraphics[height=1.25cm]{fig_mnist_advtrain_4_interpolation_0}\\
+        \tiny $y{=}2$\\
+        $f_y{=}1$
+    \end{subfigure}
+    \begin{subfigure}{0.085\textwidth}
+        \centering
+        \includegraphics[height=1.25cm]{fig_mnist_advtrain_4_interpolation_05}\\
+        \tiny $\tilde{y}{=}6$\\
+        $f_{\tilde{y}}{=}0.4$
+    \end{subfigure}
+    \begin{subfigure}{0.085\textwidth}
+        \centering
+        \includegraphics[height=1.25cm]{fig_mnist_advtrain_4_interpolation_1}\\
+        \tiny $y{=}4$\\
+        $f_y{=}1$
+    \end{subfigure}
+    \\[4px]
+    %
+    \begin{subfigure}{1\textwidth}
+        \centering
+        \textbf{MNIST:} \textbf{\ConfTrain} with $L_\infty$ \PGD-\FConf, $\epsilon = 0.3$ for training
+    \end{subfigure}
+    \\[4px]
+    \begin{subfigure}{0.225\textwidth}
+        \includegraphics[height=2cm]{fig_mnist_ours10_0_interpolation}
+    \end{subfigure}
+    \begin{subfigure}{0.085\textwidth}
+        \centering
+        \includegraphics[height=1.25cm]{fig_mnist_ours10_0_interpolation_0}\\
+        \tiny $y{=}2$\\
+        $f_y{=}1$
+    \end{subfigure}
+    \begin{subfigure}{0.085\textwidth}
+        \centering
+        \includegraphics[height=1.25cm]{fig_mnist_ours10_0_interpolation_05}\\
+        \tiny $\tilde{y}{=}4$\\
+        {\color{red}$f_{\tilde{y}}{=}0.11$}
+    \end{subfigure}
+    \begin{subfigure}{0.085\textwidth}
+        \centering
+        \includegraphics[height=1.25cm]{fig_mnist_ours10_0_interpolation_1}\\
+        \tiny $y{=}7$\\
+        $f_y{=}1$
+    \end{subfigure}
+    %
+    \begin{subfigure}{0.225\textwidth}
+        \includegraphics[height=2cm]{fig_mnist_ours10_4_interpolation}
+    \end{subfigure}
+    \begin{subfigure}{0.085\textwidth}
+        \centering
+        \includegraphics[height=1.25cm]{fig_mnist_ours10_4_interpolation_0}\\
+        \tiny $y{=}2$\\
+        $f_y{=}1$
+    \end{subfigure}
+    \begin{subfigure}{0.085\textwidth}
+        \centering
+        \includegraphics[height=1.25cm]{fig_mnist_ours10_4_interpolation_05}\\
+        \tiny $\tilde{y}{=}0$\\
+        {\color{red}$f_{\tilde{y}}{=}0.12$}
+    \end{subfigure}
+    \begin{subfigure}{0.085\textwidth}
+        \centering
+        \includegraphics[height=1.25cm]{fig_mnist_ours10_4_interpolation_1}\\
+        \tiny $y{=}4$\\
+        $f_y{=}1$
+    \end{subfigure}
+    \vskip 4px
+    \fbox{
+        \hspace*{1.9cm}\includegraphics[width=0.7\textwidth]{fig_supp_class_legend}\hspace*{1.9cm}
+    }
+    
+    \caption{\textbf{Confidence Calibration Between Test Examples.} We plot the confidence for all classes when interpolating linearly between test examples: $(1 - \kappa) x_1 + \kappa x_2$ for two test examples $x_1$ and $x_2$ with $\kappa \in [0,1]$; $x_1$ is fixed and we show two examples corresponding to different $x_2$. Additionally, we show the corresponding images for $\kappa = 0$, \ie, $x_1$, $\kappa = 0.5$, \ie, the mean image, and $\kappa = 1$, \ie, $x_2$, with the corresponding labels and confidences. As can be seen, \ConfTrain is able to perfectly predict a uniform distribution between test examples. \AdvTrain, in contrast, enforces high-confidence predictions, resulting in conflicts if $x_1$ and $x_2$ are too close together (\ie, within one $\epsilon$-ball) or in sudden changes of the predicted class in between, as seen above.}
+    \label{fig:supp-experiments-interpolation}
+\end{figure*}
+
+In the main paper, instead of reporting ROC AUC, we reported only confidence-thresholded robust test error (\RTE), which implicitly subsumes the false positive rate (FPR), at a confidence threshold of $99\%$TPR. Again, we note that this is an extremely conservative choice, allowing to reject at most $1\%$ correctly classified clean examples. In addition, comparison to other approaches is fair as the corresponding confidence threshold only depends on correctly classified clean examples, not on adversarial examples. As also seen in \figref{fig:supp-experiments-evaluation}, ROC AUC is not a practical metric to evaluate the detection/rejection of adversarial examples. This is because rejecting a significant part of correctly classified clean examples is not acceptable. In this sense, ROC AUC measures how well positives and negatives can be distinguished in general, while we are only interested in the performance for very high TPR, \eg, $99\%$TPR as in the main paper. In this document, we also report FPR to complement our evaluation using (confidence-thresholded) \RTE.
+
+\textbf{Robust Test Error:} 
+%
+The standard robust test error \cite{MadryICLR2018} is the model's test error in the case where all test examples are allowed to be attacked, \ie, modified within the chosen threat model, \eg, for $L_p$:
+%\vspace*{-2px}
+\begin{align}
+\text{``Standard'' }\RTE = \frac{1}{N}\sum_{n = 1}^N \;\max\limits_{\|\delta\|_p\leq \epsilon} \Id_{f(x_n + \delta)\neq y_n}\label{eq:supp-rte}
+\end{align}
+%\vspace*{-2px}
+where $\{(x_n,y_n)\}_{n = 1}^N$ are test examples and labels. In practice, \RTE is computed empirically using several adversarial attacks, potentially with multiple restarts as the inner maximization problem is generally non-convex. 
+
+As standard \RTE does not account for a reject option, we propose a generalized definition adapted to our confidence-thresholded setting. For fixed confidence threshold $\tau$, \eg, at $99\%$TPR, the confidence-thresholded \RTE is defined as
+%\vspace*{-2px}
+\begin{align}
+\RTE(\tau) = \frac{
+    \sum\limits_{n=1}^N \;\max\limits_{\|\delta\|_p\leq \epsilon, c(x_n + \delta)\geq \tau} \Id_{f(x_n + \delta)\neq y_n}
+}
+{
+    \sum\limits_{n=1}^N \;\max\limits_{\|\delta\|_p\leq \epsilon} \Id_{c(x_n + \delta)\geq \tau}
+}\label{eq:supp-conf-rte}
+\end{align}
+%\vspace*{-2px}
+with $c(x) = \max_k f_k(x)$ and $f(x)$ being the model's confidence and predicted class on example $x$, respectively. This is the test error on test examples that can be modified within the chosen threat model \emph{and} pass confidence thresholding. It reduces to standard \RTE for $\tau = 0$, is in $[0,1]$ and, thus, fully comparable to related work.
+
+As both \eqnref{eq:supp-rte} and \eqnref{eq:supp-conf-rte} cannot be computed exactly, we compute
+\begin{align}
+\frac{
+    \sum_{n = 1}^N \max\{\Id_{f(x_n) \neq y_n}\Id_{c(x_n)\geq \tau}, \Id_{f(\tilde{x}_n) \neq y_n}\Id_{c(\tilde{x}_n)\geq \tau}\}
+}{
+    \sum_{n = 1}^N \max\{\Id_{c(x_n)\geq \tau}, \Id_{c(\tilde{x}_n)\geq \tau}\}
+}\label{eq:supp-appr-rte}
+\end{align}
+which is an upper bound assuming that our attack is perfect. Essentially, this counts the test examples $x_n$ that are either classified incorrectly with confidence $c(x_n) \geq \tau$ or that can be attacked successfully $\tilde{x}_n = x_n + \delta$ with confidence $c(\tilde{x}_n) \geq \tau$. This is normalized by the total number of test examples $x_n$ that have $c(x_n) \geq \tau$ or where the corresponding adversarial example $\tilde{x}_n$ has $c(\tilde{x}_n) \geq \tau$. It can easily be seen that $\tau = 0$ reduces \eqnref{eq:supp-appr-rte} to its unthresholded variant, \ie, standard \RTE, ensuring full comparability to related work.
+
+In the following, we also highlight two special cases that are (correctly) taken into account by \eqnref{eq:supp-appr-rte}: (a) if a correctly classified test example $x_n$, \ie, $f(x_n) = y_n$, has confidence $c(x_n) < \tau$, \ie, is rejected, but the corresponding adversarial example $\tilde{x}_n$ with $f(\tilde{x}_n) \neq y$ has $c(\tilde{x}_n) \geq \tau$, \ie, is \emph{not} rejected, this is counted both in the numerator and denominator; (b) if an incorrectly classified test example $x_n$, \ie, $f(x_n) \neq y$, with $c(x_n) < \tau$, \ie, rejected, has a corresponding adversarial example $\tilde{x}_n$, \ie, also $f(\tilde{x}_n) \neq y$, but with $x(x_n) \geq \tau$, \ie, \emph{not} rejected, this is also counted in the numerator as well as denominator. Note that these cases are handled differently in our detection evaluation following related work \cite{MaICLR2018,LeeNIPS2018}: negatives are adversarial examples corresponding to correctly classified clean examples that are successful, \ie, change the label. For example, case (b) would not contribute towards the FPR since the original test example is already mis-classified. Thus, while \RTE implicitly includes FPR as well as \TE, it is even more conservative than just considering ``$\text{FPR} + \TE$''.
+
+\subsection{Ablation Study}
+\label{subsec:supp-experiments-ablation}
+
+In the following, we include ablation studies for our attack \PGD-\FConf, in \tabref{tab:supp-experiments-attack}, and for \ConfTrain, in \tabref{tab:supp-experiments-training}.
+
+\textbf{Attack.}
+%
+Regarding the proposed attack \PGD-\FConf using momentum and backtracking, \tabref{tab:supp-experiments-attack} shows that backtracking and sufficient iterations are essential to attack \ConfTrain. On SVHN, for \AdvTrain, the difference in \RTE between $T=200$ and $T=1000$ iterations is only $3.7\%$, specifically, $46.2\%$ and $49.9\%$. For \ConfTrain, in contrast, using $T=200$ iterations is not sufficient, with merely $5\%$ \RTE. However, $T=1000$ iterations with zero initialization increases \RTE to $22.8\%$. For more iterations, \ie, $T = 2000$, \RTE stagnates with $23.3\%$. When using random initialization (one restart), \RTE drops to $5.2\%$, even when using $T = 2000$ iterations. Similar significant drops are observed without backtracking. These observations generalize to MNIST and Cifar10.
+
+\textbf{Training:}
+%
+\tabref{tab:supp-experiments-training} reports results for \ConfTrain with different values for $\rho$. We note that $\rho$ controls the (speed of the) transition from (correct) one-hot distribution to uniform distribution depending on the distance of adversarial example to the corresponding original training example. Here, higher $\rho$ results in a sharper (\ie, faster) transition from one-hot to uniform distribution. It is also important to note that the power transition does not preserve a bias towards the true label, \ie, for the maximum possible perturbation ($\|\delta\|_\infty = \epsilon$), the network is forced to predict a purely uniform distribution. As can be seen, both on SVHN and Cifar10, higher $\rho$ usually results in better robustness. Thus, for the main paper, we chose $\rho = 10$. Only on SVHN, $\rho = 6$ of $\rho = 12$ perform slightly better. However, we found that $\rho = 10$ generalizes better to previously unseen attacks.
+
+\begin{table*}[t]
+	\centering
+	\footnotesize
+	\begin{subfigure}{0.84\textwidth}
+		\centering
+		\input{tab_mmnist_main2_99tpr}
+	\end{subfigure}
+	\vskip 2px
+	\begin{subfigure}{0.84\textwidth}
+		\centering
+		\input{tab_msvhn_main2_99tpr}
+	\end{subfigure}
+	\vskip 2px
+	\begin{subfigure}{0.84\textwidth}
+		\centering
+		\input{tab_mcifar10_main2_99tpr}
+	\end{subfigure}
+	\vskip -6px
+	\caption{\textbf{Main Results: FPR for $99\%$TPR.} For $\boldsymbol{99}\%$TPR, we report confidence-thresholded \RTE \emph{and} FPR for the results from the main paper. We emphasize that only \PGD-\FCE and \PGD-\FConf were used against \Ma and \Lee. In general, the observations of the main paper can be confirmed considering FPR. Due to the poor \TE of \AdvTrain, \Wong or \TRADES on Cifar10, these methods benefit most from considering FPR instead of (confidence-thresholded) \RTE. \textbf{*} Pre-trained models with different architectures.}
+	\label{tab:supp-experiments-99}
+\end{table*}
+\begin{table*}[t]
+    %\centering
+    \footnotesize
+    \begin{subfigure}{0.83\textwidth}
+        \centering
+        \input{tab_mmnist_main2_98tpr}
+    \end{subfigure}
+    \begin{subfigure}{0.08\textwidth}
+        \centering
+        \input{tab_mmnist_distal_main_98tpr}
+    \end{subfigure}
+    \begin{subfigure}{0.075\textwidth}
+        \centering
+        \input{tab_mmnist_corrupted_main_98tpr}
+    \end{subfigure}
+    \vskip 2px
+    \begin{subfigure}{0.83\textwidth}
+        \centering
+        \input{tab_msvhn_main2_98tpr}
+    \end{subfigure}
+    \begin{subfigure}{0.08\textwidth}
+        \centering
+        \input{tab_msvhn_distal_main_98tpr}
+    \end{subfigure}
+    \hfill
+    \vskip 2px
+    \begin{subfigure}{0.83\textwidth}
+        \centering
+        \input{tab_mcifar10_main2_98tpr}
+    \end{subfigure}
+    \begin{subfigure}{0.08\textwidth}
+        \centering
+        \input{tab_mcifar10_distal_main_98tpr}
+    \end{subfigure}
+    \begin{subfigure}{0.075\textwidth}
+        \centering
+        \input{tab_mcifar10_corrupted_main_98tpr}
+    \end{subfigure}
+    \vskip -6px
+    \caption{\textbf{Main Results: Generalizable Robustness for {\color{colorbrewer1}$\boldsymbol{98\%}$TPR}.} While reporting results for $99\%$TPR in the main paper, reducing the TPR requirement for confidence-thresholding to {\color{colorbrewer1}$98\%$TPR} generally improves results, but only slightly. We report FPR and confidence-thresholded \RTE for $98\%$TPR. For MNIST-C and Cifar10-C, we report mean \TE across all corruptions. $L_\infty$ attacks with $\epsilon{=}0.3$ on MNIST and $\epsilon = 0.03$ on SVHN/Cifar10 were used for training (\textbf{\textcolor{colorbrewer3}{seen}}). All other attacks were not used during training (\textbf{\textcolor{colorbrewer1}{unseen}}). \textbf{*} Pre-trained models with different architectures.}
+    \label{tab:supp-experiments-98}
+\end{table*}
+\begin{table*}[t]
+    %\centering
+    \footnotesize
+    \begin{subfigure}{0.83\textwidth}
+        \centering
+        \input{tab_mmnist_main2_95tpr}
+    \end{subfigure}
+    \begin{subfigure}{0.08\textwidth}
+        \centering
+        \input{tab_mmnist_distal_main_95tpr}
+    \end{subfigure}
+    \begin{subfigure}{0.075\textwidth}
+        \centering
+        \input{tab_mmnist_corrupted_main_95tpr}
+    \end{subfigure}
+    \vskip 2px
+    \begin{subfigure}{0.83\textwidth}
+        \centering
+        \input{tab_msvhn_main2_95tpr}
+    \end{subfigure}
+    \begin{subfigure}{0.08\textwidth}
+        \centering
+        \input{tab_msvhn_distal_main_95tpr}
+    \end{subfigure}
+    \hfill
+    \vskip 2px
+    \begin{subfigure}{0.83\textwidth}
+        \centering
+        \input{tab_mcifar10_main2_95tpr}
+    \end{subfigure}
+    \begin{subfigure}{0.08\textwidth}
+        \centering
+        \input{tab_mcifar10_distal_main_95tpr}
+    \end{subfigure}
+    \begin{subfigure}{0.075\textwidth}
+        \centering
+        \input{tab_mcifar10_corrupted_main_95tpr}
+    \end{subfigure}
+    \vskip -6px
+    \caption{\textbf{Main Results: Generalizable Robustness for {\color{colorbrewer1}$\boldsymbol{95\%}$TPR}.} We report FPR and \RTE for $\boldsymbol{95}\%$TPR, in comparison with $98\%$ in \tabref{tab:supp-experiments-98} and $99\%$ in the main paper. For MNIST-C and Cifar10-C, we report mean \TE across all corruptions. $L_\infty$ attacks with $\epsilon{=}0.3$ on MNIST and $\epsilon = 0.03$ on SVHN/Cifar10 \textbf{\textcolor{colorbrewer3}{seen}} during training; all other attacks \textbf{\textcolor{colorbrewer1}{unseen}} during training. Results improve slightly in comparison with $98\%$TPR. However, the improvements are rather small and do not justify the significantly increased fraction of ``thrown away'' (correctly classified) clean examples. \textbf{*} Pre-trained models with different architectures.}
+    \label{tab:supp-experiments-95}
+\end{table*}
+\begin{table}
+    \centering
+    \begin{subfigure}{0.235\textwidth}
+        \input{tab_mmnist_all_99tpr}
+    \end{subfigure}
+    \begin{subfigure}{0.125\textwidth}
+        \input{tab_msvhn_all_99tpr}
+    \end{subfigure}
+    \begin{subfigure}{0.125\textwidth}
+        \input{tab_mcifar10_all_99tpr}
+    \end{subfigure}
+    \hspace*{0px}
+    {\color{gray}\rule[-2.75cm]{1px}{5.75cm}}
+    \hspace*{0.5px}
+    \begin{subfigure}{0.125\textwidth}
+        \input{tab_mcifar10_all2_99tpr}
+    \end{subfigure}
+    \caption{\textbf{Worst-Case Results Across \textcolor{colorbrewer1}{Unseen} Attacks.} We report the (per-example) worst-case, confidence-thresholded \RTE and FPR across \textbf{all} unseen attacks on MNIST, SVHN and Cifar10. On Cifar10, we additionally present results for all attacks except $L_\infty$ adversarial examples with larger $\epsilon=0.06$ (indicated in \textcolor{colorbrewer2}{blue}). \ConfTrain is able to outperform all baselines, including \Wong and \TRADES, significantly on MNIST and SVHN. On Cifar10, \ConfTrain performs poorly on $L_\infty$ adversarial examples with larger $\epsilon = 0.06$. However, excluding these adversarial examples, \ConfTrain also outperforms all baselines on Cifar10. \textbf{*} Pre-trained models with different architectures.}
+    \label{tab:supp-experiments-all}
+\end{table}
+
+\subsection{Analysis}
+\label{subsec:supp-experiments-analysis}
+
+\textbf{Confidence Histograms:}
+%
+For further analysis, \figref{fig:supp-experiments-histograms} shows confidence histograms for \AdvTrain and \ConfTrain on MNIST and Cifar10. The confidence histograms for \ConfTrain reflect the expected behavior: adversarial examples are mostly successful in changing the label, which is supported by high \RTE values for confidence threshold $\tau = 0$, but their confidence is pushed towards uniform distributions. For \AdvTrain, in contrast, successful adversarial examples -- fewer in total -- generally obtain high confidence. As a result, while confidence thresholding generally benefits \AdvTrain, the improvement is not as significant as for \ConfTrain.
+
+\textbf{Confidence Along Adversarial Directions:}
+%
+In \figref{fig:supp-experiments-analysis}, we plot the probabilities for all ten classes along an adversarial direction. We note that these directions do not necessarily correspond to successful or high-confidence adversarial examples. Instead, we chose the first 10 test examples on SVHN and Cifar10. The adversarial examples were obtained using our $L_\infty$ \PGD-\FConf attack with $T = 1000$ iterations and zero initialization for $\epsilon = 0.03$. For \AdvTrain, we usually observe a change in predictions along these directions; some occur within $\|\delta\|_\infty \leq \epsilon$, corresponding to successful adversarial examples (within $\epsilon$), some occur for $\|\delta\|_\infty > \epsilon$, corresponding to unsuccessful adversarial examples (within $\epsilon$). However, \AdvTrain always assigns high confidence. Thus, when allowing larger adversarial perturbations at test time, robustness of \AdvTrain reduces significantly. For \ConfTrain, in contrast, there are only few such cases; more often, the model achieves a near uniform prediction for small $\|\delta\|_\infty$ and extrapolates this behavior beyond the $\epsilon$-ball used for training. On SVHN, this behavior successfully allows to generalize the robustness to larger adversarial perturbations. Furthermore, these plots illustrate why using more iterations at test time, and using techniques such as momentum and backtracking, are necessary to find adversarial examples as the objective becomes more complex compared to \AdvTrain.
+
+\textbf{Confidence Along Interpolation:}
+%
+In \figref{fig:supp-experiments-interpolation}, on MNIST, we additionally illustrate the advantage of \ConfTrain with respect to the toy example in Proposition \ref{prop:toy-example}. Here, we consider the case where the $\epsilon$-balls of two training or test examples (in different classes) overlap. As we show in Proposition \ref{prop:toy-example}, adversarial training is not able to handle such cases, resulting in the  trade-off between accuracy in robustness reported in the literature \citep{TsiprasARXIV2018,StutzCVPR2019,RaghunathanARXIV2019,ZhangICML2019}. This is because adversarial training enforces high-confidence predictions on both $\epsilon$-balls (corresponding to different classes), resulting in an obvious conflict. \ConfTrain, in contrast, enforces uniform predictions throughout the largest parts of both $\epsilon$-balls, resolving the conflict.
+
+\subsection{Results}
+\label{subsec:supp-experiments-results}
+
+\textbf{Main Results for $98\%$ and $95\%$ TPR:}
+%
+\tabref{tab:supp-experiments-98} reports our main results requiring only $98\%$TPR; \tabref{tab:supp-experiments-95} shows results for $95\%$TPR. This implies, that compared to $99\%$TPR, up to $1\%$ (or $4\%$) more correctly classified test examples can be rejected, increasing the confidence threshold and potentially improving robustness. For relatively simple tasks such as MNIST and SVHN, where \TE is low, this is a significant ``sacrifice''. However, as can be seen, robustness in terms of \RTE only improves slightly. We found that the same holds for $95\%$TPR, however, rejecting more than $2\%$ of correctly classified examples seems prohibitive large for the considered datasets.
+
+\textbf{Worst-Case Across \textbf{\textcolor{colorbrewer1}{Unseen}} Attacks:}
+%
+\tabref{tab:supp-experiments-all} reports \emph{per-example} worst-case \RTE and FPR for $99\%$TPR considering \textbf{all} \textcolor{colorbrewer1}{unseen} attacks. On MNIST and SVHN, \RTE increases to nearly $100\%$ for \AdvTrain, both \AdvTrainHalf and \AdvTrainFull. \ConfTrain, in contrast, is able to achieve considerably lower \RTE: $23.9\%$ on MNIST and $61.1\%$ on SVHN. Only on Cifar10, \ConfTrain does not result in a significant improvement; all methods, including related work such as \Wong and \TRADES yield \RTE of $94\%$ or higher. However, this is mainly due to the poor performance of \ConfTrain against large $L_\infty$ adversarial examples with $\epsilon = 0.06$. Excluding these adversarial examples (right most table, indicated in \textcolor{colorbrewer2}{blue}) shows that \RTE improves to $77.6\%$ for \ConfTrain, while \RTE for the remaining methods remains nearly unchanged. Overall, these experiments emphasize that \ConfTrain is able to generalize robustness to previously unseen attacks.
+
+\textbf{Per-Attack Results:}
+%
+In \tabref{tab:supp-experiments-main-mnist-1} to \ref{tab:supp-experiments-main-cifar10-4}, we break down our main results regarding all used $L_p$ attacks for $p \in \{\infty, 2, 1, 0\}$. For simplicity we focus on \PGD-\FCE and \PGD-\FConf while reporting the used black-box attacks together, \ie, taking the per-example worst-case adversarial examples across all black-box attacks. For comparison, we also include the area under the ROC curve (ROC AUC), non-thresholded \TE and non-thresholded \RTE. On MNIST, where \AdvTrain performs very well in practice, it is striking that for $\nicefrac{4}{3}\epsilon = 0.4$ even black-box attacks are able to reduce robustness completely, resulting in high \RTE. This observation also transfers to SVHN and Cifar10. For \ConfTrain, black-box attacks are only effective on Cifar10, where they result in roughly $87\%$ \RTE with $\tau$@$99\%$TPR. For the $L_2$, $L_1$ and $L_0$ attacks we can make similar observations. Across all $L_p$ norms, it can also be seen that \PGD-\FCE performs significantly worse against our \ConfTrain compared to \AdvTrain, which shows that it is essential to optimize the right objective to evaluate the robustness of defenses and adversarially trained models, \ie, maximize confidence against \ConfTrain.
+
+\textbf{Results on Corrupted MNIST/Cifar10:}
+%
+We also conducted experiments on MNIST-C \citep{MuICMLWORK2019} and Cifar10-C \citep{HendrycksARXIV2019}. These datasets are variants of MNIST and Cifar10 that contain common perturbations of the original images obtained from various types of noise, blur or transformations; examples include zoom or motion blue, Gaussian and shot noise, rotations, translations and shear. \tabref{tab:supp-experiments-corruption-mnist-1} to \ref{tab:supp-experiments-corruption-cifar10-2} presents the per-corruption results on MNIST-C and Cifar10-C, respectively. Here, \texttt{all} includes all corruptions and \texttt{mean} reports the average results across all corruptions. We note that, due to the thresholding, different numbers of corrupted examples are left after detection for different corruptions. Thus, the distinction between \texttt{all} and \texttt{mean} is meaningful. Striking is the performance of \ConfTrain on noise corruptions such as \texttt{gaussian\_noise} or \texttt{shot\_noise}. Here, \ConfTrain is able to reject $100\%$ of the corrupted examples, resulting in a thresholded \TE of $0\%$. This is in stark contrast to \AdvTrain, exhibiting a \TE of roughly $15\%$ after rejection on Cifar10-C. On the remaining corruptions, \ConfTrain is able to perform slightly better than \AdvTrain, which is often due to higher detection rate, \ie, higher ROC AUC. On, Cifar10, the generally lower \TE of \ConfTrain also contributes to the results. Overall, this illustrates that \ConfTrain is able to preserve the inductive bias of predicting near-uniform distribution on noise similar to $L_\infty$ adversarial examples as seen during training.
+
+\begin{table*}[t]
+	\centering
+	\scriptsize
+    \input{tab_mmnist_supp_99tpr_1}
+	\vskip -6px
+	\caption{\textbf{Per-Attack Results on MNIST, Part I ($\mathbf{L_\infty}$).} Per-attack results considering \PGD-\FCE, as in \cite{MadryICLR2018}, our \PGD-\FConf and the remaining black-box attacks for the $L_\infty$ threat model. The used $\epsilon$ values are reported in the left-most column. For the black-box attacks, we report the per-example worst-case across all black-box attacks. In addition to FPR and \RTE, we include ROC AUC, \TE as well as \TE and \RTE in the standard, non-thresholded setting, as reference.}
+	\label{tab:supp-experiments-main-mnist-1}
+\end{table*}
+\begin{table*}[t]
+    \centering
+    \scriptsize
+    \input{tab_mmnist_supp_99tpr_2}
+    \vskip -6px
+    \caption{\textbf{Per-Attack Results on MNIST, Part II ($\mathbf{L_2}$).} Per-attack results considering \PGD-\FCE, as in \cite{MadryICLR2018}, our \PGD-\FConf and the remaining black-box attacks for the $L_2$ threat model. The used $\epsilon$ values are reported in the left-most column. For the black-box attacks, we report the per-example worst-case across all black-box attacks. In addition to FPR and \RTE we include ROC AUC, \TE as well as \TE and \RTE in the standard, non-thresholded setting, as reference.}
+    \label{tab:supp-experiments-main-mnist-2}
+\end{table*}
+\begin{table*}[t]
+    \centering
+    \scriptsize
+    \input{tab_mmnist_supp_99tpr_3}
+    \vskip -6px
+    \caption{\textbf{Per-Attack Results on MNIST, Part III ($\mathbf{L_1}$).} Per-attack results considering \PGD-\FCE, as in \cite{MadryICLR2018}, our \PGD-\FConf and the remaining black-box attacks for the $L_1$ threat model. The used $\epsilon$ values are reported in the left-most column. For the black-box attacks, we report the per-example worst-case across all black-box attacks. In addition to FPR and \RTE we include ROC AUC, \TE as well as \TE and \RTE in the standard, non-thresholded setting, as reference.}
+    \label{tab:supp-experiments-main-mnist-3}
+\end{table*}
+\begin{table*}[t]
+    \centering
+    \scriptsize
+    \input{tab_mmnist_supp_99tpr_4}
+    \vskip -6px
+    \caption{\textbf{Per-Attack Results on MNIST, Part IV ($\mathbf{L_0}$, Adversarial Frames).} Per-attack results considering \PGD-\FCE, as in \cite{MadryICLR2018}, our \PGD-\FConf and the remaining black-box attacks for $L_0$ threat models and adversarial frames. The used $\epsilon$ values are reported in the left-most column. For the black-box attacks, we report the per-example worst-case across all black-box attacks. In addition to FPR and \RTE we include ROC AUC, \TE as well as \TE and \RTE in the standard, non-thresholded setting, as reference.}
+    \label{tab:supp-experiments-main-mnist-4}
+\end{table*}
+\begin{table*}[t]
+	\centering
+	\scriptsize
+    \input{tab_msvhn_supp_99tpr_1}
+	\vskip -6px
+	\caption{\textbf{Per-Attack Results on SVHN, Part I ($\mathbf{L_\infty}$).} Per-attack results considering \PGD-\FCE, as in \cite{MadryICLR2018}, our \PGD-\FConf and the remaining black-box attacks for the $L_\infty$ threat model. The used $\epsilon$ values are reported in the left-most column. For the black-box attacks, we report the per-example worst-case across all black-box attacks. In addition to FPR and \RTE we include ROC AUC, \TE as well as \TE and \RTE in the standard, non-thresholded setting, as reference.}
+    \label{tab:supp-experiments-main-svhn-1}
+\end{table*}
+\begin{table*}[t]
+    \centering
+    \scriptsize
+    \input{tab_msvhn_supp_99tpr_2}
+    \vskip -6px
+    \caption{\textbf{Per-Attack Results on SVHN, Part II ($\mathbf{L_2}$).} Per-attack results considering \PGD-\FCE, as in \cite{MadryICLR2018}, our \PGD-\FConf and the remaining black-box attacks for $L_2$ threat model. The used $\epsilon$ values are reported in the left-most column. For the black-box attacks, we report the per-example worst-case across all black-box attacks. In addition to FPR and \RTE we include ROC AUC, \TE as well as \TE and \RTE in the standard, non-thresholded setting, as reference.}
+    \label{tab:supp-experiments-main-svhn-2}
+\end{table*}
+\begin{table*}[t]
+    \centering
+    \scriptsize
+    \input{tab_msvhn_supp_99tpr_3}
+    \vskip -6px
+    \caption{\textbf{Per-Attack Results on SVHN, Part III ($\mathbf{L_1}$, $\mathbf{L_0}$, Adversarial Frames).} Per-attack results considering \PGD-\FCE, as in \cite{MadryICLR2018}, our \PGD-\FConf and the remaining black-box attacks for $L_1$, $L_0$ threat models and adversarial frames. The used $\epsilon$ values are reported in the left-most column. For the black-box attacks, we report the per-example worst-case across all black-box attacks. In addition to FPR and \RTE we include ROC AUC, \TE as well as \TE and \RTE in the standard, non-thresholded setting, as reference.}
+    \label{tab:supp-experiments-main-svhn-3}
+\end{table*}
+\begin{table*}[t]
+	\centering
+	\tiny
+    \input{tab_mcifar10_supp_99tpr_1}
+	\vskip -6px
+	\caption{\textbf{Per-Attack Results on Cifar10, Part I ($\mathbf{L_\infty}$).} Per-attack results considering \PGD-\FCE, as in \cite{MadryICLR2018}, our \PGD-\FConf and the remaining black-box attacks for $L_\infty$ and $L_2$ threat models. The used $\epsilon$ values are reported in the left-most column. For the black-box attacks, we report the per-example worst-case across all black-box attacks. In addition to FPR and \RTE we include ROC AUC, \TE as well as \TE and \RTE in the standard, non-thresholded setting, as reference.}
+    \label{tab:supp-experiments-main-cifar10-1}
+\end{table*}
+\begin{table*}[t]
+    \centering
+    \scriptsize
+    \input{tab_mcifar10_supp_99tpr_2}
+    \vskip -6px
+    \caption{\textbf{Per-Attack Results on Cifar10, Part II ($\mathbf{L_2}$).} Per-attack results considering \PGD-\FCE, as in \cite{MadryICLR2018}, our \PGD-\FConf and the remaining black-box attacks for the $L_2$ threat model. The used $\epsilon$ values are reported in the left-most column. For the black-box attacks, we report the per-example worst-case across all black-box attacks. In addition to FPR and \RTE we include ROC AUC, \TE as well as \TE and \RTE in the standard, non-thresholded setting, as reference.}
+    \label{tab:supp-experiments-main-cifar10-2}
+\end{table*}
+\begin{table*}[t]
+    \centering
+    \scriptsize
+    \input{tab_mcifar10_supp_99tpr_3}
+    \vskip -6px
+    \caption{\textbf{Per-Attack Results on Cifar10, Part III ($\mathbf{L_1}$).} Per-attack results considering \PGD-\FCE, as in \cite{MadryICLR2018}, our \PGD-\FConf and the remaining black-box attacks for the $L_1$ threat model. The used $\epsilon$ values are reported in the left-most column. For the black-box attacks, we report the per-example worst-case across all black-box attacks. In addition to FPR and \RTE we include ROC AUC, \TE as well as \TE and \RTE in the standard, non-thresholded setting, as reference.}
+    \label{tab:supp-experiments-main-cifar10-3}
+\end{table*}
+\begin{table*}[t]
+    \centering
+    \scriptsize
+    \input{tab_mcifar10_supp_99tpr_4}
+    \vskip -6px
+    \caption{\textbf{Per-Attack Results on Cifar10, Part IV ($\mathbf{L_0}$, Adversarial Frames).} Per-attack results considering \PGD-\FCE, as in \cite{MadryICLR2018}, our \PGD-\FConf and the remaining black-box attacks for the $L_0$ threat model and adversarial frames. The used $\epsilon$ values are reported in the left-most column. For the black-box attacks, we report the per-example worst-case across all black-box attacks. In addition to FPR and \RTE we include ROC AUC, \TE as well as \TE and \RTE in the standard, non-thresholded setting, as reference.}
+    \label{tab:supp-experiments-main-cifar10-4}
+\end{table*}
+\begin{table*}
+    \centering
+    \scriptsize
+    \input{tab_mmnist_corrupted_supp_99tpr_1}
+    \caption{\textbf{Per-Corruptions Results on MNIST-C, PART I.} Results on MNIST-C, broken down by individual corruptions (first column); \texttt{mean} are the averaged results over all corruptions. We report ROC AUC, FPR and the true negative rate (TNR) in addition to the thresholded and unthresholded \TE on the corrupted examples. The table is continued in \tabref{tab:supp-experiments-corruption-mnist-2}.}
+    \label{tab:supp-experiments-corruption-mnist-1}
+\end{table*}
+\begin{table*}
+    \centering
+    \scriptsize
+    \input{tab_mmnist_corrupted_supp_99tpr_2}
+    \caption{\textbf{Per-Corruptions Results on MNIST-C, PART II.} Continued results of \tabref{tab:supp-experiments-corruption-mnist-1} including results on MNIST-C focusing on individual corruptions. texttt{mean} are the averaged results over all corruptions. We report ROC AUC, FPR and the true negative rate (TNR) in addition to the thresholded and unthresholded \TE on the corrupted examples.}
+    \label{tab:supp-experiments-corruption-mnist-2}
+\end{table*}
+\begin{table*}
+    \centering
+    \tiny
+    \input{tab_mcifar10_corrupted_supp_99tpr_1}
+    \caption{\textbf{Per-Corruptions Results on Cifar10-C, PART I.} Results on Cifar10-C focusing on individual corruptions (first column); texttt{mean} are the averaged results over all corruptions. We report ROC AUC, FPR and the true negative rate (TNR) in addition to the thresholded and unthresholded \TE on the corrupted examples. The table is continued in \tabref{tab:supp-experiments-corruption-cifar10-2}.}
+    \label{tab:supp-experiments-corruption-cifar10-1}
+\end{table*}
+\begin{table*}
+    \centering
+    \tiny
+    \input{tab_mcifar10_corrupted_supp_99tpr_2}
+    \caption{\textbf{Per-Corruptions Results on Cifar10-C, PART II} Continued results of \tabref{tab:supp-experiments-corruption-cifar10-1} including results on Cifar10-C focusing on individual corruptions. texttt{mean} are the averaged results over all corruptions. We report ROC AUC, FPR and the true negative rate (TNR) in addition to the thresholded and unthresholded \TE on the corrupted examples.}
+    \label{tab:supp-experiments-corruption-cifar10-2}
+\end{table*}
+\FloatBarrier

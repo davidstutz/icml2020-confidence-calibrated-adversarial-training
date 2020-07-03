@@ -1,0 +1,79 @@
+\begin{tabularx}{1\textwidth}{|X|@{\hskip 7px}c@{\hskip 7px}|@{\hskip 3px}c@{\hskip 3px}|@{\hskip 7px}c@{\hskip 7px}|@{\hskip 7px}c@{\hskip 7px}|@{\hskip 7px}c@{\hskip 7px}|@{\hskip 7px}c@{\hskip 7px}|@{\hskip 7px}c@{\hskip 7px}|@{\hskip 7px}c@{\hskip 7px}|}
+\hline
+%\multicolumn{9}{|c|}{\textbf{MNIST:}}\\
+%\hline
+\textbf{MNIST:} & \multicolumn{2}{c|@{\hskip 7px}}{\textbf{\TE} $\downarrow$ in \%} & \multicolumn{6}{@{\hskip 7px}c@{\hskip 7px}|}{\emph{confidence-thresholed} \textbf{\RTE} $\downarrow$ for $\tau$@$99\%$TPR}\\
+\hline
+& \begin{tabular}{@{}c@{}}(clean)\\$\tau = 0$\end{tabular}
+& \begin{tabular}{@{}c@{}}(clean)\\$99\%$TPR\end{tabular}
+& \begin{tabular}{@{\hskip 2.5px}c@{\hskip 2.5px}}$L_\infty$\\$\epsilon = 0.3$\end{tabular}
+& \begin{tabular}{@{\hskip 2.5px}c@{\hskip 2.5px}}$L_\infty$\\$\epsilon = 0.4$\end{tabular}
+& \begin{tabular}{@{}c@{}}$L_2$\\$\epsilon = 3$\end{tabular}
+& \begin{tabular}{@{}c@{}}$L_1$\\$\epsilon = 18$\end{tabular}
+& \begin{tabular}{@{}c@{}}$L_0$\\$\epsilon = 15$\end{tabular}
+& \begin{tabular}{@{}c@{}}adv.\\frames\end{tabular}
+\\\hline
+& (seen)
+& (seen)
+& \textcolor{colorbrewer3}{seen}
+& \textcolor{colorbrewer1}{\bfseries unseen}
+& \textcolor{colorbrewer1}{\bfseries unseen}
+& \textcolor{colorbrewer1}{\bfseries unseen}
+& \textcolor{colorbrewer1}{\bfseries unseen}
+& \textcolor{colorbrewer1}{\bfseries unseen}
+\\\hline\hline
+\Normal & 0.4 & 0.1
+& 100.0 % rte@99
+& 100.0 % rte@99
+& 100.0 % rte@99
+& 100.0 % rte@99
+& 92.3 % rte@99
+& 87.7 % rte@99
+\\
+%\hline
+\AdvTrainHalf & 0.5 & \bfseries 0.0
+& \bfseries 1.7 % rte@99
+& 100.0 % rte@99
+& 81.5 % rte@99
+& 24.6 % rte@99
+& 23.9 % rte@99
+& 73.7 % rte@99
+\\
+%\hline
+\AdvTrainFull & 0.5 & \bfseries 0.0
+& \bfseries 1.7 % rte@99
+& 100.0 % rte@99
+& 84.8 % rte@99
+& 21.3 % rte@99
+& \bfseries 13.9 % rte@99
+& 62.3 % rte@99
+\\
+%\hline
+\ConfTrain & \bfseries 0.3 & 0.1
+& 7.4 % rte@99
+& \bfseries 11.9 % rte@99
+& \bfseries 0.3 % rte@99
+& \bfseries 1.8 % rte@99
+& 14.8 % rte@99
+& \bfseries 0.2 % rte@99
+\\
+\hline\hline
+\textbf{*} \Wong & 1.8 & 0.9
+& 34.3 % rte@99
+& 98.9 % rte@99
+& 59.2 % rte@99
+& 55.9 % rte@99
+& 66.4 % rte@99
+& 8.8 % rte@99
+\\
+%\hline
+\textbf{*} \TRADES & 0.5 & 0.1
+& 4.0 % rte@99
+& 99.9 % rte@99
+& 44.3 % rte@99
+& 9.0 % rte@99
+& 35.5 % rte@99
+& \bfseries 0.2 % rte@99
+\\
+\hline
+\end{tabularx}

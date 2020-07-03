@@ -1,0 +1,45 @@
+\begin{tabularx}{1\textwidth}{| r | X ||c|c|c|c|c||c|c|}
+\hline
+\multicolumn{9}{|c|}{\textbf{MNIST:} Supplementary Results for $\mathbf{L_0}$ Adversarial Examples and \textbf{Adversarial Frames}}\\
+\hline
+&& \multicolumn{5}{c||}{\begin{tabular}{c}\textbf{Detection Setting}\\$\tau$@$99\%$TPR\end{tabular}} & \multicolumn{2}{c|}{\begin{tabular}{c}\textbf{Standard Setting}\\$\tau{=}0$\end{tabular}}\\
+\hline
+Attack & Training & \begin{tabular}{c}ROC\\AUC\end{tabular} & \begin{tabular}{c}FPR\\ in \%\end{tabular} & \begin{tabular}{c}\TE\\ in \%\end{tabular} & \begin{tabular}{c}\RTE\\ in \%\end{tabular} & $\tau$ & \begin{tabular}{c}\TE\\ in \%\end{tabular} & \begin{tabular}{c}\RTE\\ in \%\end{tabular}\\
+\hline
+\hline
+\multirow{7}{*}{Worst-Case ($L_0$, $\epsilon = 15$)} & \Normal & 0.63 & 91.6 & 0.1 & 92.3 & 0.98 & 0.4 & 99.1\\
+& \AdvTrainHalf & 0.94 & 23.0 & 0.0 & 23.5 & 1.00 & 0.5 & 95.3\\
+& \AdvTrainFull & 0.98 & 12.9 & 0.0 & 13.3 & 1.00 & 0.5 & 94.3\\
+& \ConfTrain & 0.99 & 14.2 & 0.2 & 14.5 & 0.85 & 0.4 & 83.5\\
+& \Wong & 0.75 & 64.2 & 0.9 & 66.2 & 0.51 & 1.8 & 74.2\\
+& \TRADES & 0.87 & 34.6 & 0.1 & 35.1 & 0.92 & 0.5 & 86.7\\
+\hline
+\multirow{7}{*}{\PGD\FConf ($L_0$, $\epsilon = 15$)} & \Normal & 0.69 & 84.4 & 0.1 & 85.0 & 0.98 & 0.4 & 92.7\\
+& \AdvTrainHalf & 0.98 & 0.5 & 0.0 & 0.5 & 1.00 & 0.5 & 5.2\\
+& \AdvTrainFull & 0.98 & 0.3 & 0.0 & 0.3 & 1.00 & 0.5 & 3.6\\
+& \ConfTrain & 0.99 & 3.1 & 0.2 & 3.3 & 0.85 & 0.4 & 13.7\\
+& \Wong & 0.88 & 26.7 & 0.9 & 28.5 & 0.51 & 1.8 & 35.4\\
+& \TRADES & 0.97 & 3.0 & 0.1 & 3.1 & 0.92 & 0.5 & 12.6\\
+\hline
+\multirow{7}{*}{\PGD\FCE ($L_0$, $\epsilon = 15$)} & \Normal & 0.63 & 90.3 & 0.1 & 90.9 & 0.98 & 0.4 & 95.2\\
+& \AdvTrainHalf & 0.98 & 2.3 & 0.0 & 2.4 & 1.00 & 0.5 & 17.7\\
+& \AdvTrainFull & 0.99 & 0.5 & 0.0 & 0.5 & 1.00 & 0.5 & 11.1\\
+& \ConfTrain & 1.00 & 0.9 & 0.2 & 1.1 & 0.85 & 0.4 & 10.3\\
+& \Wong & 0.88 & 30.5 & 0.9 & 32.3 & 0.51 & 1.8 & 41.5\\
+& \TRADES & 0.95 & 10.7 & 0.1 & 11.0 & 0.92 & 0.5 & 27.9\\
+\hline
+\multirow{7}{*}{\BlackBox ($L_0$, $\epsilon = 15$)} & \Normal & 0.97 & 18.3 & 0.1 & 18.5 & 0.98 & 0.4 & 98.6\\
+& \AdvTrainHalf & 0.94 & 21.7 & 0.0 & 22.3 & 1.00 & 0.5 & 95.3\\
+& \AdvTrainFull & 0.98 & 12.9 & 0.0 & 13.3 & 1.00 & 0.5 & 94.3\\
+& \ConfTrain & 0.99 & 12.5 & 0.2 & 12.8 & 0.85 & 0.4 & 84.4\\
+& \Wong & 0.78 & 51.8 & 0.9 & 54.0 & 0.51 & 1.8 & 70.8\\
+& \TRADES & 0.88 & 31.7 & 0.1 & 32.4 & 0.92 & 0.5 & 86.7\\
+\hline
+\multirow{7}{*}{Adversarial Frames} & \Normal & 0.69 & 87.0 & 0.1 & 87.6 & 0.98 & 0.4 & 94.6\\
+& \AdvTrainHalf & 0.82 & 72.9 & 0.0 & 73.6 & 1.00 & 0.5 & 95.4\\
+& \AdvTrainFull & 0.86 & 61.3 & 0.0 & 62.0 & 1.00 & 0.5 & 93.9\\
+& \ConfTrain & 1.00 & 0.0 & 0.2 & 0.2 & 0.85 & 0.4 & 95.4\\
+& \Wong & 0.96 & 6.6 & 0.9 & 8.3 & 0.51 & 1.8 & 17.3\\
+& \TRADES & 0.99 & 0.0 & 0.1 & 0.0 & 0.92 & 0.5 & 1.9\\
+\hline
+\end{tabularx}

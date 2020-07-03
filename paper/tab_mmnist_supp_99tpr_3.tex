@@ -1,0 +1,66 @@
+\begin{tabularx}{1\textwidth}{| r | X ||c|c|c|c|c||c|c|}
+\hline
+\multicolumn{9}{|c|}{\textbf{MNIST:} Supplementary Results for $\mathbf{L_1}$ Adversarial Examples}\\
+\hline
+&& \multicolumn{5}{c||}{\begin{tabular}{c}\textbf{Detection Setting}\\$\tau$@$99\%$TPR\end{tabular}} & \multicolumn{2}{c|}{\begin{tabular}{c}\textbf{Standard Setting}\\$\tau{=}0$\end{tabular}}\\
+\hline
+Attack & Training & \begin{tabular}{c}ROC\\AUC\end{tabular} & \begin{tabular}{c}FPR\\ in \%\end{tabular} & \begin{tabular}{c}\TE\\ in \%\end{tabular} & \begin{tabular}{c}\RTE\\ in \%\end{tabular} & $\tau$ & \begin{tabular}{c}\TE\\ in \%\end{tabular} & \begin{tabular}{c}\RTE\\ in \%\end{tabular}\\
+\hline
+\hline
+\multirow{7}{*}{Worst-Case ($L_1$, $\epsilon = 12$)} & \Normal & 0.44 & 98.9 & 0.1 & 99.6 & 0.98 & 0.4 & 100.0\\
+& \AdvTrainHalf & 0.93 & 8.6 & 0.0 & 8.8 & 1.00 & 0.5 & 26.3\\
+& \AdvTrainFull & 0.91 & 8.2 & 0.0 & 8.4 & 1.00 & 0.5 & 23.6\\
+& \ConfTrain & 1.00 & 0.8 & 0.2 & 1.0 & 0.85 & 0.4 & 16.5\\
+& \Wong & 0.87 & 25.5 & 0.9 & 27.3 & 0.51 & 1.8 & 32.3\\
+& \TRADES & 0.96 & 2.7 & 0.1 & 2.8 & 0.92 & 0.5 & 9.5\\
+\hline
+\multirow{7}{*}{\PGD\FConf ($L_1$, $\epsilon = 12$)} & \Normal & 0.45 & 98.9 & 0.1 & 99.6 & 0.98 & 0.4 & 100.0\\
+& \AdvTrainHalf & 0.92 & 6.3 & 0.0 & 6.4 & 1.00 & 0.5 & 19.3\\
+& \AdvTrainFull & 0.90 & 5.8 & 0.0 & 6.0 & 1.00 & 0.5 & 16.7\\
+& \ConfTrain & 1.00 & 0.7 & 0.2 & 0.9 & 0.85 & 0.4 & 14.2\\
+& \Wong & 0.87 & 24.8 & 0.9 & 26.6 & 0.51 & 1.8 & 31.7\\
+& \TRADES & 0.96 & 1.8 & 0.1 & 1.9 & 0.92 & 0.5 & 6.7\\
+\hline
+\multirow{7}{*}{\PGD\FCE ($L_1$, $\epsilon = 12$)} & \Normal & 0.58 & 92.4 & 0.1 & 93.1 & 0.98 & 0.4 & 96.5\\
+& \AdvTrainHalf & 0.94 & 6.4 & 0.0 & 6.6 & 1.00 & 0.5 & 20.2\\
+& \AdvTrainFull & 0.92 & 5.9 & 0.0 & 6.1 & 1.00 & 0.5 & 17.3\\
+& \ConfTrain & 1.00 & 0.0 & 0.2 & 0.2 & 0.85 & 0.4 & 100.0\\
+& \Wong & 0.92 & 12.5 & 0.9 & 14.3 & 0.51 & 1.8 & 21.8\\
+& \TRADES & 0.96 & 2.4 & 0.1 & 2.5 & 0.92 & 0.5 & 8.8\\
+\hline
+\multirow{7}{*}{\BlackBox ($L_1$, $\epsilon = 12$)} & \Normal & 0.98 & 3.3 & 0.1 & 3.5 & 0.98 & 0.4 & 10.8\\
+& \AdvTrainHalf & 0.96 & 0.7 & 0.0 & 0.7 & 1.00 & 0.5 & 4.4\\
+& \AdvTrainFull & 0.97 & 0.8 & 0.0 & 0.8 & 1.00 & 0.5 & 5.3\\
+& \ConfTrain & 1.00 & 0.1 & 0.2 & 0.3 & 0.85 & 0.4 & 8.8\\
+& \Wong & 0.96 & 0.4 & 0.9 & 2.1 & 0.51 & 1.8 & 3.2\\
+& \TRADES & 0.98 & 0.1 & 0.1 & 0.1 & 0.92 & 0.5 & 1.4\\
+\hline
+\multirow{7}{*}{Worst-Case ($L_1$, $\epsilon = 18$)} & \Normal & 0.36 & 99.3 & 0.1 & 100.0 & 0.98 & 0.4 & 100.0\\
+& \AdvTrainHalf & 0.88 & 23.8 & 0.0 & 24.1 & 1.00 & 0.5 & 50.4\\
+& \AdvTrainFull & 0.88 & 20.2 & 0.0 & 20.7 & 1.00 & 0.5 & 43.8\\
+& \ConfTrain & 1.00 & 1.3 & 0.2 & 1.5 & 0.85 & 0.4 & 22.0\\
+& \Wong & 0.81 & 53.7 & 0.9 & 55.6 & 0.51 & 1.8 & 60.8\\
+& \TRADES & 0.95 & 8.2 & 0.1 & 8.4 & 0.92 & 0.5 & 21.4\\
+\hline
+\multirow{7}{*}{\PGD\FConf ($L_1$, $\epsilon = 18$)} & \Normal & 0.36 & 99.3 & 0.1 & 100.0 & 0.98 & 0.4 & 100.0\\
+& \AdvTrainHalf & 0.88 & 15.5 & 0.0 & 15.7 & 1.00 & 0.5 & 33.8\\
+& \AdvTrainFull & 0.87 & 12.7 & 0.0 & 13.0 & 1.00 & 0.5 & 27.6\\
+& \ConfTrain & 1.00 & 0.8 & 0.2 & 1.0 & 0.85 & 0.4 & 15.5\\
+& \Wong & 0.81 & 53.1 & 0.9 & 55.0 & 0.51 & 1.8 & 60.3\\
+& \TRADES & 0.95 & 2.9 & 0.1 & 3.0 & 0.92 & 0.5 & 8.9\\
+\hline
+\multirow{7}{*}{\PGD\FCE ($L_1$, $\epsilon = 18$)} & \Normal & 0.45 & 97.7 & 0.1 & 98.4 & 0.98 & 0.4 & 98.8\\
+& \AdvTrainHalf & 0.90 & 17.0 & 0.0 & 17.3 & 1.00 & 0.5 & 37.6\\
+& \AdvTrainFull & 0.90 & 11.7 & 0.0 & 12.0 & 1.00 & 0.5 & 29.8\\
+& \ConfTrain & 1.00 & 0.0 & 0.2 & 0.2 & 0.85 & 0.4 & 100.0\\
+& \Wong & 0.88 & 27.0 & 0.9 & 28.9 & 0.51 & 1.8 & 36.3\\
+& \TRADES & 0.95 & 4.8 & 0.1 & 4.9 & 0.92 & 0.5 & 13.6\\
+\hline
+\multirow{7}{*}{\BlackBox ($L_1$, $\epsilon = 18$)} & \Normal & 0.98 & 3.3 & 0.1 & 3.5 & 0.98 & 0.4 & 10.8\\
+& \AdvTrainHalf & 0.96 & 0.7 & 0.0 & 0.7 & 1.00 & 0.5 & 4.4\\
+& \AdvTrainFull & 0.97 & 0.8 & 0.0 & 0.8 & 1.00 & 0.5 & 5.3\\
+& \ConfTrain & 1.00 & 0.1 & 0.2 & 0.3 & 0.85 & 0.4 & 8.8\\
+& \Wong & 0.96 & 0.4 & 0.9 & 2.1 & 0.51 & 1.8 & 3.2\\
+& \TRADES & 0.98 & 0.1 & 0.1 & 0.1 & 0.92 & 0.5 & 1.4\\
+\hline
+\end{tabularx}

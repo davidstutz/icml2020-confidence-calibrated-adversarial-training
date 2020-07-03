@@ -1,0 +1,75 @@
+\begin{tabularx}{1\textwidth}{|X|@{ }c@{ }|@{ }c@{ }|@{ }c@{ }|@{ }c@{ }|@{ }c@{ }|@{ }c@{ }|@{ }c@{ }|@{ }c@{ }|@{ }c@{ }|@{ }c@{ }|@{ }c@{ }|@{ }c@{ }|}
+\hline
+\multicolumn{13}{|c|}{\textbf{CIFAR10:} \textbf{FPR} and confidence-thresholded \textbf{\RTE} in \% for $\tau$@{\color{colorbrewer1}$\mathbf{95}\%$TPR}}\\
+\hline
+& \multicolumn{2}{@{}c@{}|@{ }}{\begin{tabular}{@{}c@{}}$L_\infty$\\$\epsilon = 0.03$\end{tabular}}
+& \multicolumn{2}{@{}c@{}|@{ }}{\begin{tabular}{@{}c@{}}$L_\infty$\\$\epsilon = 0.06$\end{tabular}}
+& \multicolumn{2}{@{}c@{}|@{ }}{\begin{tabular}{@{}c@{}}$L_2$\\$\epsilon = 2$\end{tabular}}
+& \multicolumn{2}{@{}c@{}|@{ }}{\begin{tabular}{@{}c@{}}$L_1$\\$\epsilon = 24$\end{tabular}}
+& \multicolumn{2}{@{}c@{}|@{ }}{\begin{tabular}{@{}c@{}}$L_0$\\$\epsilon = 10$\end{tabular}}
+& \multicolumn{2}{c|}{\begin{tabular}{@{}c@{}}adv.\\frames\end{tabular}}
+\\\hline
+& \multicolumn{2}{@{}c@{}|@{ }}{\textcolor{colorbrewer3}{seen}}
+& \multicolumn{2}{@{}c@{}|@{ }}{\textcolor{colorbrewer1}{\bfseries unseen}}
+& \multicolumn{2}{@{}c@{}|@{ }}{\textcolor{colorbrewer1}{\bfseries unseen}}
+& \multicolumn{2}{@{}c@{}|@{ }}{\textcolor{colorbrewer1}{\bfseries unseen}}
+& \multicolumn{2}{@{}c@{}|@{ }}{\textcolor{colorbrewer1}{\bfseries unseen}}
+& \multicolumn{2}{c|}{\textcolor{colorbrewer1}{\bfseries unseen}}
+\\\hline
+& FPR$\downarrow$ & \RTE$\downarrow$
+& FPR$\downarrow$ & \RTE$\downarrow$
+& FPR$\downarrow$ & \RTE$\downarrow$
+& FPR$\downarrow$ & \RTE$\downarrow$
+& FPR$\downarrow$ & \RTE$\downarrow$
+& FPR$\downarrow$ & \RTE$\downarrow$
+\\\hline\hline
+\Normal & 93.0 & 100.0 % fpr@95, rte@95
+& 93.0 & 100.0 % fpr@95, rte@95
+& 93.0 & 100.0 % fpr@95, rte@95
+& 93.0 & 100.0 % fpr@95, rte@95
+& 52.0 & 59.0 % fpr@95, rte@95
+& 88.8 & 95.9 % fpr@95, rte@95
+\\
+\AdvTrainHalf & 46.6 & 61.7 % fpr@95, rte@95
+& 78.6 & 93.7 % fpr@95, rte@95
+& 83.3 & 98.4 % fpr@95, rte@95
+& 83.3 & 98.4 % fpr@95, rte@95
+& 43.9 & 59.6 % fpr@95, rte@95
+& 62.8 & 77.9 % fpr@95, rte@95
+\\
+\AdvTrainFull & 41.3 & 59.1 % fpr@95, rte@95
+& 72.7 & 90.3 % fpr@95, rte@95
+& 80.6 & 98.2 % fpr@95, rte@95
+& 80.4 & 98.0 % fpr@95, rte@95
+& 47.2 & 65.3 % fpr@95, rte@95
+& 62.0 & 79.7 % fpr@95, rte@95
+\\
+\ConfTrain & 57.4 & 66.0 % fpr@95, rte@95
+& 80.8 & 89.3 % fpr@95, rte@95
+& 39.7 & 48.2 % fpr@95, rte@95
+& 48.9 & 57.4 % fpr@95, rte@95
+& 3.6 & 11.1 % fpr@95, rte@95
+& 50.8 & 59.7 % fpr@95, rte@95
+\\\hline\hline
+\textbf{*} \Wong & 32.8 & 50.9 % fpr@95, rte@95
+& 71.5 & 89.4 % fpr@95, rte@95
+& 67.7 & 85.6 % fpr@95, rte@95
+& 49.1 & 67.3 % fpr@95, rte@95
+& 11.4 & 28.4 % fpr@95, rte@95
+& 64.2 & 82.2 % fpr@95, rte@95
+\\
+\textbf{*} \TRADES & 26.5 & 41.3 % fpr@95, rte@95
+& 66.1 & 80.7 % fpr@95, rte@95
+& 53.9 & 68.5 % fpr@95, rte@95
+& 82.3 & 96.9 % fpr@95, rte@95
+& 17.6 & 32.0 % fpr@95, rte@95
+& 56.4 & 71.1 % fpr@95, rte@95
+\\
+\textbf{*} \MadryAT & 32.4 & 43.9 % fpr@95, rte@95
+& 73.2 & 84.5 % fpr@95, rte@95
+& 87.4 & 98.7 % fpr@95, rte@95
+& 86.5 & 97.8 % fpr@95, rte@95
+& 28.6 & 40.1 % fpr@95, rte@95
+& 61.5 & 72.8 % fpr@95, rte@95
+\\\hline
+\end{tabularx}

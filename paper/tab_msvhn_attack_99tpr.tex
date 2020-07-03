@@ -1,0 +1,17 @@
+\begin{tabularx}{1\textwidth}{| X ||c|c|c|c||c||c|c||c|c|}
+\hline
+\multicolumn{10}{|c|}{\textbf{SVHN:} Attack Ablation with confidence-thresholded \RTE in \% for $\tau$@$99\%$TPR}\\
+\multicolumn{10}{|c|}{($L_\infty$ attack with $\epsilon = 0.03$ for training and testing)}\\
+\hline
+Optimization & \multicolumn{5}{c||}{momentum+backtrack} & \multicolumn{2}{c||}{mom} & \multicolumn{2}{c|}{--}\\
+\hline
+Initialization & \multicolumn{4}{c||}{zero} & rand & \multicolumn{2}{c||}{zero} & \multicolumn{2}{c|}{zero}\\
+\hline
+Iterations & $40$ & $200$ & $1000$ & $2000$ & $2000$ & $60$ & $300$ & $60$ & $300$\\
+\hline
+\hline
+\AdvTrain & 38.4 & 46.2 & 49.9 & 50.1 & 51.8 & 37.7 & 38.1 & 29.9 & 30.8\\
+\AdvTrain\FConf (\AdvTrain trained with \PGD-\FConf) & 27.4 & 40.5 & 46.9 & 47.3 & 48.1 & 27.1 & 28.5 & 21.1 & 23.8\\
+\ConfTrain & 4.0 & 5.0 & 22.8 & 23.3 & 5.2 & 2.6 & 2.6 & 2.6 & 2.6\\
+\hline
+\end{tabularx}
