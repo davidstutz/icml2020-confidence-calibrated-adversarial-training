@@ -1,4 +1,4 @@
-# Disentangling Adversarial Robustness and Generalization
+# Confidence-Calibrated Adversarial Training
 
 This repository contains data and code corresponding to
 
